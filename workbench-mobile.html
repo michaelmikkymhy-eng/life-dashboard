@@ -609,7 +609,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 9,
+  seedVersion: 10,
   owner: "HAVING",
   slogan: "持续拥有中",
   brand: "我",
@@ -924,6 +924,48 @@ function migrateSeedData(d){
     if(!d.completedTrainings.includes("2026-08-07")) d.completedTrainings.push("2026-08-07");
     const habit = (d.checkin || []).find(x => x.id === 9903);
     if(habit){ habit.log = habit.log || {}; habit.log["2026-08-07"] = true; }
+  }
+  // v10: 8/8 晚间消费记录 + 晚餐饮食记录
+  if(curVer < 10){
+    const t8 = "2026-08-08";
+    // 支出：打车×3 + 请欣雨吃饭 + 酒吧
+    d.money = d.money || [];
+    const moneyIds = new Set(d.money.map(x=>x.id));
+    const newExpenses = [
+      { id: 10101, date: t8, title: "打车", type: "expense", amount: 17, category: "行" },
+      { id: 10102, date: t8, title: "请欣雨吃饭·牛排锅", type: "expense", amount: 176, category: "食" },
+      { id: 10103, date: t8, title: "酒吧·起泡酒+甜食", type: "expense", amount: 210, category: "娱乐" },
+      { id: 10104, date: t8, title: "打车", type: "expense", amount: 13, category: "行" },
+      { id: 10105, date: t8, title: "打车", type: "expense", amount: 33.4, category: "行" },
+    ];
+    newExpenses.forEach(e => { if(!moneyIds.has(e.id)) d.money.push(e); });
+    // 晚餐+夜宵饮食记录
+    d.diet = d.diet || [];
+    const dietIds = new Set(d.diet.map(x=>x.id));
+    if(!dietIds.has(10001)){
+      d.diet.push({
+        id: 10001, date: t8, title: "晚餐·牛排锅",
+        content: "排骨肉7块 + 干豆腐丝，吃到饱",
+        mood: "热量超",
+        calories: 620, protein: 45, fat: 40, carbs: 13
+      });
+    }
+    if(!dietIds.has(10002)){
+      d.diet.push({
+        id: 10002, date: t8, title: "酒吧·起泡酒+甜食",
+        content: "甜起泡酒5高脚杯 + 几口甜食",
+        mood: "热量超",
+        calories: 650, protein: 2, fat: 6, carbs: 120
+      });
+    }
+    if(!dietIds.has(10003)){
+      d.diet.push({
+        id: 10003, date: t8, title: "KTV·啤酒+奶茶+芒果水",
+        content: "小啤酒330ml + 3分糖奶茶1杯 + 清淡芒果水",
+        mood: "热量超",
+        calories: 350, protein: 4, fat: 3, carbs: 55
+      });
+    }
   }
   d.__seedVer = CONFIG.seedVersion;
   localStorage.setItem(CONFIG.storageKey, JSON.stringify(d));
@@ -2355,6 +2397,26 @@ function seedTodayData(){
       category: "社交"
     });
   }
+
+  // 8/8 晚间支出
+  const eveningIds = new Set((data.money||[]).map(x=>x.id));
+  const eveningExpenses = [
+    { id: 10101, date: t, title: "打车", type: "expense", amount: 17, category: "行" },
+    { id: 10102, date: t, title: "请欣雨吃饭·牛排锅", type: "expense", amount: 176, category: "食" },
+    { id: 10103, date: t, title: "酒吧·起泡酒+甜食", type: "expense", amount: 210, category: "娱乐" },
+    { id: 10104, date: t, title: "打车", type: "expense", amount: 13, category: "行" },
+    { id: 10105, date: t, title: "打车", type: "expense", amount: 33.4, category: "行" },
+  ];
+  eveningExpenses.forEach(e => { if(!eveningIds.has(e.id)) (data.money=data.money||[]).push(e); });
+
+  // 8/8 晚餐+夜宵饮食记录
+  const dietIds = new Set((data.diet||[]).map(x=>x.id));
+  const eveningDiet = [
+    { id: 10001, date: t, title: "晚餐·牛排锅", content: "排骨肉7块 + 干豆腐丝，吃到饱", mood: "热量超", calories: 620, protein: 45, fat: 40, carbs: 13 },
+    { id: 10002, date: t, title: "酒吧·起泡酒+甜食", content: "甜起泡酒5高脚杯 + 几口甜食", mood: "热量超", calories: 650, protein: 2, fat: 6, carbs: 120 },
+    { id: 10003, date: t, title: "KTV·啤酒+奶茶+芒果水", content: "小啤酒330ml + 3分糖奶茶1杯 + 清淡芒果水", mood: "热量超", calories: 350, protein: 4, fat: 3, carbs: 55 },
+  ];
+  eveningDiet.forEach(e => { if(!dietIds.has(e.id)) (data.diet=data.diet||[]).push(e); });
 
   // 更新食材库存
   const inv = CONFIG.foodInventory;
