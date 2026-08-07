@@ -380,9 +380,9 @@
   .bcg-arr { font-size:11px; color:var(--text-tertiary); }
   .bcg-tgt { font-size:13px; font-weight:700; color:var(--module-1); font-variant-numeric:tabular-nums; }
   .bcg-unit { font-size:10px; color:var(--text-tertiary); font-weight:500; }
-  .body-img-wrap { position:relative; display:flex; justify-content:center; margin-top:12px; border-radius:var(--radius-tile); overflow:hidden; }
-  .body-img-wrap img { width:100%; max-width:220px; display:block; }
-  .body-img-wrap svg { position:absolute; top:0; left:50%; transform:translateX(-50%); height:100%; max-width:220px; }
+  .body-svg-wrap { display:flex; justify-content:center; margin-top:10px; }
+  .body-grad-1 { stop-color: var(--module-1); stop-opacity: 0.18; }
+  .body-grad-2 { stop-color: var(--module-1); stop-opacity: 0.04; }
   .body-legend { display:flex; justify-content:center; gap:18px; margin-top:8px; }
   .body-legend span { font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
   .body-legend .dot { width:10px; height:2px; border-radius:1px; }
@@ -1600,6 +1600,7 @@ function renderBody(){
 /* ---------- body silhouette ---------- */
 function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest, curWeight){
   const tgtWeight = 72, tgtChest = 100;
+  const cx = 40;
   const metrics = [
     { label:'体重', cur:curWeight||'--', tgt:tgtWeight, unit:'kg', lowerBetter:true },
     { label:'体脂率', cur:curBF||'--', tgt:tgtBF, unit:'%', lowerBetter:true },
@@ -1621,50 +1622,87 @@ function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest, curWeight){
     </div>`;
   }).join("");
 
-  // 现状虚线轮廓（基于体脂率生成更瘦削的轮廓叠加在目标图上）
-  const bfF = (bf) => Math.max(0.85, Math.min(1.35, 1 + (bf - 12) * 0.035));
-  const wF = (w) => Math.max(6, Math.min(15, (w - 60) * 0.42));
-  function silhouette(bf, waist) {
-    const b = bfF(bf), wHalf = wF(waist), cx = 50;
-    const hR=7,hY=10,nH=3.5,sH=17,cH=14+(b-1)*3,hH=13+(b-1)*5,aH=2+(b-1)*1.5,aG=2.5,lH=4.5+(b-1)*1.5,lG=2;
-    const nY=hY+hR,sY=nY+5,cY=sY+7,wY=sY+18,hY2=wY+9,cY2=hY2+7,kY=hY2+22,fY=hY2+42,hY3=wY+6;
-    return `M ${cx} ${hY-hR}
-C ${cx+hR} ${hY-hR*0.5} ${cx+hR*0.95} ${hY+hR*0.6} ${cx+nH} ${nY}
-C ${cx+sH-4} ${nY+1} ${cx+sH} ${sY-3} ${cx+sH} ${sY}
-L ${cx+sH+aH} ${hY3}
-Q ${cx+sH+aH} ${hY3+3} ${cx+sH+aH-1.5} ${hY3+3}
-L ${cx+sH-aG} ${hY3-3}
-C ${cx+cH+1} ${cY} ${cx+cH} ${cY+3} ${cx+wHalf} ${wY-2}
-C ${cx+wHalf} ${wY+2} ${cx+wHalf+1} ${wY+4} ${cx+wHalf+2} ${wY+5}
-C ${cx+hH-2} ${hY2-3} ${cx+hH} ${hY2-1} ${cx+hH} ${hY2}
-L ${cx+hH+1} ${kY} L ${cx+hH-1} ${fY}
-L ${cx+lH+2} ${fY+1} L ${cx+lH+2} ${fY-1}
-L ${cx+lG+0.5} ${kY-2} L ${cx+lG} ${cY2}
-L ${cx-lG} ${cY2} L ${cx-lG-0.5} ${kY-2}
-L ${cx-lH-2} ${fY-1} L ${cx-lH-2} ${fY+1}
-L ${cx-hH+1} ${fY} L ${cx-hH-1} ${kY} L ${cx-hH} ${hY2}
-C ${cx-hH} ${hY2-1} ${cx-hH+2} ${hY2-3} ${cx-wHalf-2} ${wY+5}
-C ${cx-wHalf-1} ${wY+4} ${cx-wHalf} ${wY+2} ${cx-wHalf} ${wY-2}
-C ${cx-cH} ${cY+3} ${cx-cH-1} ${cY} ${cx-sH+aG} ${hY3-3}
-L ${cx-sH-aH+1.5} ${hY3+3}
-Q ${cx-sH-aH} ${hY3+3} ${cx-sH-aH} ${hY3}
-L ${cx-sH} ${sY}
-C ${cx-sH} ${sY-3} ${cx-sH+4} ${nY+1} ${cx-nH} ${nY}
-C ${cx-hR*0.95} ${hY+hR*0.6} ${cx-hR} ${hY-hR*0.5} ${cx} ${hY-hR} Z`;
+  // 把真实测量值映射为视觉比例——数值变化时身材跟着变
+  const tgtSho = Math.max(16, (tgtChest - 80) * 0.35 + 12);
+  const tgtWst = Math.max(6, (tgtWaist - 70) * 0.5 + 4);
+  const curSho = Math.max(16, (chest - 80) * 0.35 + 12);
+  const curWst = Math.max(6, (curWaist - 70) * 0.5 + 4);
+  const tgtHip = 11, curHip = 12;
+
+  // 各身体部位的路径生成器（共用坐标系，保证叠加完美贴合）
+  function parts(sho, wst, hp) {
+    const headR=5, headY=8, neckY=13, shoY=20, cheY=26, wstY=38, hipY=46, croY=51, kneY=79, ankY=111;
+    const torso = `M ${cx} ${headY-headR}
+C ${cx+headR} ${headY-1} ${cx+headR} ${headY+3} ${cx+2.5} ${neckY}
+C ${cx+sho-3} ${neckY+1} ${cx+sho} ${shoY-3} ${cx+sho} ${shoY}
+L ${cx+sho} ${shoY+4}
+C ${cx+wst+2} ${cheY} ${cx+wst} ${cheY+4} ${cx+wst} ${wstY-1}
+C ${cx+wst} ${wstY+3} ${cx+wst+1} ${wstY+6} ${cx+hp} ${hipY}
+L ${cx+hp+0.5} ${croY}
+L ${cx-hp-0.5} ${croY}
+L ${cx-hp} ${hipY}
+C ${cx-wst-1} ${wstY+6} ${cx-wst} ${wstY+3} ${cx-wst} ${wstY-1}
+C ${cx-wst} ${cheY+4} ${cx-wst-2} ${cheY} ${cx-sho} ${shoY+4}
+L ${cx-sho} ${shoY}
+C ${cx-sho} ${shoY-3} ${cx-sho+3} ${neckY+1} ${cx-2.5} ${neckY}
+C ${cx-headR} ${headY+3} ${cx-headR} ${headY-1} ${cx} ${headY-headR} Z`;
+    const armR = `M ${cx+sho} ${shoY}
+C ${cx+sho+3} ${shoY+5} ${cx+sho+2.5} ${shoY+14} ${cx+sho-1} ${shoY+22}
+L ${cx+sho-2} ${shoY+28} Q ${cx+sho-2.5} ${shoY+30} ${cx+sho-3.5} ${shoY+30}
+L ${cx+sho-5} ${shoY+26}
+C ${cx+sho-4} ${shoY+14} ${cx+sho-5} ${shoY+5} ${cx+sho-2} ${shoY} Z`;
+    const armL = `M ${cx-sho} ${shoY}
+C ${cx-sho-3} ${shoY+5} ${cx-sho-2.5} ${shoY+14} ${cx-sho+1} ${shoY+22}
+L ${cx-sho+2} ${shoY+28} Q ${cx-sho+2.5} ${shoY+30} ${cx-sho+3.5} ${shoY+30}
+L ${cx-sho+5} ${shoY+26}
+C ${cx-sho+4} ${shoY+14} ${cx-sho+5} ${shoY+5} ${cx-sho+2} ${shoY} Z`;
+    const legR = `M ${cx+hp+0.5} ${croY} L ${cx+hp+1} ${kneY} L ${cx+4} ${ankY}
+L ${cx+4.5} ${ankY+2.5} L ${cx+2.5} ${ankY+2.5} L ${cx+2} ${kneY-3} L ${cx+1.5} ${croY} Z`;
+    const legL = `M ${cx-hp-0.5} ${croY} L ${cx-hp-1} ${kneY} L ${cx-4} ${ankY}
+L ${cx-4.5} ${ankY+2.5} L ${cx-2.5} ${ankY+2.5} L ${cx-2} ${kneY-3} L ${cx-1.5} ${croY} Z`;
+    return { torso, armR, armL, legR, legL };
   }
+
+  // 肌肉线条（仅目标身体显示——胸肌分隔、腹肌、腹斜肌V线、三角肌、肱二头肌）
+  function muscle(sho, wst) {
+    const shoY=20, cheY=26, wstY=38;
+    return `<path d="M ${cx} ${cheY-2} L ${cx} ${cheY+6}" stroke-width="0.8" opacity="0.55"/>
+<path d="M ${cx-1} ${cheY-1} Q ${cx-wst*0.4} ${cheY+2} ${cx-2} ${cheY+7}" stroke-width="0.5" fill="none" opacity="0.4"/>
+<path d="M ${cx+1} ${cheY-1} Q ${cx+wst*0.4} ${cheY+2} ${cx+2} ${cheY+7}" stroke-width="0.5" fill="none" opacity="0.4"/>
+<path d="M ${cx-wst*0.55} ${cheY+10} L ${cx+wst*0.55} ${cheY+10}" stroke-width="0.5" opacity="0.4"/>
+<path d="M ${cx-wst*0.45} ${cheY+14} L ${cx+wst*0.45} ${cheY+14}" stroke-width="0.5" opacity="0.4"/>
+<path d="M ${cx-wst*0.35} ${cheY+18} L ${cx+wst*0.35} ${cheY+18}" stroke-width="0.5" opacity="0.4"/>
+<path d="M ${cx} ${cheY+7} L ${cx} ${cheY+20}" stroke-width="0.5" opacity="0.4"/>
+<path d="M ${cx-wst*0.6} ${wstY-4} L ${cx-0.5} ${wstY+2}" stroke-width="0.6" opacity="0.45"/>
+<path d="M ${cx+wst*0.6} ${wstY-4} L ${cx+0.5} ${wstY+2}" stroke-width="0.6" opacity="0.45"/>
+<path d="M ${cx+sho-1.5} ${shoY-1} Q ${cx+sho+1} ${shoY+3} ${cx+sho-0.5} ${shoY+8}" stroke-width="0.5" fill="none" opacity="0.35"/>
+<path d="M ${cx-sho+1.5} ${shoY-1} Q ${cx-sho-1} ${shoY+3} ${cx-sho+0.5} ${shoY+8}" stroke-width="0.5" fill="none" opacity="0.35"/>`;
+  }
+
+  const tgt = parts(tgtSho, tgtWst, tgtHip);
+  const cur = parts(curSho, curWst, curHip);
+  const tgtM = muscle(tgtSho, tgtWst);
 
   return `<div class="panel" style="margin-bottom:12px">
     <div class="ph" style="margin-bottom:10px">${icon("target",15)} 目标 vs 现状</div>
     <div class="body-compare-grid">${metricsHTML}</div>
-    <div class="body-img-wrap">
-      <img src="assets/body-target.jpg" alt="目标身材"/>
-      <svg viewBox="0 0 100 96" preserveAspectRatio="xMidYMid meet" stroke-linecap="round" stroke-linejoin="round">
-        <path d="${silhouette(curBF, curWaist)}" stroke="var(--module-4)" stroke-width="1.2" stroke-dasharray="2.5 2" fill="color-mix(in srgb, var(--module-4) 6%, transparent)" opacity="0.8"/>
+    <div class="body-svg-wrap">
+      <svg viewBox="14 0 52 118" width="100%" style="max-width:180px" stroke-linecap="round" stroke-linejoin="round">
+        <defs><linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop class="body-grad-1" offset="0"/><stop class="body-grad-2" offset="1"/>
+        </linearGradient></defs>
+        <g fill="url(#bodyGrad)" stroke="var(--module-1)" stroke-width="1" opacity="0.9">
+          <path d="${tgt.torso}"/><path d="${tgt.armR}"/><path d="${tgt.armL}"/><path d="${tgt.legR}"/><path d="${tgt.legL}"/>
+        </g>
+        <g stroke="var(--module-1)" fill="none">${tgtM}</g>
+        <g fill="none" stroke="var(--module-4)" stroke-width="1.3" stroke-dasharray="2.5 2" opacity="0.85">
+          <path d="${cur.torso}"/><path d="${cur.armR}"/><path d="${cur.armL}"/><path d="${cur.legR}"/><path d="${cur.legL}"/>
+        </g>
       </svg>
     </div>
     <div class="body-legend">
-      <span><span class="dot" style="background:var(--module-4);border-top:1.5px dashed var(--module-4)"></span> 现状 ${curBF}%</span>
-      <span><span class="dot" style="background:var(--text);opacity:.8"></span> 目标 ${tgtBF}%</span>
+      <span><svg width="14" height="3"><line x1="0" y1="1.5" x2="14" y2="1.5" stroke="var(--module-4)" stroke-width="1.5" stroke-dasharray="2.5 2"/></svg> 现状 ${curBF}%</span>
+      <span><svg width="14" height="3"><line x1="0" y1="1.5" x2="14" y2="1.5" stroke="var(--module-1)" stroke-width="2"/></svg> 目标 ${tgtBF}%</span>
     </div>
   </div>`;
 }
