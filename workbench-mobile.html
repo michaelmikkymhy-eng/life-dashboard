@@ -10,7 +10,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="HAVING">
-<meta name="theme-color" content="#1e1d1a">
+<meta name="theme-color" content="#1c1b18">
 <link rel="manifest" href="assets/manifest.json">
 <link rel="apple-touch-icon" href="assets/app-icon.svg">
 <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
@@ -232,6 +232,17 @@
   .tpg-head::before { content:""; width:3px; height:12px; border-radius:2px; background:var(--module-3); }
   .tpg-head small { font-size:11px; font-weight:500; color:var(--text-tertiary); }
 
+  /* ---------- training completed state ---------- */
+  .train-done { position:relative; overflow:hidden; }
+  .train-done-bg { filter: blur(3px) opacity(.35); transform: scale(1.03); pointer-events:none; }
+  .train-done-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; padding:14px; }
+  .train-done-badge { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--module-1); }
+  .train-done-badge::before { content:"✓"; width:18px; height:18px; border-radius:50%; background:var(--module-1); color:var(--surface-card); display:grid; place-items:center; font-size:11px; font-weight:800; }
+  .train-tomorrow { margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
+  .train-tomorrow .tt-label { font-size:10px; font-weight:600; color:var(--text-tertiary); letter-spacing:.08em; margin-bottom:4px; }
+  .train-tomorrow .tt-part { font-size:14px; font-weight:700; color:var(--text); }
+  .train-tomorrow .tt-ex { font-size:12px; color:var(--text-secondary); margin-top:3px; }
+
   /* ---------- nutrition progress bars ---------- */
   .nutri-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
   .nutri-row:last-child { margin-bottom:0; }
@@ -359,6 +370,22 @@
   .trend-arrow.up { color: var(--danger); }
   .trend-arrow.down { color: var(--module-1); }
   .trend-arrow.flat { color: var(--text-tertiary); }
+
+  /* ---------- body compare (target vs current) ---------- */
+  .body-compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:var(--radius-tile); overflow:hidden; }
+  .bcg-cell { background:var(--surface-card); padding:10px 12px; }
+  .bcg-label { font-size:10px; font-weight:600; color:var(--text-tertiary); letter-spacing:.06em; }
+  .bcg-row { display:flex; align-items:baseline; gap:5px; margin-top:3px; }
+  .bcg-cur { font-size:16px; font-weight:800; color:var(--module-4); font-variant-numeric:tabular-nums; }
+  .bcg-arr { font-size:11px; color:var(--text-tertiary); }
+  .bcg-tgt { font-size:13px; font-weight:700; color:var(--module-1); font-variant-numeric:tabular-nums; }
+  .bcg-unit { font-size:10px; color:var(--text-tertiary); font-weight:500; }
+  .body-img-wrap { position:relative; display:flex; justify-content:center; margin-top:12px; border-radius:var(--radius-tile); overflow:hidden; }
+  .body-img-wrap img { width:100%; max-width:220px; display:block; }
+  .body-img-wrap svg { position:absolute; top:0; left:50%; transform:translateX(-50%); height:100%; max-width:220px; }
+  .body-legend { display:flex; justify-content:center; gap:18px; margin-top:8px; }
+  .body-legend span { font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
+  .body-legend .dot { width:10px; height:2px; border-radius:1px; }
 
   /* ---------- advice section ---------- */
   .advice-box { background:var(--surface-nested); border:1px solid var(--border); border-radius:var(--radius-tile); padding:12px 14px; margin-bottom:12px; font-size:13px; color:var(--text-secondary); line-height:1.6; }
@@ -582,7 +609,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 8,
+  seedVersion: 9,
   owner: "HAVING",
   slogan: "持续拥有中",
   brand: "我",
@@ -614,7 +641,8 @@ const CONFIG = {
     5: { part: "肩+手臂", exercises: [
       { name: "侧平举 ★", sets: 4, reps: "15", weight: "7.5kg", note: "核心动作·末组吃力" },
       { name: "哑铃推举", sets: 5, reps: "10-14", weight: "12.5kg", note: "前束·第5组补量" },
-      { name: "下压+弯举", sets: 3, reps: "8-12+15", weight: "35kg+15kg", note: "超级组·手臂力竭" }
+      { name: "绳索下压", sets: 3, reps: "8-12", weight: "35kg", note: "三头孤立·末组力竭" },
+      { name: "哑铃弯举", sets: 3, reps: "15", weight: "15kg", note: "二头·与下压交替" }
     ], cardio: "爬坡35min · 心率130-150" },
     6: { part: "胸+背(二轮)", exercises: [
       { name: "上斜卧推", sets: 4, reps: "8-10", weight: "12.5kg", note: "下次试15kg" },
@@ -629,7 +657,7 @@ const CONFIG = {
     { name: "漫画身材", progress: 15, desc: "体脂15%以下，肌肉围度明显" },
   ],
 
-  gymCard: { totalCost: 1754.80, visits: 52, perVisit: 33.7, expireDate: "2027-07", targetPerVisit: 5 },
+  gymCard: { totalCost: 1754.80, visits: 53, perVisit: 33.11, expireDate: "2027-07", targetPerVisit: 5 },
 
   foodInventory: [
     { name: "溏心卤蛋", amount: "4枚", calories: 280 },
@@ -664,7 +692,7 @@ const CONFIG = {
     { key:"training", name:"训练情况", icon:"activity", tint:"#f6f0e6", color:"var(--module-3)", type:"progress",
       unit:"kg", desc:"力量训练进度",
       fields:[
-        {key:"part", label:"训练部位", type:"select", options:["肩","胸","背","手臂","腿","核心","其他"]}
+        {key:"part", label:"训练部位", type:"select", options:["肩","胸","背","手臂","腿","核心"]}
       ],
       seed:[
         { id:8801, title:"高位下拉", current:35, target:45, unit:"kg", part:"背", note:"4组×15个，第4组力竭分解" },
@@ -674,7 +702,8 @@ const CONFIG = {
         { id:8805, title:"哑铃飞鸟", current:7.5, target:10, unit:"kg", part:"胸", note:"4组×12-15" },
         { id:8806, title:"侧平举", current:7.5, target:12.5, unit:"kg", part:"肩", note:"8/7 今日4组×15，末组吃力" },
         { id:8807, title:"哑铃推举", current:12.5, target:17.5, unit:"kg", part:"肩", note:"8/7 今日5组(10/13/11/14/12)" },
-        { id:8808, title:"下压+弯举超级组", current:35, target:40, unit:"kg", part:"手臂", note:"8/7 3组(8+15/10+15/12+15) 下压35kg+弯举15kg，手臂力竭未做第4组" }
+        { id:8809, title:"绳索下压", current:35, target:40, unit:"kg", part:"手臂", note:"8/7 3组(8/10/12) 末组力竭" },
+        { id:8810, title:"哑铃弯举", current:15, target:20, unit:"kg", part:"手臂", note:"8/7 3组×15 与下压交替" }
       ] },
 
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
@@ -877,9 +906,24 @@ function migrateSeedData(d){
           if(item && s.note) item.note = s.note;
         });
       }
+      // v9: 拆分"下压+弯举超级组"为独立记录
+      if(m.key === "training" && curVer < 9){
+        existing = existing.filter(x => x.id !== 8808);
+        const existIds = new Set(existing.map(x => x.id));
+        seed.filter(s => s.id === 8809 || s.id === 8810).forEach(s => {
+          if(!existIds.has(s.id)) existing.push(structuredClone(s));
+        });
+      }
       d[m.key] = existing;
     }
   });
+  // v9: 标记今日训练完成 + 准提咒打卡
+  if(curVer < 9){
+    d.completedTrainings = d.completedTrainings || [];
+    if(!d.completedTrainings.includes("2026-08-07")) d.completedTrainings.push("2026-08-07");
+    const habit = (d.checkin || []).find(x => x.id === 9903);
+    if(habit){ habit.log = habit.log || {}; habit.log["2026-08-07"] = true; }
+  }
   d.__seedVer = CONFIG.seedVersion;
   localStorage.setItem(CONFIG.storageKey, JSON.stringify(d));
   return true;
@@ -1100,6 +1144,7 @@ function renderHome(){
   // 今日训练卡片
   const plan = CONFIG.trainingPlan[dow];
   const isRest = dow === 0;
+  const trainDone = (data.completedTrainings || []).includes(isoToday());
   const exHTML = plan.exercises.length ? plan.exercises.map(e=>{
     const star = e.name.includes('★');
     const name = e.name.replace('★','').trim();
@@ -1108,7 +1153,29 @@ function renderHome(){
       ${e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''}
     </div>`;
   }).join("") : '<div class="rest-day">休息日，散步或完全休息</div>';
-  const trainCard = `<div class="home-card" data-go="training">
+  // 明天计划
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  const tmrPlan = CONFIG.trainingPlan[tomorrow.getDay()];
+  const tmrEx = tmrPlan.exercises.length ? tmrPlan.exercises.map(e=>e.name.replace('★','').trim()).join(' · ') : '休息日';
+  const trainCard = trainDone
+    ? `<div class="home-card train-done" data-go="training">
+        <div class="train-done-bg">
+          <div class="hc-title">${icon("activity",15)} 今日训练</div>
+          <div class="train-part">${plan.part}</div>
+          <div class="ex-list-detailed">${exHTML}</div>
+          <div class="cardio-line">${icon("flame",13)} ${plan.cardio}</div>
+        </div>
+        <div class="train-done-overlay">
+          <div class="train-done-badge">今日训练已完成</div>
+          <div class="train-tomorrow">
+            <div class="tt-label">明天计划</div>
+            <div class="tt-part">${tmrPlan.part}</div>
+            <div class="tt-ex">${tmrEx}</div>
+            <div class="tt-ex" style="color:var(--module-4)">${icon("flame",11)} ${tmrPlan.cardio}</div>
+          </div>
+        </div>
+      </div>`
+    : `<div class="home-card" data-go="training">
     <div class="hc-title">${icon("activity",15)} 今日训练<span class="hc-more">查看 ›</span></div>
     <div class="train-part">${plan.part}</div>
     <div class="ex-list-detailed">${exHTML}</div>
@@ -1359,11 +1426,11 @@ function renderTraining(){
   // 训练进度按部位分区——不显示进度条，只显示动作名和重量
   const partGroups = {};
   it.forEach(x=>{
-    const part = x.part || '其他';
+    const part = x.part || '未分类';
     if(!partGroups[part]) partGroups[part] = [];
     partGroups[part].push(x);
   });
-  const partOrder = ['肩','胸','背','手臂','腿','核心','其他'];
+  const partOrder = ['肩','胸','背','手臂','腿','核心'];
   const sortedParts = Object.keys(partGroups).sort((a,b)=>{
     const ia = partOrder.indexOf(a), ib = partOrder.indexOf(b);
     return (ia===-1?99:ia) - (ib===-1?99:ib);
@@ -1497,7 +1564,7 @@ function renderBody(){
     const currentWaist = +latest.waist || 87;
     const targetWaist = 78;
     const chest = +latest.chest || 94;
-    silhouetteCard = renderSilhouette(currentBF, targetBF, currentWaist, targetWaist, chest);
+    silhouetteCard = renderSilhouette(currentBF, targetBF, currentWaist, targetWaist, chest, +latest.weight || 0);
   }
 
   // 建议
@@ -1530,29 +1597,36 @@ function renderBody(){
 }
 
 /* ---------- body silhouette ---------- */
-function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest){
-  // 体脂率影响整体围度，腰围直接影响腰部宽度——差异要明显
+function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest, curWeight){
+  const tgtWeight = 72, tgtChest = 100;
+  const metrics = [
+    { label:'体重', cur:curWeight||'--', tgt:tgtWeight, unit:'kg', lowerBetter:true },
+    { label:'体脂率', cur:curBF||'--', tgt:tgtBF, unit:'%', lowerBetter:true },
+    { label:'腰围', cur:curWaist||'--', tgt:tgtWaist, unit:'cm', lowerBetter:true },
+    { label:'胸围', cur:chest||'--', tgt:tgtChest, unit:'cm', lowerBetter:false },
+  ];
+  const metricsHTML = metrics.map(m=>{
+    const diff = (+m.cur) - (+m.tgt);
+    const good = m.lowerBetter ? diff <= 0 : diff >= 0;
+    const diffStr = isNaN(diff) ? '' : (diff===0 ? '持平' : (Math.abs(diff)<1?Math.abs(diff).toFixed(1):Math.abs(diff|0)) + (m.lowerBetter?(diff>0?'需降':'已达'):(diff<0?'需增':'已达')));
+    return `<div class="bcg-cell">
+      <div class="bcg-label">${m.label}</div>
+      <div class="bcg-row">
+        <span class="bcg-cur">${m.cur}</span><span class="bcg-unit">${m.unit}</span>
+        <span class="bcg-arr">→</span>
+        <span class="bcg-tgt">${m.tgt}${m.unit}</span>
+      </div>
+      <div style="font-size:10px;color:${good?'var(--module-1)':'var(--module-4)'};font-weight:600;margin-top:1px">${diffStr}</div>
+    </div>`;
+  }).join("");
+
+  // 现状虚线轮廓（基于体脂率生成更瘦削的轮廓叠加在目标图上）
   const bfF = (bf) => Math.max(0.85, Math.min(1.35, 1 + (bf - 12) * 0.035));
   const wF = (w) => Math.max(6, Math.min(15, (w - 60) * 0.42));
-
   function silhouette(bf, waist) {
-    const b = bfF(bf);
-    const wHalf = wF(waist);
-    const cx = 50;
-
-    const hR = 7, hY = 10, nH = 3.5;
-    const sH = 17;            // 肩宽固定（骨架）
-    const cH = 14 + (b-1)*3;  // 胸围略受体脂影响
-    const hH = 13 + (b-1)*5;  // 髋围受体脂影响
-    const aH = 2 + (b-1)*1.5; // 手臂粗细
-    const aG = 2.5;
-    const lH = 4.5 + (b-1)*1.5;
-    const lG = 2;
-
-    const nY = hY + hR, sY = nY + 5, cY = sY + 7, wY = sY + 18;
-    const hY2 = wY + 9, cY2 = hY2 + 7, kY = hY2 + 22, fY = hY2 + 42, hY3 = wY + 6;
-
-    // 闭合路径：头顶顺时针 → 右臂外→手→臂内→腋→胸→腰→髋→腿→脚 → 左侧镜像 → 闭合
+    const b = bfF(bf), wHalf = wF(waist), cx = 50;
+    const hR=7,hY=10,nH=3.5,sH=17,cH=14+(b-1)*3,hH=13+(b-1)*5,aH=2+(b-1)*1.5,aG=2.5,lH=4.5+(b-1)*1.5,lG=2;
+    const nY=hY+hR,sY=nY+5,cY=sY+7,wY=sY+18,hY2=wY+9,cY2=hY2+7,kY=hY2+22,fY=hY2+42,hY3=wY+6;
     return `M ${cx} ${hY-hR}
 C ${cx+hR} ${hY-hR*0.5} ${cx+hR*0.95} ${hY+hR*0.6} ${cx+nH} ${nY}
 C ${cx+sH-4} ${nY+1} ${cx+sH} ${sY-3} ${cx+sH} ${sY}
@@ -1579,18 +1653,18 @@ C ${cx-hR*0.95} ${hY+hR*0.6} ${cx-hR} ${hY-hR*0.5} ${cx} ${hY-hR} Z`;
   }
 
   return `<div class="panel" style="margin-bottom:12px">
-    <div class="ph" style="margin-bottom:10px">${icon("target",15)} 身材剪影对比</div>
-    <div style="display:flex;justify-content:center;position:relative">
-      <svg viewBox="0 0 100 96" width="100%" style="max-width:180px" stroke-linecap="round" stroke-linejoin="round">
-        <path d="${silhouette(curBF, curWaist)}" stroke="var(--module-4)" stroke-width="1.5" fill="color-mix(in srgb, var(--module-4) 18%, transparent)" opacity="0.7"/>
-        <path d="${silhouette(tgtBF, tgtWaist)}" stroke="var(--module-1)" stroke-width="1.5" stroke-dasharray="3 2" fill="color-mix(in srgb, var(--module-1) 8%, transparent)" opacity="0.85"/>
+    <div class="ph" style="margin-bottom:10px">${icon("target",15)} 目标 vs 现状</div>
+    <div class="body-compare-grid">${metricsHTML}</div>
+    <div class="body-img-wrap">
+      <img src="assets/body-target.jpg" alt="目标身材"/>
+      <svg viewBox="0 0 100 96" preserveAspectRatio="xMidYMid meet" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${silhouette(curBF, curWaist)}" stroke="var(--module-4)" stroke-width="1.2" stroke-dasharray="2.5 2" fill="color-mix(in srgb, var(--module-4) 6%, transparent)" opacity="0.8"/>
       </svg>
     </div>
-    <div style="display:flex;justify-content:center;gap:20px;margin-top:6px">
-      <span style="font-size:11px;color:var(--module-4);font-weight:600">━ 当前 ${curBF}%</span>
-      <span style="font-size:11px;color:var(--module-1);font-weight:600">┄ 目标 ${tgtBF}%</span>
+    <div class="body-legend">
+      <span><span class="dot" style="background:var(--module-4);border-top:1.5px dashed var(--module-4)"></span> 现状 ${curBF}%</span>
+      <span><span class="dot" style="background:var(--text);opacity:.8"></span> 目标 ${tgtBF}%</span>
     </div>
-    <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;text-align:center">腰围 ${curWaist}→${tgtWaist}cm · 胸围 ${chest}cm</div>
   </div>`;
 }
 
