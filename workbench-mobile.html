@@ -3,7 +3,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>我的生活 · 生活台</title>
 <!-- PWA: 手机添加到主屏幕后像原生 App 一样全屏运行 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -141,9 +141,14 @@
     color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     max-width: 393px; margin: 0 auto; position: relative;
-    min-height: 100vh; overflow-x: hidden;
+    min-height: 100vh; overflow: hidden;
+    -webkit-user-select: none; user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    overscroll-behavior: none;
   }
-  .app { padding: 0 12px calc(var(--nav-h) + 24px); }
+  .app { padding: 0 12px calc(var(--nav-h) + 24px); height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .app::-webkit-scrollbar { display: none; }
   svg { display: block; }
   .tabular { font-variant-numeric: tabular-nums; }
 
@@ -182,6 +187,11 @@
     min-height: 44px; transition: transform .12s, filter .15s; }
   .greet .add:active { transform: scale(.95); filter: brightness(1.15); }
   .greet .add svg { margin-top: -1px; }
+  .fab { position: fixed; right: 16px; bottom: calc(var(--nav-h) + 20px); z-index: 25; width: 52px; height: 52px; min-width:52px; min-height:52px;
+    border: none; border-radius: 50%; background: var(--accent); color: var(--on-accent); cursor: pointer;
+    box-shadow: var(--shadow-overlay); display: grid; place-items: center; transition: transform .12s; }
+  .fab:active { transform: scale(.9); }
+  body.readonly .fab { display: none; }
 
   /* ---------- compact greeting (homepage) ---------- */
   .compact-greet { display:flex; align-items:baseline; gap:8px; padding:8px 0 4px; }
@@ -211,8 +221,12 @@
   .ex-item.star .ex-name { color:var(--module-3); }
   .ex-detail { font-size:12px; font-weight:600; color:var(--text-secondary); font-variant-numeric:tabular-nums; white-space:nowrap; }
   .ex-note { font-size:11px; color:var(--text-tertiary); margin-top:3px; }
-  .cardio-line { font-size:12px; color:var(--text-secondary); margin-top:8px; display:flex; align-items:center; gap:5px; }
+  .cardio-line { font-size:14px; font-weight:600; color:var(--text); margin-top:8px; padding:8px 12px; border-radius:10px; background:color-mix(in srgb, var(--module-4) 8%, var(--surface-card)); border:1px solid color-mix(in srgb, var(--module-4) 20%, var(--border)); display:flex; align-items:center; gap:6px; }
   .rest-day { font-size:14px; color:var(--text-secondary); padding:6px 0; }
+  .train-part-group { margin-bottom:14px; }
+  .tpg-head { font-size:13px; font-weight:700; color:var(--text); margin:10px 0 6px; padding-left:2px; display:flex; align-items:center; gap:6px; }
+  .tpg-head::before { content:""; width:3px; height:12px; border-radius:2px; background:var(--module-3); }
+  .tpg-head small { font-size:11px; font-weight:500; color:var(--text-tertiary); }
 
   /* ---------- nutrition progress bars ---------- */
   .nutri-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
@@ -241,7 +255,7 @@
 
   /* ---------- record list ---------- */
   .rec { position: relative; background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card); padding: 12px 14px; margin-bottom: 8px; transition: border-color .15s; }
+    box-shadow: var(--shadow-card); padding: 10px 14px; margin-bottom: 6px; transition: border-color .15s; }
   .rec:active { border-color: var(--border-input); }
   .rec .top { display:flex; align-items:flex-start; gap: 11px; }
   .rec .chk { flex:0 0 auto; width: 24px; height: 24px; min-width:44px; min-height:44px; border-radius: 50%;
@@ -304,6 +318,14 @@
     border:1px solid var(--border-input); background:var(--surface-card); color:var(--text-secondary);
     cursor:pointer; transition:all .15s; font-variant-numeric:tabular-nums; }
   .cat-chip.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  .cat-chip.empty-cat { opacity:.4; }
+  .diet-week { display:flex; flex-direction:column; gap:6px; }
+  .diet-day { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:var(--radius-tile); background:var(--surface-nested); border:1px solid var(--border); }
+  .diet-day.has { background:color-mix(in srgb, var(--module-5) 8%, var(--surface-card)); border-color:color-mix(in srgb, var(--module-5) 25%, var(--border)); }
+  .diet-day.today { box-shadow: inset 0 0 0 2px var(--accent); }
+  .dd-date { font-size:12px; font-weight:700; width:56px; flex:0 0 auto; }
+  .dd-date small { display:block; font-size:10px; font-weight:500; color:var(--text-tertiary); }
+  .dd-cal { font-size:13px; font-weight:600; color:var(--text-secondary); font-variant-numeric:tabular-nums; }
 
   /* ---------- stage goals ---------- */
   .stage-goal { margin-bottom:14px; }
@@ -325,6 +347,9 @@
   .body-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
   .bm-cell { text-align:center; }
   .bm-v { font-size:18px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; display:flex; align-items:center; justify-content:center; gap:3px; }
+  .silhouette-compare { display:flex; align-items:center; justify-content:center; gap:16px; padding:8px 0; }
+  .sil-col { flex:1; display:flex; justify-content:center; }
+  .sil-arrow { font-size:24px; font-weight:700; color:var(--text-tertiary); flex:0 0 auto; }
   .bm-l { font-size:11px; color:var(--text-secondary); margin-top:2px; }
   .trend-arrow { font-size:13px; font-weight:700; }
   .trend-arrow.up { color: var(--danger); }
@@ -370,7 +395,7 @@
   .vt-btn.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
 
   /* ---------- bottom nav ---------- */
-  .nav { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 393px; height: var(--nav-h);
+  .nav { position: fixed; left: 0; bottom: 0; width: 100%; height: var(--nav-h);
     background: rgba(252,251,248,.92); backdrop-filter: blur(14px); border-top: 1px solid var(--border);
     display: grid; grid-template-columns: repeat(3,1fr); align-items: center; z-index: 30;
     padding-bottom: env(safe-area-inset-bottom); }
@@ -436,9 +461,9 @@
   .bar-row { display:flex; align-items:center; gap:10px; cursor:pointer; }
   .bar-ic { width:30px; height:30px; border-radius:var(--radius-tile); display:grid; place-items:center; flex:0 0 auto;
     background:var(--surface-nested); border:1px solid var(--border); }
-  .bar-name { font-size:13px; font-weight:600; width:56px; flex:0 0 auto; color:var(--text); }
-  .bar-row .pbar { flex:1; margin:0; height:7px; }
-  .bar-pct { font-size:12px; font-weight:600; color:var(--text-secondary); flex:1; text-align:right; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .bar-name { font-size:12px; font-weight:600; width:48px; flex:0 0 auto; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar-row .pbar { flex:1; margin:0; height:7px; min-width:0; }
+  .bar-pct { font-size:11px; font-weight:600; color:var(--text-secondary); flex:1; text-align:right; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; max-width:120px; }
 
   /* ---------- calendar grid ---------- */
   .cal-panel { margin-top:12px; }
@@ -547,7 +572,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 4,
+  seedVersion: 5,
   owner: "我的生活",
   slogan: "Life Dashboard",
   brand: "我",
@@ -619,28 +644,34 @@ const CONFIG = {
 
     { key:"checkin", name:"习惯打卡", icon:"leaf", tint:"#eef3ec", color:"var(--module-1)", type:"checkin",
       desc:"每日习惯追踪",
-      seed:[] },
+      seed:[
+        { id:9901, title:"有氧运动", log:{}, pinned:false },
+        { id:9902, title:"力量训练", log:{}, pinned:false },
+        { id:9903, title:"准提咒", log:{}, pinned:false },
+        { id:9904, title:"阅读", log:{}, pinned:false },
+      ] },
 
-    { key:"training", name:"训练重量", icon:"activity", tint:"#f6f0e6", color:"var(--module-3)", type:"progress",
+    { key:"training", name:"训练情况", icon:"activity", tint:"#f6f0e6", color:"var(--module-3)", type:"progress",
       unit:"kg", desc:"力量训练进度",
       seed:[] },
 
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
       desc:"收支记录",
-      categories:["食","住","行","娱乐","衣","设备","医疗","特殊事件","其他"],
+      categories:["食","住","行","娱乐","衣","设备","医疗","通讯","教育","社交","特殊事件","其他"],
       seed:[] },
 
     { key:"mantra", name:"功课进度", icon:"star", tint:"#edf1f5", color:"var(--module-2)", type:"progress",
       unit:"遍", desc:"每日功课累计",
       seed:[] },
 
-    { key:"body", name:"身体指标", icon:"target", tint:"#edf1f5", color:"var(--module-2)", type:"note",
+    { key:"body", name:"身材指标", icon:"target", tint:"#edf1f5", color:"var(--module-2)", type:"note",
       desc:"体重·体脂·围度记录",
       moods:["记录","目标"],
       fields:[
         {key:"weight",label:"体重(kg)",type:"number",placeholder:"0"},
         {key:"bodyFat",label:"体脂率(%)",type:"number",placeholder:"0"},
-        {key:"waist",label:"腰围(cm)",type:"number",placeholder:"0"}
+        {key:"waist",label:"腰围(cm)",type:"number",placeholder:"0"},
+        {key:"chest",label:"胸围(cm)",type:"number",placeholder:"0"}
       ],
       seed:[] },
 
@@ -1186,7 +1217,7 @@ function renderInsight(){
     <div class="pbar"><i style="width:${Math.min(100,b.pct)}%;background:${b.m.color}"></i></div>
     <span class="bar-pct">${b.label}</span></div>`).join("");
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>洞察</h1><p>各模块进展一览 · 记录—执行—统计—反馈</p></div></div>
+  $("#screen").innerHTML = `<div style="margin-top:10px">
     <div class="sec-title">模块状态</div>
     <div class="panel"><div class="ph">${icon("chart",15)} 各模块进展</div>
       <div class="bar-list" style="margin-top:12px">${barList}</div></div>`;
@@ -1215,7 +1246,7 @@ function renderModule(key){
   } else if(m.type === "checkin"){
     const done = it.filter(x=>x.log&&x.log[t]).length;
     const pct = it.length ? Math.round(done/it.length*100) : 0;
-    head = headHero(m, `${done}/${it.length}`, "今日已打卡", pct);
+    head = headHero(m, `${done}/${it.length}`, "今日坚持", pct);
   } else if(m.type === "progress"){
     const p = avgProgress(it);
     head = headHero(m, `${p.value}%`, `平均进度 · ${it.length} 项`, p.value);
@@ -1225,11 +1256,10 @@ function renderModule(key){
   }
   if(m.type === "checkin") extra = renderCalendar(m, it);
   const body = it.length ? it.map(x=>recHTML(m,x)).join("")
-    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录，点上方「新建」添加第一条吧</div></div>`;
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">${head}${extra}
-      <div class="sec-title">记录</div>${body}</div>`;
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录，点右下角「+」添加第一条吧</div></div>`;
+  $("#screen").innerHTML = `<div style="margin-top:10px">${head}${extra}
+      <div class="sec-title">记录</div>${body}</div>
+      <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule(key);
 }
 
@@ -1247,40 +1277,10 @@ function headHero(m, big, label, pct){
    ============================================================ */
 function renderTraining(){
   const m = modOf("training"); const it = data.training || [];
-  const now = new Date();
-  const dow = now.getDay();
-  const plan = CONFIG.trainingPlan[dow];
 
-  // 阶段目标
-  const goals = CONFIG.stageGoals.map((g,i)=>{
-    const color = i===0 ? 'var(--module-3)' : 'var(--module-2)';
-    return `<div class="stage-goal">
-      <div class="sg-head"><span class="sg-name">${g.name}</span><span class="sg-pct">${g.progress}%</span></div>
-      <div class="sg-bar"><i style="width:${g.progress}%;background:${color}"></i></div>
-      <div class="sg-desc">${g.desc}</div>
-    </div>`;
-  }).join("");
-
-  // 今日训练
-  const isRest = dow === 0;
-  const exHTML = plan.exercises.length ? plan.exercises.map(e=>{
-    const star = e.name.includes('★');
-    const name = e.name.replace('★','').trim();
-    return `<div class="ex-item${star?' star':''}">
-      <div class="ex-row"><span class="ex-name">${esc(name)}</span><span class="ex-detail">${e.sets}组 × ${e.reps}次 · ${e.weight}</span></div>
-      ${e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''}
-    </div>`;
-  }).join("") : '<div class="rest-day">休息日，散步或完全休息</div>';
-  const workout = `<div class="home-card no-tap" style="margin-top:10px">
-    <div class="hc-title">${icon("activity",15)} 今日训练</div>
-    <div class="train-part">${plan.part}</div>
-    <div class="ex-list-detailed">${exHTML}</div>
-    <div class="cardio-line">${icon("flame",13)} ${plan.cardio}</div>
-  </div>`;
-
-  // 健身卡性价比
+  // 健身卡性价比（置顶）
   const gc = CONFIG.gymCard;
-  const gymCost = `<div class="home-card no-tap" style="margin-top:10px">
+  const gymCost = `<div class="home-card no-tap">
     <div class="hc-title">${icon("wallet",15)} 健身卡性价比</div>
     <div class="gym-stats">
       <div class="gym-stat"><div class="gs-v" style="color:var(--module-4)">¥${fmtMoney(gc.perVisit)}</div><div class="gs-l">单次成本</div></div>
@@ -1289,19 +1289,44 @@ function renderTraining(){
     </div>
   </div>`;
 
-  // 训练进度记录
-  const body = it.length ? it.map(x=>recHTML(m,x)).join("")
-    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有训练记录，点上方「新建」添加</div></div>`;
+  // 阶段目标（加天数）
+  const goals = CONFIG.stageGoals.map((g,i)=>{
+    const color = i===0 ? 'var(--module-3)' : 'var(--module-2)';
+    const remaining = 100 - g.progress;
+    return `<div class="stage-goal">
+      <div class="sg-head"><span class="sg-name">${g.name}</span><span class="sg-pct">${g.progress}%</span></div>
+      <div class="sg-bar"><i style="width:${g.progress}%;background:${color}"></i></div>
+      <div class="sg-desc">${g.desc} · 预计约 ${remaining} 天达成</div>
+    </div>`;
+  }).join("");
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">
+  // 训练进度按部位分区
+  const partGroups = {};
+  it.forEach(x=>{
+    const part = x.note || '其他';
+    if(!partGroups[part]) partGroups[part] = [];
+    partGroups[part].push(x);
+  });
+  const partOrder = ['肩','胸','背','手臂','腿','核心','其他'];
+  const sortedParts = Object.keys(partGroups).sort((a,b)=>{
+    const ia = partOrder.indexOf(a), ib = partOrder.indexOf(b);
+    return (ia===-1?99:ia) - (ib===-1?99:ib);
+  });
+  const body = it.length ? sortedParts.map(part=>{
+    const items = partGroups[part];
+    return `<div class="train-part-group">
+      <div class="tpg-head">${esc(part)} <small>${items.length}项</small></div>
+      ${items.map(x=>recHTML(m,x)).join("")}
+    </div>`;
+  }).join("") : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有训练记录，点右下角「+」添加</div></div>`;
+
+  $("#screen").innerHTML = `<div style="margin-top:10px">
+      ${gymCost}
       <div class="sec-title">阶段目标</div>
       <div class="panel">${goals}</div>
-      ${workout}
-      ${gymCost}
       <div class="sec-title">训练进度</div>${body}
-    </div>`;
+    </div>
+    <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule("training");
 }
 
@@ -1330,17 +1355,18 @@ function renderMoney(){
     <div class="money-tab ${moneyFilter==='expense'?'on':''}" data-filter="expense">支出</div>
     <div class="money-tab ${moneyFilter==='income'?'on':''}" data-filter="income">收入</div></div>`;
 
-  // 分类汇总
+  // 分类汇总（显示所有分类，包括本月没有的）
   const cats = m.categories || [];
   const monthExps = it.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym));
   const catAmounts = cats.map(c=>({
     cat: c,
     amount: monthExps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
-  })).filter(x=>x.amount > 0).sort((a,b)=>b.amount-a.amount);
-  const catChips = catAmounts.length ? `<div class="cat-chips">${catAmounts.map(c=>{
+  })).sort((a,b)=>b.amount-a.amount);
+  const catChips = `<div class="cat-chips">${catAmounts.map(c=>{
     const on = moneyCatFilter === c.cat;
-    return `<div class="cat-chip ${on?'on':''}" data-cat="${esc(c.cat)}">${esc(c.cat)} ¥${fmtMoney(c.amount)}</div>`;
-  }).join("")}</div>` : '';
+    const hasAmount = c.amount > 0;
+    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-cat="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
+  }).join("")}</div>`;
 
   // 筛选记录
   let filtered = it;
@@ -1350,14 +1376,13 @@ function renderMoney(){
   const body = filtered.length ? filtered.map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>暂无记录</div></div>`;
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">
+  $("#screen").innerHTML = `<div style="margin-top:10px">
       ${summary}
       ${tabs}
       ${catChips}
       <div class="sec-title">记录</div>${body}
-    </div>`;
+    </div>
+    <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
 
   wireModule("money");
 
@@ -1383,6 +1408,7 @@ function renderBody(){
   const t = today();
 
   let latestCard = "";
+  let silhouetteCard = "";
   if(it.length){
     const latest = it[it.length-1];
     const wTrend = bodyTrend(it, 'weight');
@@ -1400,6 +1426,14 @@ function renderBody(){
         <div class="bm-cell"><div class="bm-v">${latest.bodyFat||'--'}% ${arrowHTML(bfTrend,true)}</div><div class="bm-l">体脂率</div></div>
         <div class="bm-cell"><div class="bm-v">${latest.waist||'--'} ${arrowHTML(waTrend,true)}</div><div class="bm-l">腰围(cm)</div></div>
       </div></div>`;
+
+    // 身材剪影模拟——基于体脂率生成 SVG 人体轮廓
+    const currentBF = +latest.bodyFat || 20;
+    const targetBF = 12;
+    const currentWaist = +latest.waist || 87;
+    const targetWaist = 78;
+    const chest = +latest.chest || 94;
+    silhouetteCard = renderSilhouette(currentBF, targetBF, currentWaist, targetWaist, chest);
   }
 
   // 建议
@@ -1421,19 +1455,68 @@ function renderBody(){
   const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">
+  $("#screen").innerHTML = `<div style="margin-top:10px">
       ${latestCard}
+      ${silhouetteCard}
       ${adviceBox}
       <div class="sec-title">记录</div>${body}
-    </div>`;
+    </div>
+    <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule("body");
+}
+
+/* ---------- body silhouette ---------- */
+function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest){
+  // 根据体脂率调整轮廓宽度——体脂越高腰越宽
+  const bfFactor = (bf) => Math.max(0.8, Math.min(1.5, 1 + (bf - 12) * 0.04));
+  const curF = bfFactor(curBF);
+  const tgtF = bfFactor(tgtBF);
+  const waistScale = (w) => Math.max(0.75, Math.min(1.4, w / 85));
+
+  // 简化人体剪影 SVG——正面视角
+  function bodySVG(scale, waist, color, label, bf){
+    const ws = waistScale(waist);
+    const shoulderW = 36;
+    const waistW = 26 * ws * scale;
+    const hipW = 32 * scale;
+    const headR = 12;
+    const cy = 20; // head center y
+    const neckY = cy + headR + 2;
+    const shoulderY = neckY + 8;
+    const waistY = shoulderY + 40;
+    const hipY = waistY + 18;
+    const feetY = hipY + 55;
+    return `<svg viewBox="0 0 100 ${feetY + 5}" width="100%" style="max-width:140px" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="50" cy="${cy}" r="${headR}"/>
+      <path d="M${50-shoulderW/2} ${shoulderY} Q50 ${neckY-2} ${50+shoulderW/2} ${shoulderY}"/>
+      <path d="M${50-shoulderW/2} ${shoulderY} L${50-waistW/2} ${waistY} L${50-hipW/2} ${hipY} L${50-hipW/2+4} ${feetY}"/>
+      <path d="M${50+shoulderW/2} ${shoulderY} L${50+waistW/2} ${waistY} L${50+hipW/2} ${hipY} L${50+hipW/2-4} ${feetY}"/>
+      <text x="50" y="${feetY+18}" text-anchor="middle" fill="${color}" font-size="10" font-weight="700" font-family="-apple-system,sans-serif">${label}</text>
+      <text x="50" y="${feetY+30}" text-anchor="middle" fill="${color}" font-size="9" font-family="-apple-system,sans-serif" opacity="0.7">体脂 ${bf}%</text>
+    </svg>`;
+  }
+
+  return `<div class="panel" style="margin-bottom:12px">
+    <div class="ph" style="margin-bottom:10px">${icon("target",15)} 身材剪影对比</div>
+    <div class="silhouette-compare">
+      <div class="sil-col">
+        ${bodySVG(curF, curWaist, 'var(--module-4)', '当前', curBF)}
+      </div>
+      <div class="sil-arrow">→</div>
+      <div class="sil-col">
+        ${bodySVG(tgtF, tgtWaist, 'var(--module-1)', '目标', tgtBF)}
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-top:8px;text-align:center">腰围 ${curWaist}cm → ${tgtWaist}cm · 胸围 ${chest}cm</div>
+  </div>`;
 }
 
 /* ============================================================
    DIET MODULE — 营养 + 库存 + 建议
    ============================================================ */
+let dietViewMode = 'week';
+let dietWeekOffset = 0;
+
 function renderDiet(){
   const m = modOf("diet"); const it = data.diet || [];
   const t = today();
@@ -1459,16 +1542,7 @@ function renderDiet(){
     <div class="ph" style="margin-bottom:10px">${icon("pen",15)} 今日营养</div>
     ${nutriRows}</div>`;
 
-  // 食材库存
-  const inv = CONFIG.foodInventory;
-  const foodList = inv.length ? `<div class="food-list">${inv.map(f=>
-    `<div class="food-item"><span class="fn">${esc(f.name)}</span><span class="fa">${esc(f.amount)}</span><span class="fc">${f.calories}kcal</span></div>`
-  ).join("")}</div>` : '<div style="font-size:13px;color:var(--text-secondary);padding:8px 0">暂无库存数据</div>';
-  const invCard = `<div class="panel" style="margin-bottom:12px">
-    <div class="ph" style="margin-bottom:8px">${icon("wallet",15)} 食材库存</div>
-    ${foodList}</div>`;
-
-  // 建议
+  // 建议（上调到最前面）
   let advice = "暂无饮食记录。";
   if(nut.calories > 0 || it.length){
     if(nut.protein < goals.protein * 0.8 && nut.calories > 0){
@@ -1484,42 +1558,122 @@ function renderDiet(){
     }
   }
   const adviceBox = `<div class="advice-box">
-    <div class="ab-title">${icon("bolt",14)} 建议</div>${advice}</div>`;
+    <div class="ab-title">${icon("bolt",14)} 饮食建议</div>${advice}</div>`;
+
+  // 食材库存
+  const inv = CONFIG.foodInventory;
+  const foodList = inv.length ? `<div class="food-list">${inv.map(f=>
+    `<div class="food-item"><span class="fn">${esc(f.name)}</span><span class="fa">${esc(f.amount)}</span><span class="fc">${f.calories}kcal</span></div>`
+  ).join("")}</div>` : '<div style="font-size:13px;color:var(--text-secondary);padding:8px 0">暂无库存数据</div>';
+  const invCard = `<div class="panel" style="margin-bottom:12px">
+    <div class="ph" style="margin-bottom:8px">${icon("wallet",15)} 食材库存</div>
+    ${foodList}</div>`;
+
+  // 日历视图切换
+  const toggle = `<div class="view-toggle">
+    <div class="vt-btn ${dietViewMode==='week'?'on':''}" data-vm="week">周历</div>
+    <div class="vt-btn ${dietViewMode==='month'?'on':''}" data-vm="month">月历</div></div>`;
+
+  // 构建日期到记录的映射
+  const dateMap = {};
+  it.forEach(r=>{ if(r.date) { if(!dateMap[r.date]) dateMap[r.date] = []; dateMap[r.date].push(r); } });
+
+  let calContent = "";
+  if(dietViewMode === 'week'){
+    // 周历——显示当前周（可切换上下周）
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + dietWeekOffset * 7);
+    const days = [];
+    for(let i=0; i<7; i++){
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      const ds = d.toISOString().slice(0,10);
+      const recs = dateMap[ds] || [];
+      const totalCal = recs.reduce((s,x)=>s+(+x.calories||0), 0);
+      const hasRec = recs.length > 0;
+      days.push({ ds, short: `${d.getMonth()+1}/${d.getDate()}`, weekday: "日一二三四五六"[d.getDay()], totalCal, hasRec });
+    }
+    const weekLabel = `${days[0].short} - ${days[6].short}`;
+    calContent = `<div class="panel">
+      <div class="cal-hd"><button class="cal-nav" data-diet-w="-1" aria-label="上周">${icon("chevron",16,2)}</button>
+        <span class="cal-title">${weekLabel}</span>
+        <button class="cal-nav" data-diet-w="1" aria-label="下周">${icon("chevron",16,2)}</button></div>
+      <div class="diet-week">${days.map(d=>`
+        <div class="diet-day ${d.hasRec?'has':''} ${d.ds===t?'today':''}">
+          <div class="dd-date">${d.short}<small>周${d.weekday}</small></div>
+          <div class="dd-cal">${d.hasRec?Math.round(d.totalCal)+'kcal':'--'}</div>
+        </div>`).join("")}</div>
+    </div>`;
+  } else {
+    // 月历
+    const now = new Date();
+    const y = now.getFullYear(), mo = now.getMonth();
+    const startDow = new Date(y, mo, 1).getDay();
+    const daysInMonth = new Date(y, mo+1, 0).getDate();
+    const todayIso = isoToday();
+    let cells = "";
+    for(let i=0; i<startDow; i++) cells += `<div class="cal-cell blank"></div>`;
+    for(let d=1; d<=daysInMonth; d++){
+      const ds = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const recs = dateMap[ds] || [];
+      const hasRec = recs.length > 0;
+      cells += `<div class="cal-cell ${hasRec?'on':''} ${ds===todayIso?'today':''}"${hasRec?` style="background:var(--module-5);border-color:var(--module-5)"`:''}>${d}</div>`;
+    }
+    calContent = `<div class="panel">
+      <div class="cal-dow">${"日一二三四五六".split("").map(x=>`<span>${x}</span>`).join("")}</div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-foot" style="margin-top:10px">
+        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--module-5)"></span>有记录</span>
+      </div></div>`;
+  }
 
   const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">
-      ${nutriCard}
-      ${invCard}
+  $("#screen").innerHTML = `<div style="margin-top:10px">
       ${adviceBox}
+      ${nutriCard}
+      ${toggle}
+      ${calContent}
+      ${invCard}
       <div class="sec-title">记录</div>${body}
-    </div>`;
+    </div>
+    <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule("diet");
+
+  // 视图切换
+  $("#screen").querySelectorAll(".vt-btn").forEach(el=>el.onclick=()=>{
+    dietViewMode = el.dataset.vm; dietWeekOffset = 0; render();
+  });
+  // 周历切换
+  $("#screen").querySelectorAll("[data-diet-w]").forEach(el=>el.onclick=()=>{
+    dietWeekOffset += parseInt(el.dataset.dietW); render();
+  });
 }
 
 /* ============================================================
    SLEEP MODULE — 日历 + 建议
    ============================================================ */
 let sleepViewMode = 'week';
+let sleepWeekOffset = 0;
 
 function renderSleep(){
   const m = modOf("sleep"); const it = data.sleep || [];
 
   // 视图切换
   const toggle = `<div class="view-toggle">
-    <div class="vt-btn ${sleepViewMode==='week'?'on':''}" data-vm="week">周视图</div>
-    <div class="vt-btn ${sleepViewMode==='month'?'on':''}" data-vm="month">月视图</div></div>`;
+    <div class="vt-btn ${sleepViewMode==='week'?'on':''}" data-vm="week">周历</div>
+    <div class="vt-btn ${sleepViewMode==='month'?'on':''}" data-vm="month">月历</div></div>`;
 
   let viewContent = "";
   if(sleepViewMode === 'week'){
-    // 周视图
+    // 周历——可切换上下周
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + sleepWeekOffset * 7);
     const days = [];
-    for(let i=6; i>=0; i--){
-      const d = new Date();
-      d.setDate(d.getDate() - i);
+    for(let i=0; i<7; i++){
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
       const ds = d.toISOString().slice(0,10);
       const rec = it.find(x=>x.date === ds);
       let status = null;
@@ -1540,12 +1694,17 @@ function renderSleep(){
         cls
       });
     }
-    viewContent = `<div class="sleep-week">${days.map(d=>`
+    const weekLabel = `${days[0].short} - ${days[6].short}`;
+    viewContent = `<div class="panel">
+      <div class="cal-hd"><button class="cal-nav" data-sleep-w="-1" aria-label="上周">${icon("chevron",16,2)}</button>
+        <span class="cal-title">${weekLabel}</span>
+        <button class="cal-nav" data-sleep-w="1" aria-label="下周">${icon("chevron",16,2)}</button></div>
+      <div class="sleep-week" style="margin-top:10px">${days.map(d=>`
       <div class="sleep-day ${d.cls}">
         <div class="sd-date">${d.short}<small>周${d.weekday}</small></div>
         <div class="sd-time">${d.bedtime} → ${d.wakeTime}<small>${d.status}</small></div>
         <div class="sd-dur">${d.duration}</div>
-      </div>`).join("")}</div>`;
+      </div>`).join("")}</div></div>`;
   } else {
     // 月视图
     const now = new Date();
@@ -1607,21 +1766,24 @@ function renderSleep(){
   const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
 
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:14px">
+  $("#screen").innerHTML = `<div style="margin-top:10px">
       ${summary}
+      ${adviceBox}
       ${toggle}
       ${viewContent}
-      ${adviceBox}
       <div class="sec-title">记录</div>${body}
-    </div>`;
+    </div>
+    <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule("sleep");
 
   // 视图切换交互
   $("#screen").querySelectorAll(".vt-btn").forEach(el=>el.onclick=()=>{
-    sleepViewMode = el.dataset.vm;
+    sleepViewMode = el.dataset.vm; sleepWeekOffset = 0;
     render();
+  });
+  // 周历切换
+  $("#screen").querySelectorAll("[data-sleep-w]").forEach(el=>el.onclick=()=>{
+    sleepWeekOffset += parseInt(el.dataset.sleepW); render();
   });
 }
 
@@ -1650,11 +1812,12 @@ function recHTML(m, x){
   }
   if(m.type === "checkin"){
     const on = !!(x.log && x.log[today()]); const st = streak(x.log);
+    const total = x.log ? Object.keys(x.log).length : 0;
     return `<div class="rec">${acts}<div class="top">
       <div class="chk js-chk ${on?'on':''}" data-id="${x.id}">${chkMark}</div>
       ${thumb}
       <div class="body" data-edit="${x.id}"><div class="rname">${esc(x.title)}</div>
-      <div class="rmeta"><span class="streak">${icon("flame",13)} 连续 ${st} 天</span>${on?'<span class="badge" style="background:var(--accent-muted);color:var(--accent)">今日已打卡</span>':''}</div>${customBlock}</div></div></div>`;
+      <div class="rmeta"><span class="streak">${icon("flame",13)} 连续 ${st} 天 · 累计 ${total} 天</span></div>${customBlock}</div></div></div>`;
   }
   if(m.type === "progress"){
     const pct = Math.min(100, Math.round((x.current/x.target)*100||0));
@@ -1789,8 +1952,8 @@ function openEditor(key, item){
       <div class="field"><label>优先级</label><div class="seg" id="f-prio">${(m.priorities||[]).map(p=>`<div class="opt ${p.key===d.priority?'on':''}" data-v="${p.key}">${p.label}</div>`).join("")}</div></div>
       <div class="field"><label>备注</label><textarea id="f-note" placeholder="补充说明">${esc(d.note||'')}</textarea></div>`;
   } else if(m.type==="checkin"){
-    fields=`<div class="field"><label>打卡项</label><input id="f-title" value="${attr(d.title)}" placeholder="例如：喝够 8 杯水"/></div>
-      <p class="sub" style="margin:0">保存后可在列表点击左侧圆圈打卡；连续天数自动统计，每天从零开始。</p>`;
+    fields=`<div class="field"><label>打卡项</label><input id="f-title" value="${attr(d.title)}" placeholder="例如：有氧运动"/></div>
+      <p class="sub" style="margin:0">保存后可在列表点击左侧圆圈打卡；连续天数和累计天数自动统计。</p>`;
   } else if(m.type==="progress"){
     fields=`<div class="field"><label>名称</label><input id="f-title" value="${attr(d.title)}" placeholder="动作名称"/></div>
       <div class="frow"><div class="field"><label>当前</label><input id="f-cur" type="number" value="${d.current??0}"/></div>
