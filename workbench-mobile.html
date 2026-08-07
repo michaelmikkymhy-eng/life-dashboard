@@ -878,6 +878,7 @@ const store = {
     }
     const d = {};
     CONFIG.modules.forEach(m => d[m.key] = structuredClone(m.seed||[]));
+    d.completedTrainings = [];
     d.__seedVer = CONFIG.seedVersion || 1;
     return d;
   },
@@ -2180,9 +2181,9 @@ function confirmDelete(key,id){
    ============================================================ */
 function go(v){ view=v; closeDrawer(); render(); window.scrollTo({top:0}); }
 function render(){
-  if(view==="home"){ $("#topTitle").firstChild.textContent="我的生活"; $("#topSub").textContent=CONFIG.slogan; }
+  if(view==="home"){ $("#topTitle").firstChild.textContent="HAVING"; $("#topSub").textContent=CONFIG.slogan; }
   else if(view==="insight"){ $("#topTitle").firstChild.textContent="洞察"; $("#topSub").textContent="统计与复盘"; }
-  else { const m=modOf(view); $("#topTitle").firstChild.textContent=m?m.name:"我的生活"; $("#topSub").textContent=m?m.desc:""; }
+  else { const m=modOf(view); $("#topTitle").firstChild.textContent=m?m.name:"HAVING"; $("#topSub").textContent=m?m.desc:""; }
   $("#nav").querySelector('[data-nav="home"]').classList.toggle("active", view==="home");
   $("#nav").querySelector('[data-nav="insight"]').classList.toggle("active", view==="insight");
   if(view==="home") renderHome();
