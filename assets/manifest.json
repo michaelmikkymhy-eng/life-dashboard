@@ -1,0 +1,17 @@
+{
+  "name": "我的生活",
+  "short_name": "生活台",
+  "description": "个人生活台 — 训练·饮食·作息·记账·功课",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f3f0",
+  "theme_color": "#2f2e2b",
+  "icons": [
+    {
+      "src": "assets/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
