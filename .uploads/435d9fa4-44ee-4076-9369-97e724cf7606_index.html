@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Life Dashboard</title>
+<style>
+:root {
+  --bg: #0a0b0f;
+  --card: #14161f;
+  --card-hover: #1a1d29;
+  --border: #2a2d3a;
+  --text: #e0e0e0;
+  --text-dim: #888899;
+  --blue: #4a9eff;
+  --green: #4caf50;
+  --red: #ef4444;
+  --orange: #ff9800;
+  --purple: #9c27b0;
+  --cyan: #00bcd4;
+  --pink: #e91e63;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,11,15,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav .logo { font-size: 18px; font-weight: 700; color: var(--blue); }
+nav .nav-links { display: flex; gap: 4px; }
+nav .nav-links a {
+  color: var(--text-dim); text-decoration: none; padding: 8px 14px;
+  border-radius: 8px; font-size: 13px; transition: all 0.2s; cursor: pointer;
+}
+nav .nav-links a:hover, nav .nav-links a.active {
+  color: var(--text); background: var(--card);
+}
+
+.container { max-width: 1400px; margin: 0 auto; padding: 76px 24px 40px; }
+
+/* Section */
+.section { display: none; animation: fadeIn 0.3s; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px; margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: #3a3d4a; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* Stat cards */
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; text-align: center;
+}
+.stat-value { font-size: 32px; font-weight: 700; margin: 8px 0; }
+.stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+/* Progress bars */
+.progress-bar {
+  height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 6px;
+}
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; color: var(--text-dim); font-weight: 600; border-bottom: 1px solid var(--border); }
+td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+.badge-green { background: rgba(76,175,80,0.15); color: var(--green); }
+.badge-orange { background: rgba(255,152,0,0.15); color: var(--orange); }
+.badge-blue { background: rgba(74,158,255,0.15); color: var(--blue); }
+
+/* Charts */
+.chart-container { position: relative; width: 100%; }
+canvas { max-width: 100%; }
+
+/* Macro rings */
+.macro-rings { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px; }
+.ring-item { text-align: center; }
+.ring-svg { transform: rotate(-90deg); }
+.ring-bg { stroke: var(--border); fill: none; }
+.ring-fg { fill: none; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+.ring-label { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+.ring-value { font-size: 18px; font-weight: 700; }
+
+/* Inventory */
+.inventory-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+}
+.inventory-item:last-child { border: none; }
+.inv-name { font-size: 14px; }
+.inv-qty { font-size: 14px; font-weight: 600; }
+
+/* Week schedule */
+.week-schedule { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+@media (max-width: 768px) { .week-schedule { grid-template-columns: 1fr 1fr; } }
+.day-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; min-height: 120px; text-align: center;
+}
+.day-card.rest { opacity: 0.5; }
+.day-name { font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+.day-muscle { font-size: 13px; font-weight: 600; }
+.day-exercises { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+
+/* Transaction list */
+.txn-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.txn-item:last-child { border: none; }
+.txn-name { font-size: 14px; }
+.txn-cat { font-size: 11px; color: var(--text-dim); }
+.txn-amount { font-size: 14px; font-weight: 600; }
+.txn-amount.expense { color: var(--red); }
+.txn-amount.income { color: var(--green); }
+
+/* Privacy notice */
+.privacy-banner {
+  background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.3);
+  border-radius: 12px; padding: 14px 20px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px; font-size: 13px;
+}
+.privacy-banner .icon { font-size: 20px; }
+
+/* Tabs for daily log */
+.log-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.log-tab {
+  padding: 6px 16px; border-radius: 20px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+}
+.log-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* Heat map for gym visits */
+.heatmap { display: flex; gap: 3px; flex-wrap: wrap; }
+.heat-cell { width: 14px; height: 14px; border-radius: 3px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">My Life Dashboard</div>
+  <div class="nav-links">
+    <a class="nav-link active" data-section="overview">概览</a>
+    <a class="nav-link" data-section="finance">财务</a>
+    <a class="nav-link" data-section="fitness">健身</a>
+    <a class="nav-link" data-section="nutrition">饮食</a>
+    <a class="nav-link" data-section="daily">每日记录</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- Privacy Banner -->
+<div class="privacy-banner">
+  <span class="icon">🔒</span>
+  <span>本页面为纯本地文件，所有数据存储在HTML中，不联网、不上传。最后更新：2026年8月7日</span>
+</div>
+
+<!-- ============ OVERVIEW ============ -->
+<div class="section active" id="overview">
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="stat-card">
+      <div class="stat-label">当前体重</div>
+      <div class="stat-value" style="color:var(--blue)">69.85<span style="font-size:16px">kg</span></div>
+      <div class="stat-sub">8/5更新 · 目标10-12%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">体脂率</div>
+      <div class="stat-value" style="color:var(--orange)">20.6%</div>
+      <div class="stat-sub">起点 → 目标12%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">准提咒进度</div>
+      <div class="stat-value" style="color:var(--purple)">2,211<span style="font-size:16px">/10K</span></div>
+      <div class="stat-sub">22.1% · 还需72天</div>
+      <div class="stat-value" style="color:var(--red)">¥458.80</div>
+      <div class="stat-sub">8月至今支出</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">健身打卡</div>
+      <div class="stat-value" style="color:var(--green)">52<span style="font-size:16px">次</span></div>
+      <div class="stat-sub">单次成本¥33.7</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">个人档案</div>
+      <table>
+        <tr><th>姓名</th><td>—</td><th>性别/年龄</th><td>男 / 31岁</td></tr>
+        <tr><th>身高</th><td>175cm</td><th>民族</th><td>回族</td></tr>
+        <tr><th>体重</th><td>69.85kg</td><th>体脂率</th><td>20.6%</td></tr>
+        <tr><th>肌肉占比</th><td>51.6kg</td><th>内脏脂肪</th><td><span class="badge badge-orange">10级偏高</span></td></tr>
+        <tr><th>BMR</th><td>1515 kcal</td><th>静息心率</th><td>61 bpm</td></tr>
+        <tr><th>胸围</th><td>94.4cm</td><th>腰围</th><td>87cm</td></tr>
+        <tr><th>设备</th><td>Keep B4 手环</td><th></th><td>Keep S3 体脂秤</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">2026年1-7月 收支趋势</div>
+      <div class="chart-container">
+        <canvas id="overviewChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">围度对比（2018 vs 2026）</div>
+      <div class="chart-container">
+        <canvas id="bodyChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">营养目标（每日）</div>
+      <div class="macro-rings" style="margin-top:12px">
+        <div class="ring-item">
+          <svg class="ring-svg" width="100" height="100">
+            <circle class="ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+            <circle class="ring-fg" cx="50" cy="50" r="42" stroke-width="8" stroke="#ff9800" stroke-dasharray="264" stroke-dashoffset="0"/>
+          </svg>
+          <div class="ring-value" style="color:var(--orange)">1900</div>
+          <div class="ring-label">热量 kcal</div>
+        </div>
+        <div class="ring-item">
+          <svg class="ring-svg" width="100" height="100">
+            <circle class="ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+            <circle class="ring-fg" cx="50" cy="50" r="42" stroke-width="8" stroke="#4a9eff" stroke-dasharray="264" stroke-dashoffset="0"/>
+          </svg>
+          <div class="ring-value" style="color:var(--blue)">125g</div>
+          <div class="ring-label">蛋白质</div>
+        </div>
+        <div class="ring-item">
+          <svg class="ring-svg" width="100" height="100">
+            <circle class="ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+            <circle class="ring-fg" cx="50" cy="50" r="42" stroke-width="8" stroke="#e91e63" stroke-dasharray="264" stroke-dashoffset="0"/>
+          </svg>
+          <div class="ring-value" style="color:var(--pink)">53g</div>
+          <div class="ring-label">脂肪</div>
+        </div>
+        <div class="ring-item">
+          <svg class="ring-svg" width="100" height="100">
+            <circle class="ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+            <circle class="ring-fg" cx="50" cy="50" r="42" stroke-width="8" stroke="#4caf50" stroke-dasharray="264" stroke-dashoffset="0"/>
+          </svg>
+          <div class="ring-value" style="color:var(--green)">231g</div>
+          <div class="ring-label">碳水</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:var(--text-dim)">
+        TDEE ≈ 2300 kcal · 减脂缺口 400 kcal/天 · BMR 1506 kcal（设备测量）
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FINANCE ============ -->
+<div class="section" id="finance">
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="stat-card">
+      <div class="stat-label">1-7月总支出</div>
+      <div class="stat-value" style="color:var(--red)">¥70,576</div>
+      <div class="stat-sub">月均 ¥10,082</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">1-7月总收入</div>
+      <div class="stat-value" style="color:var(--green)">¥34,564</div>
+      <div class="stat-sub">月均 ¥4,938</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">净结余</div>
+      <div class="stat-value" style="color:var(--red)">-¥36,012</div>
+      <div class="stat-sub">月均 -¥5,145</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">vs 2025同期收入</div>
+      <div class="stat-value" style="color:var(--orange)">-63.6%</div>
+      <div class="stat-sub">95K → 35K</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">月度收支对比 & 累计净结余</div>
+    <div class="chart-container">
+      <canvas id="financeChart1" height="120"></canvas>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">支出分类占比</div>
+      <div class="chart-container">
+        <canvas id="financeChart2" height="220"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">月度分类支出堆叠</div>
+      <div class="chart-container">
+        <canvas id="financeChart3" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">收入来源构成</div>
+      <div class="chart-container">
+        <canvas id="financeChart4" height="220"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">支出分类明细</div>
+      <table>
+        <thead><tr><th>分类</th><th>金额</th><th>占比</th><th>月均</th></tr></thead>
+        <tbody>
+          <tr><td>🏠 住</td><td>¥26,340</td><td>37.3%</td><td>¥3,763</td></tr>
+          <tr><td>🎭 其他</td><td>¥9,690</td><td>13.7%</td><td>¥1,384</td></tr>
+          <tr><td>🚗 行</td><td>¥8,969</td><td>12.7%</td><td>¥1,281</td></tr>
+          <tr><td>🥗 食</td><td>¥8,634</td><td>12.2%</td><td>¥1,233</td></tr>
+          <tr><td>🎮 娱乐</td><td>¥8,525</td><td>12.1%</td><td>¥1,218</td></tr>
+          <tr><td>👕 衣</td><td>¥3,392</td><td>4.8%</td><td>¥485</td></tr>
+          <tr><td>🎁 特殊事件</td><td>¥2,157</td><td>3.1%</td><td>¥308</td></tr>
+          <tr><td>⚡ 设备</td><td>¥1,861</td><td>2.6%</td><td>¥266</td></tr>
+          <tr><td>🏥 医疗</td><td>¥1,007</td><td>1.4%</td><td>¥144</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2025 vs 2026 同期对比</div>
+    <div class="chart-container">
+      <canvas id="financeChart5" height="140"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">月度明细</div>
+    <table>
+      <thead><tr><th>月份</th><th>支出</th><th>收入</th><th>结余</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>1月</td><td style="color:var(--red)">¥9,269</td><td style="color:var(--green)">¥8,883</td><td style="color:var(--red)">-¥387</td><td>机票¥3,507</td></tr>
+        <tr><td>2月</td><td style="color:var(--red)">¥7,746</td><td style="color:var(--green)">¥6,838</td><td style="color:var(--red)">-¥908</td><td></td></tr>
+        <tr><td>3月</td><td style="color:var(--red)">¥11,402</td><td style="color:var(--green)">¥388</td><td style="color:var(--red)">-¥11,014</td><td>搬家月</td></tr>
+        <tr><td>4月</td><td style="color:var(--red)">¥9,527</td><td style="color:var(--green)">¥500</td><td style="color:var(--red)">-¥9,027</td><td></td></tr>
+        <tr><td>5月</td><td style="color:var(--red)">¥7,156</td><td style="color:var(--green)">¥0</td><td style="color:var(--red)">-¥7,156</td><td><span class="badge badge-red">零收入</span></td></tr>
+        <tr><td>6月</td><td style="color:var(--red)">¥12,124</td><td style="color:var(--green)">¥67</td><td style="color:var(--red)">-¥12,058</td><td></td></tr>
+        <tr><td>7月</td><td style="color:var(--red)">¥13,351</td><td style="color:var(--green)">¥17,889</td><td style="color:var(--green)">+¥4,538</td><td><span class="badge badge-green">唯一结余月</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ FITNESS ============ -->
+<div class="section" id="fitness">
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="stat-card">
+      <div class="stat-label">健身卡总花费</div>
+      <div class="stat-value" style="color:var(--orange)">¥1,755</div>
+      <div class="stat-sub">3笔（4月/6月/7月）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">已去次数</div>
+      <div class="stat-value" style="color:var(--blue)">46次</div>
+      <div class="stat-sub">月均11.5次</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">当前单次成本</div>
+      <div class="stat-value" style="color:var(--red)">¥38/次</div>
+      <div class="stat-sub">目标 ≤¥5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">卡到期</div>
+      <div class="stat-value" style="color:var(--green)">2027.7</div>
+      <div class="stat-sub">剩12个月</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">单次成本 vs 每周频次（剩余12个月预测）</div>
+    <div class="chart-container">
+      <canvas id="fitnessChart1" height="160"></canvas>
+    </div>
+    <div style="margin-top:16px;font-size:13px;color:var(--text-dim)">
+      💡 每周6次可压到 <strong style="color:var(--green)">¥4.93/次</strong>（≤¥5目标达成）<br>
+      💡 每周5次 = ¥5.77/次（接近目标）<br>
+      💡 ¥3/次在当前卡费下无法实现（需每周8.4次）
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">周训练计划</div>
+    <div class="week-schedule">
+      <div class="day-card">
+        <div class="day-name">周一</div>
+        <div class="day-muscle" style="color:var(--red)">胸+三头</div>
+        <div class="day-exercises">卧推<br>飞鸟<br>绳索下压<br>+30min爬坡</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周二</div>
+        <div class="day-muscle" style="color:var(--blue)">背+二头</div>
+        <div class="day-exercises">高位下拉<br>坐姿划船<br>哑铃弯举<br>+30min爬坡</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周三</div>
+        <div class="day-muscle" style="color:var(--orange)">肩</div>
+        <div class="day-exercises">侧平举★<br>推举<br>面拉<br>+30min爬坡</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周四</div>
+        <div class="day-muscle" style="color:var(--purple)">胸+背</div>
+        <div class="day-exercises">超级组<br>卧推+下拉<br>飞鸟+划船<br>+30min爬坡</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周五</div>
+        <div class="day-muscle" style="color:var(--orange)">肩+手臂</div>
+        <div class="day-exercises">侧平举★<br>弯举+下压<br>推举<br>+30min爬坡</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周六</div>
+        <div class="day-muscle" style="color:var(--cyan)">胸+背(二轮)</div>
+        <div class="day-exercises">上斜卧推<br>单臂划船<br>窄距卧推<br>+30min爬坡</div>
+      </div>
+      <div class="day-card rest">
+        <div class="day-name">周日</div>
+        <div class="day-muscle" style="color:var(--text-dim)">休息</div>
+        <div class="day-exercises">散步或<br>完全休息</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--text-dim)">
+      ★ 侧平举一周两次——肩宽=V型比例核心 · 不练腿(靠爬坡维持) · 有氧≤30min(皮质醇管理)
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">健身支出明细</div>
+      <table>
+        <thead><tr><th>日期</th><th>项目</th><th>金额</th></tr></thead>
+        <tbody>
+          <tr><td>2025-01-13</td><td>Keep智能手环</td><td>¥254.43</td></tr>
+          <tr><td>2025-01-13</td><td>哑铃凳</td><td>¥181.16</td></tr>
+          <tr><td>2025-08-10</td><td>健身设备配件</td><td>¥44.60</td></tr>
+          <tr><td>2026-04-01</td><td>健身卡</td><td>¥569.00</td></tr>
+          <tr><td>2026-06-30</td><td>健身卡</td><td>¥206.90</td></tr>
+          <tr><td>2026-07-28</td><td>健身卡</td><td>¥978.90</td></tr>
+          <tr style="font-weight:700"><td></td><td>合计</td><td style="color:var(--orange)">¥2,234.99</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">训练参数</div>
+      <table>
+        <tr><th>训练起始</th><td>2024年11月</td></tr>
+        <tr><th>频率</th><td>6天/周（周日休）</td></tr>
+        <tr><th>力量</th><td>2-3动作/天 · 4×12-15 · 自我调节休息</td></tr>
+        <tr><th>有氧</th><td>爬坡30min · 心率<150bpm</td></tr>
+        <tr><th>乳酸阈心率</th><td>171 bpm</td></tr>
+        <tr><th>最大心率</th><td>197 bpm</td></tr>
+        <tr><th>VO2Max</th><td>36.3</td></tr>
+        <tr><th>血氧</th><td>98%</td></tr>
+        <tr><th>当前重量</th><td>侧平举7.5kg · 推举12.5kg · 弯举15kg · 下拉35kg · 划船35kg</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NUTRITION ============ -->
+<div class="section" id="nutrition">
+  <div class="card">
+    <div class="card-title">今日营养余额（8月2日）</div>
+    <div class="macro-rings" style="margin-top:16px">
+      <div class="ring-item">
+        <svg class="ring-svg" width="120" height="120">
+          <circle class="ring-bg" cx="60" cy="60" r="50" stroke-width="10"/>
+          <circle class="ring-fg" cx="60" cy="60" r="50" stroke-width="10" stroke="#ff9800" stroke-dasharray="314" stroke-dashoffset="119.5"/>
+        </svg>
+        <div class="ring-value" style="color:var(--orange)">726<span style="font-size:12px">/1900</span></div>
+        <div class="ring-label">热量 kcal · 还需1174</div>
+      </div>
+      <div class="ring-item">
+        <svg class="ring-svg" width="120" height="120">
+          <circle class="ring-bg" cx="60" cy="60" r="50" stroke-width="10"/>
+          <circle class="ring-fg" cx="60" cy="60" r="50" stroke-width="10" stroke="#4a9eff" stroke-dasharray="314" stroke-dashoffset="202.4"/>
+        </svg>
+        <div class="ring-value" style="color:var(--blue)">44.2<span style="font-size:12px">/125g</span></div>
+        <div class="ring-label">蛋白质 · 还需80.8g</div>
+      </div>
+      <div class="ring-item">
+        <svg class="ring-svg" width="120" height="120">
+          <circle class="ring-bg" cx="60" cy="60" r="50" stroke-width="10"/>
+          <circle class="ring-fg" cx="60" cy="60" r="50" stroke-width="10" stroke="#e91e63" stroke-dasharray="314" stroke-dashoffset="114.2"/>
+        </svg>
+        <div class="ring-value" style="color:var(--pink)">19.3<span style="font-size:12px">/53g</span></div>
+        <div class="ring-label">脂肪 · 还需33.7g</div>
+      </div>
+      <div class="ring-item">
+        <svg class="ring-svg" width="120" height="120">
+          <circle class="ring-bg" cx="60" cy="60" r="50" stroke-width="10"/>
+          <circle class="ring-fg" cx="60" cy="60" r="50" stroke-width="10" stroke="#4caf50" stroke-dasharray="314" stroke-dashoffset="187.5"/>
+        </svg>
+        <div class="ring-value" style="color:var(--green)">93<span style="font-size:12px">/231g</span></div>
+        <div class="ring-label">碳水 · 还需138g</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">今日午餐（14:49）</div>
+    <table>
+      <thead><tr><th>食物</th><th>重量</th><th>热量</th><th>蛋白</th><th>脂肪</th><th>碳水</th></tr></thead>
+      <tbody>
+        <tr><td>溏心卤蛋</td><td>35g</td><td>56</td><td>5.3</td><td>3.5</td><td>0.5</td></tr>
+        <tr><td>香蕉</td><td>133g</td><td>118</td><td>1.5</td><td>0.3</td><td>30</td></tr>
+        <tr><td>风味发酵乳</td><td>200g</td><td>194</td><td>6.2</td><td>7.6</td><td>25</td></tr>
+        <tr><td>瑞幸美式(超大杯)</td><td>500ml</td><td>16</td><td>0</td><td>0</td><td>4</td></tr>
+        <tr><td>欧包</td><td>40g</td><td>179</td><td>5.2</td><td>2.4</td><td>31.7</td></tr>
+        <tr><td>五香牛肉</td><td>100g</td><td>163</td><td>26</td><td>5.5</td><td>1.8</td></tr>
+        <tr style="font-weight:700;background:rgba(255,255,255,0.03)"><td>合计</td><td>—</td><td>726</td><td>44.2</td><td>19.3</td><td>93</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">食材库存</div>
+    <div class="grid-2">
+      <div>
+        <div class="inventory-item"><span class="inv-name">五香牛肉</span><span class="inv-qty" style="color:var(--red)">150g</span></div>
+        <div class="inventory-item"><span class="inv-name">风味发酵乳</span><span class="inv-qty">~400g</span></div>
+        <div class="inventory-item"><span class="inv-name">欧包</span><span class="inv-qty">4个 (160g)</span></div>
+        <div class="inventory-item"><span class="inv-name">冰激凌</span><span class="inv-qty">370g</span></div>
+        <div class="inventory-item"><span class="inv-name">香蕉</span><span class="inv-qty">~2根</span></div>
+      </div>
+      <div>
+        <div class="inventory-item"><span class="inv-name">蛋白粉</span><span class="inv-qty">~660g</span></div>
+        <div class="inventory-item"><span class="inv-name">德亚脱脂牛奶</span><span class="inv-qty">500ml</span></div>
+        <div class="inventory-item"><span class="inv-name">溏心卤蛋</span><span class="inv-qty" style="color:var(--red)">0枚</span></div>
+        <div class="inventory-item"><span class="inv-name">贝果</span><span class="inv-qty" style="color:var(--red)">0（吃光）</span></div>
+        <div class="inventory-item"><span class="inv-name">椰子水</span><span class="inv-qty" style="color:var(--orange)">待确认</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">补剂</div>
+    <table>
+      <thead><tr><th>补剂</th><th>成分</th><th>用量</th></tr></thead>
+      <tbody>
+        <tr><td>蛋白粉</td><td>80%蛋白质</td><td>训练中60g + 早餐按需</td></tr>
+        <tr><td>锌镁片</td><td>Mg 125mg / Zn 5mg / B1·B2·B6各0.5mg</td><td>每片1.2g</td></tr>
+        <tr><td>肌酸粉</td><td>肌酸45g/100g · Mg 2288mg · Zn 152.89mg</td><td>6g/袋</td></tr>
+        <tr><td>待补充</td><td colspan="2">钙、维生素D</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ DAILY LOG ============ -->
+<div class="section" id="daily">
+  <div class="log-tabs">
+    <div class="log-tab" data-day="0802">8月2日</div>
+    <div class="log-tab" data-day="0801">8月1日</div>
+    <div class="log-tab" data-day="0731">7月31日</div>
+    <div class="log-tab" data-day="0730">7月30日</div>
+    <div class="log-tab" data-day="0729">7月29日</div>
+    <div class="log-tab" data-day="0803">8月3日</div>
+    <div class="log-tab" data-day="0804">8月4日</div>
+    <div class="log-tab" data-day="0805">8月5日</div>
+    <div class="log-tab active" data-day="0806">8月6日(今天)</div>
+  </div>
+
+
+  <!-- 8/3 -->
+  <div class="day-log" data-day="0803" style="display:none">
+    <div class="card">
+      <div class="card-title">8月3日 周日 — 背+二头</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 背+二头+37min有氧</td></tr>
+        <tr><th>力量</th><td>高位下拉30kg×15→13→26kg×15 / 划船26kg×15→33kg×12→26kg×15→26kg×19 / 21响弯举10kg×4</td></tr>
+        <tr><th>饮食</th><td>冰激凌270g一餐1296kcal ⚠️ / 训练补给30g蛋白粉+300ml牛奶 / 香蕉+发酵乳+番茄</td></tr>
+        <tr><th>热量</th><td>超标167kcal · 脂肪超标19g</td></tr>
+        <tr><th>采购</th><td>盒马¥130.9（牛腱/卤蛋/牛奶/欧包/吐司/甜虾等）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8/4 -->
+  <div class="day-log" data-day="0804" style="display:none">
+    <div class="card">
+      <div class="card-title">8月4日 周一 — 肩（升重日）✅</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 肩+37min有氧</td></tr>
+        <tr><th>力量</th><td>侧平举7.5kg×15/15/12/12/6+6 / 推举12.5kg×4×12 / 反向飞鸟26kg×4×15</td></tr>
+        <tr><th>亮点</th><td><strong style="color:var(--green)">三项全部升重！</strong>侧平举5→7.5kg / 推举10→12.5kg</td></tr>
+        <tr><th>体重</th><td>69.3kg / 体脂20.3%</td></tr>
+        <tr><th>饮食</th><td>吐司4片+甜虾+牛腱+拼盘 / 训练补给30g粉+200ml奶 / 蛋+吐司3片</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8/5 -->
+  <div class="day-log" data-day="0805" style="display:none">
+    <div class="card">
+      <div class="card-title">8月5日 周二 — 胸+三头</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 胸+三头+34min有氧</td></tr>
+        <tr><th>力量</th><td>上斜卧推12.5kg×6组(10/8/8) / 绳索下压30-35kg×4×12 / 飞鸟33-40kg×4</td></tr>
+        <tr><th>饮食</th><td>吐司+豆丝+蛋+欧包2个 / 训练补给30g粉+200ml奶 / 蛋+欧包+香蕉</td></tr>
+        <tr><th>备注</th><td>卧推前束借力，转上斜方向。下次试15kg</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8/6 -->
+  <div class="day-log active" data-day="0806">
+    <div class="card">
+      <div class="card-title">8月6日 周三 — 背+二头（升重日）✅</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 背+二头+38min有氧</td></tr>
+        <tr><th>力量</th><td>高位下拉35kg×15/15/15/8+4+3 / 划船35kg×12→30kg×15/15/11/8 / 弯举10kg×3→15kg×1</td></tr>
+        <tr><th>亮点</th><td><strong style="color:var(--green)">全线升重！</strong>下拉30→35kg / 划船33→35kg / 弯举10→15kg</td></tr>
+        <tr><th>采购</th><td>盒马¥134.05（牛腱/牛肉片/卤蛋/欧包×2/鲜奶×2等）</td></tr>
+        <tr><th>功课</th><td>准提咒30遍</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8/2 -->
+  <div class="day-log" data-day="0802" style="display:none">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">作息</div>
+        <table>
+          <tr><th>入睡</th><td>2:49</td><th>起床</th><td>13:53</td></tr>
+          <tr><th>睡眠</th><td colspan="3"><span class="badge badge-green">约11小时 ✓</span> 补觉</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">今日待办</div>
+        <table>
+          <tr><td>☐ 准提咒（每日功课）</td></tr>
+          <tr><td>☐ 健身：肩+手臂（连缺两天，必须去）</td></tr>
+          <tr><td>☐ 技能学习：AI视频</td></tr>
+          <tr><td>☐ 技能学习：自媒体策划</td></tr>
+          <tr><td>☐ 晚间汇报 22:00</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">今日记账</div>
+      <div class="txn-item"><div><div class="txn-name">花卉杀菌剂</div><div class="txn-cat">🏠住 · 家居园艺</div></div><div class="txn-amount expense">-¥10.90</div></div>
+      <div class="txn-item"><div><div class="txn-name">桃木文昌塔</div><div class="txn-cat">🏠住 · 家居风水摆件</div></div><div class="txn-amount expense">-¥173.00</div></div>
+      <div style="text-align:right;margin-top:10px;font-weight:700;color:var(--red)">今日合计: ¥183.90</div>
+    </div>
+  </div>
+
+  <!-- 8/1 -->
+  <div class="day-log" data-day="0801" style="display:none">
+    <div class="card">
+      <div class="card-title">8月1日 周五</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-red">未完成</span> 连续第二天缺练</td></tr>
+        <tr><th>饮食</th><td>香蕉+蛋+贝果 / 250g牛肉+娃娃菜 / 螺蛳粉+炸蛋+椰子水 / 80g冰激凌</td></tr>
+        <tr><th>热量</th><td>超标173kcal · 碳水超标24g</td></tr>
+        <tr><th>记账</th><td>螺蛳粉 ¥42</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7/31 -->
+  <div class="day-log" data-day="0731" style="display:none">
+    <div class="card">
+      <div class="card-title">7月31日 周四</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-red">未完成</span> 饮酒未练</td></tr>
+        <tr><th>饮食</th><td>两顿潮汕牛肉火锅 · RIO鸡尾酒</td></tr>
+        <tr><th>记账</th><td>火锅¥183 · 88VIP¥10 · 铜葫芦¥117.24 · 打车¥15.6 · 酒¥62.2 · 烧烤¥42 · 退款-¥58.7</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7/30 -->
+  <div class="day-log" data-day="0730" style="display:none">
+    <div class="card">
+      <div class="card-title">7月30日 周三 — 训练日 ✓</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 肩+手臂</td></tr>
+        <tr><th>力量</th><td>侧平举5kg(多做1组) · 推举10kg · 弯举10kg</td></tr>
+        <tr><th>有氧</th><td>爬坡32min · 消耗330kcal · 燃脂5.67g</td></tr>
+        <tr><th>训练中补给</th><td>200ml牛奶 + 60g蛋白粉</td></tr>
+        <tr><th>加餐</th><td>200g发酵乳 + 10个小番茄 + RIO白桃330ml</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7/29 -->
+  <div class="day-log" data-day="0729" style="display:none">
+    <div class="card">
+      <div class="card-title">7月29日 周二 — 首日使用 ✓</div>
+      <table>
+        <tr><th>训练</th><td><span class="badge badge-green">完成</span> 背+二头</td></tr>
+        <tr><th>有氧</th><td>爬坡38min</td></tr>
+        <tr><th>备注</th><td>DashBoard启动日 · 导入Notion数据 · 建立档案</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+// Tab navigation
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    link.classList.add('active');
+    document.getElementById(link.dataset.section).classList.add('active');
+  });
+});
+
+// Daily log tabs
+document.querySelectorAll('.log-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.log-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.day-log').forEach(d => d.style.display = 'none');
+    tab.classList.add('active');
+    document.querySelector(`.day-log[data-day="${tab.dataset.day}"]`).style.display = 'block';
+  });
+});
+
+// Chart defaults
+Chart.defaults.color = '#888899';
+Chart.defaults.borderColor = '#2a2d3a';
+Chart.defaults.font.family = '-apple-system, PingFang SC, Microsoft YaHei, sans-serif';
+
+const months = ['1月','2月','3月','4月','5月','6月','7月'];
+const expenses = [9269, 7746, 11402, 9527, 7156, 12124, 13351];
+const incomes = [8883, 6838, 388, 500, 0, 67, 17889];
+
+// Overview chart
+new Chart(document.getElementById('overviewChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {label:'支出', data:expenses, backgroundColor:'rgba(239,68,68,0.7)', borderRadius:4},
+      {label:'收入', data:incomes, backgroundColor:'rgba(76,175,80,0.7)', borderRadius:4}
+    ]
+  },
+  options: {responsive:true, plugins:{legend:{position:'top'}}, scales:{y:{grid:{color:'#2a2d3a'}}}}
+});
+
+// Body chart
+new Chart(document.getElementById('bodyChart'), {
+  type: 'radar',
+  data: {
+    labels: ['胸围','腰围','臀围','大腿围'],
+    datasets: [
+      {label:'2018年', data:[90,86,95,53], borderColor:'#9c27b0', backgroundColor:'rgba(156,39,176,0.1)'},
+      {label:'2026年', data:[94.4,87,95.8,57], borderColor:'#4a9eff', backgroundColor:'rgba(74,158,255,0.1)'}
+    ]
+  },
+  options: {responsive:true, plugins:{legend:{position:'top'}}, scales:{r:{grid:{color:'#2a2d3a'},angleLines:{color:'#2a2d3a'},pointLabels:{color:'#e0e0e0'}}}
+});
+
+// Finance chart 1: bar + cumulative line
+new Chart(document.getElementById('financeChart1'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {label:'支出', data:expenses, backgroundColor:'rgba(239,68,68,0.7)', borderRadius:4, yAxisID:'y'},
+      {label:'收入', data:incomes, backgroundColor:'rgba(76,175,80,0.7)', borderRadius:4, yAxisID:'y'},
+      {label:'累计结余', type:'line', data:[-387,-1295,-12309,-21336,-28492,-40550,-36012], borderColor:'#4a9eff', backgroundColor:'rgba(74,158,255,0.1)', tension:0.3, yAxisID:'y1'}
+    ]
+  },
+  options: {responsive:true, plugins:{legend:{position:'top'}}, scales:{y:{grid:{color:'#2a2d3a'},position:'left'},y1:{grid:{display:false},position:'right'}}}
+});
+
+// Finance chart 2: pie
+new Chart(document.getElementById('financeChart2'), {
+  type: 'doughnut',
+  data: {
+    labels: ['住','其他','行','食','娱乐','衣','特殊事件','设备','医疗'],
+    datasets: [{data:[26340,9690,8969,8634,8525,3392,2157,1861,1007], backgroundColor:['#4a9eff','#607d8b','#ff9800','#4caf50','#e91e63','#9c27b0','#8bc34a','#00bcd4','#795548']}]
+  },
+  options: {responsive:true, plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}}}
+});
+
+// Finance chart 3: stacked bar
+new Chart(document.getElementById('financeChart3'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {label:'住',data:[2615,2681,7376,2530,2952,7170,1016],backgroundColor:'#4a9eff'},
+      {label:'食',data:[1730,1786,1161,1189,814,1265,690],backgroundColor:'#4caf50'},
+      {label:'行',data:[3507,1374,831,221,1355,641,1040],backgroundColor:'#ff9800'},
+      {label:'衣',data:[978,0,322,966,552,518,55],backgroundColor:'#9c27b0'},
+      {label:'娱乐',data:[198,1265,854,3736,731,501,1240],backgroundColor:'#e91e63'},
+      {label:'其他',data:[100,540,424,100,100,300,8126],backgroundColor:'#607d8b'},
+      {label:'医疗',data:[57,0,0,0,151,141,658],backgroundColor:'#795548'},
+      {label:'设备',data:[84,100,134,785,502,74,183],backgroundColor:'#00bcd4'},
+      {label:'特殊',data:[0,0,300,0,0,1514,343],backgroundColor:'#8bc34a'}
+    ]
+  },
+  options: {responsive:true,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#2a2d3a'}}}}
+});
+
+// Finance chart 4: income pie
+new Chart(document.getElementById('financeChart4'), {
+  type: 'doughnut',
+  data: {
+    labels: ['其他(马丽女士)','工资/薪资','红包/资助','保险赔付','兼职/劳务'],
+    datasets: [{data:[15189,9323,6315,2970,767], backgroundColor:['#e91e63','#4caf50','#4a9eff','#ff9800','#9c27b0']}]
+  },
+  options: {responsive:true, plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}}}
+});
+
+// Finance chart 5: 2025 vs 2026
+new Chart(document.getElementById('financeChart5'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {label:'2025支出',data:[17939,11651,10032,6748,11980,9581,16473],backgroundColor:'rgba(239,68,68,0.5)',borderRadius:3},
+      {label:'2026支出',data:expenses,backgroundColor:'rgba(255,152,0,0.7)',borderRadius:3},
+      {label:'2025收入',data:[19280,51,18074,6200,2179,5266,13827],backgroundColor:'rgba(76,175,80,0.5)',borderRadius:3},
+      {label:'2026收入',data:incomes,backgroundColor:'rgba(74,158,255,0.7)',borderRadius:3}
+    ]
+  },
+  options: {responsive:true,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{y:{grid:{color:'#2a2d3a'}}}
+});
+
+// Fitness chart 1: cost per visit
+const freqs = [2,3,4,5,6,7];
+const costs = [11.76, 8.74, 6.95, 5.77, 4.93, 4.21];
+const colors = costs.map(c => c <= 3 ? '#4caf50' : c <= 5 ? '#ff9800' : '#ef4444');
+new Chart(document.getElementById('fitnessChart1'), {
+  type: 'bar',
+  data: {
+    labels: freqs.map(f => f + '次/周'),
+    datasets: [{label:'单次成本(¥)', data:costs, backgroundColor:colors, borderRadius:6}]
+  },
+  options: {
+    responsive:true, plugins:{legend:{display:false},
+      annotation:{}},
+    scales:{y:{grid:{color:'#2a2d3a'},beginAtZero:true}},
+    plugins:{legend:{display:false}}
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名字与 Logo 方案</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#f4f3f0; color:#2f2e2b; line-height:1.6; padding:20px; }
+  .container { max-width:420px; margin:0 auto; }
+  h1 { font-size:22px; margin-bottom:6px; }
+  .subtitle { color:#888; font-size:13px; margin-bottom:28px; }
+  .option { background:#fcfbf8; border:2px solid #ecebe5; border-radius:16px; padding:24px; margin-bottom:18px; transition:border-color .2s; cursor:pointer; }
+  .option:hover { border-color:#6f8f6a; }
+  .option-header { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+  .logo-box { width:64px; height:64px; border-radius:16px; display:grid; place-items:center; flex-shrink:0; }
+  .option-name { font-size:24px; font-weight:800; letter-spacing:-.02em; }
+  .option-pinyin { font-size:12px; color:#8c877c; margin-top:2px; }
+  .option-desc { font-size:14px; color:#6b665d; margin-bottom:12px; }
+  .option-meaning { font-size:13px; color:#8c877c; font-style:italic; padding:10px 14px; background:#f7f6f1; border-radius:10px; }
+  .option-pros { font-size:13px; color:#6b665d; margin-top:10px; }
+  .option-pros li { margin:3px 0 3px 18px; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:600; margin-left:8px; }
+  .badge-rec { background:#eef2ec; color:#6f8f6a; }
+  .footer { text-align:center; margin-top:24px; font-size:13px; color:#aaa; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>名字与 Logo 方案</h1>
+  <p class="subtitle">选一个你喜欢的，我来替换。也可以告诉我你的想法。</p>
+
+  <!-- Option 1: 循 -->
+  <div class="option" onclick="void(0)">
+    <div class="option-header">
+      <div class="logo-box" style="background:linear-gradient(135deg,#6f8f6a,#5f7a99)">
+        <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#f4f3f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M38 24a14 14 0 1 1-4.6-10.3"/>
+          <path d="M38 8v6h-6"/>
+          <circle cx="24" cy="24" r="3" fill="#f4f3f0" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="option-name">循<span class="badge badge-rec">推荐</span></div>
+        <div class="option-pinyin">Xún · Cycle</div>
+      </div>
+    </div>
+    <div class="option-desc">一个字，干净利落。意思是"循环往复，日日精进"。</div>
+    <div class="option-meaning">"天道循环，生生不息" — 你的生活就是训练、饮食、作息、记账的循环，每一天都在这个循环里往前走一步。</div>
+    <ul class="option-pros">
+      <li>一个字，App 名称极短，主屏幕显示干净</li>
+      <li>Logo 是循环箭头 + 中心点，像生活节奏的循环</li>
+      <li>含义贴合：你的生活就是有节奏的循环精进</li>
+    </ul>
+  </div>
+
+  <!-- Option 2: 刻度 -->
+  <div class="option" onclick="void(0)">
+    <div class="option-header">
+      <div class="logo-box" style="background:linear-gradient(135deg,#bd8a4e,#b5715a)">
+        <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#f4f3f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 36V18"/>
+          <path d="M18 36V12"/>
+          <path d="M26 36V22"/>
+          <path d="M34 36V8"/>
+          <path d="M8 36h32"/>
+          <path d="M12 14l8-4 8 6 8-8" stroke-dasharray="0"/>
+        </svg>
+      </div>
+      <div>
+        <div class="option-name">刻度</div>
+        <div class="option-pinyin">Kèdù · Scale</div>
+      </div>
+    </div>
+    <div class="option-desc">丈量进度，标记成长。每一条记录都是生活的一格刻度。</div>
+    <div class="option-meaning">"刻度"是尺子上的标记 — 你的体重、训练重量、支出金额，都是生活的刻度，记录着你走到哪了。</div>
+    <ul class="option-pros">
+      <li>两个字，意思清晰：度量生活</li>
+      <li>Logo 是上升的刻度线 + 趋势线，直观体现"进步"</li>
+      <li>适合数据驱动的应用调性</li>
+    </ul>
+  </div>
+
+  <!-- Option 3: 日课 -->
+  <div class="option" onclick="void(0)">
+    <div class="option-header">
+      <div class="logo-box" style="background:linear-gradient(135deg,#5f7a99,#7d7195)">
+        <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#f4f3f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="16"/>
+          <path d="M16 24l5 5 11-11"/>
+        </svg>
+      </div>
+      <div>
+        <div class="option-name">日课</div>
+        <div class="option-pinyin">Rìkè · Daily Practice</div>
+      </div>
+    </div>
+    <div class="option-desc">每日修习，持续精进。古人把每天必做的事叫"日课"。</div>
+    <div class="option-meaning">"日课"是古人每日必修的功课 — 你的训练、准提咒、作息，都是现代意义上的日课。有仪式感。</div>
+    <ul class="option-pros">
+      <li>有文化底蕴，贴合功课进度模块</li>
+      <li>Logo 是圆圈 + 勾选，像每日打卡完成</li>
+      <li>"课"字暗示学习、进步、有目标</li>
+    </ul>
+  </div>
+
+  <!-- Option 4: 方寸 -->
+  <div class="option" onclick="void(0)">
+    <div class="option-header">
+      <div class="logo-box" style="background:linear-gradient(135deg,#2f2e2b,#4a4844)">
+        <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#f4f3f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="10" y="10" width="28" height="28" rx="6"/>
+          <circle cx="24" cy="24" r="5" fill="#f4f3f0" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="option-name">方寸</div>
+        <div class="option-pinyin">Fāngcùn · Square Inch</div>
+      </div>
+    </div>
+    <div class="option-desc">方寸之间，自有天地。古人用"方寸"指代心。</div>
+    <div class="option-meaning">"方寸之间，自有天地" — 这个 App 就是你手机上方寸大的地方，却装下了你整个生活的节奏。</div>
+    <ul class="option-pros">
+      <li>有古典美感，格调高</li>
+      <li>Logo 是方形 + 中心圆点，极简抽象</li>
+      <li>"方寸"也暗合手机屏幕的方寸之地</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    告诉我你选哪个，或者你有自己的想法也行<br>
+    选好后我会更新 App 名称、Logo 和 PWA 图标
+  </div>
+</div>
+</body>
+</html>
