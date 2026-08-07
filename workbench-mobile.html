@@ -166,12 +166,12 @@
 
   /* ---------- generic card / section ---------- */
   .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
-  .sec-title { display:flex; align-items:center; gap:9px; font-size: 14px; font-weight: 700; margin: 20px 2px 10px; letter-spacing: -.01em; }
+  .sec-title { display:flex; align-items:center; gap:9px; font-size: 14px; font-weight: 700; margin: 20px 0 10px; letter-spacing: -.01em; }
   .sec-title::before { content:""; width: 3px; height: 13px; border-radius: 2px; background: var(--accent); }
   .sec-title .more { margin-left:auto; font-size: 12px; color: var(--text-secondary); font-weight: 500; cursor: pointer; display:inline-flex; align-items:center; gap:2px; }
 
   /* ---------- module header ---------- */
-  .greet { position: relative; overflow: hidden; margin-top: 8px; padding: 18px 16px 18px; border-radius: var(--radius-card);
+  .greet { position: relative; overflow: hidden; margin-top: 8px; padding: 18px 14px; border-radius: var(--radius-card);
     border: 1px solid var(--border); box-shadow: var(--shadow-card); background: var(--surface-card); }
   .greet > * { position: relative; z-index: 1; }
   .greet h1 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
@@ -184,13 +184,13 @@
   .greet .add svg { margin-top: -1px; }
 
   /* ---------- compact greeting (homepage) ---------- */
-  .compact-greet { display:flex; align-items:baseline; gap:8px; padding:8px 2px 4px; }
+  .compact-greet { display:flex; align-items:baseline; gap:8px; padding:8px 0 4px; }
   .compact-greet .hi { font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
   .compact-greet .dt { font-size: 12px; color: var(--text-secondary); }
 
   /* ---------- home card (tappable) ---------- */
   .home-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card); padding: 13px 14px; margin-top: 10px; cursor: pointer; transition: border-color .15s; }
+    box-shadow: var(--shadow-card); padding: 14px; margin-top: 10px; cursor: pointer; transition: border-color .15s; }
   .home-card:active { border-color: var(--border-input); }
   .home-card.no-tap { cursor: default; }
   .home-card .hc-title { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:10px; }
@@ -204,7 +204,7 @@
     background: var(--surface-nested); border:1px solid var(--border); color: var(--text); }
   .ex-chip.star { background: color-mix(in srgb, var(--module-3) 12%, var(--surface-card)); border-color: color-mix(in srgb, var(--module-3) 30%, var(--border)); color: var(--module-3); }
   .ex-list-detailed { margin-top:8px; display:flex; flex-direction:column; gap:6px; }
-  .ex-item { padding:8px 10px; border-radius:10px; background:var(--surface-nested); border:1px solid var(--border); }
+  .ex-item { padding:8px 12px; border-radius:10px; background:var(--surface-nested); border:1px solid var(--border); }
   .ex-item.star { background: color-mix(in srgb, var(--module-3) 10%, var(--surface-card)); border-color: color-mix(in srgb, var(--module-3) 30%, var(--border)); }
   .ex-row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
   .ex-name { font-size:13px; font-weight:700; color:var(--text); }
@@ -241,7 +241,7 @@
 
   /* ---------- record list ---------- */
   .rec { position: relative; background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card); padding: 12px 13px; margin-bottom: 8px; transition: border-color .15s; }
+    box-shadow: var(--shadow-card); padding: 12px 14px; margin-bottom: 8px; transition: border-color .15s; }
   .rec:active { border-color: var(--border-input); }
   .rec .top { display:flex; align-items:flex-start; gap: 11px; }
   .rec .chk { flex:0 0 auto; width: 24px; height: 24px; min-width:44px; min-height:44px; border-radius: 50%;
@@ -282,12 +282,12 @@
   .empty .e { display:inline-grid; place-items:center; width: 58px; height:58px; border-radius: var(--radius-card); background: var(--surface-card); border:1px solid var(--border); color: var(--text-tertiary); margin-bottom: 14px; }
 
   /* ---------- panel ---------- */
-  .panel { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 13px; }
+  .panel { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 13px 14px; }
   .panel .ph { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; }
 
   /* ---------- module summary (money) ---------- */
   .mod-summary { display:grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-  .mini { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 11px; }
+  .mini { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 11px 14px; }
   .mini .l { font-size: 11px; color: var(--text-secondary); }
   .mini .v { font-size: 17px; font-weight: 800; margin-top: 3px; letter-spacing: -.02em; font-variant-numeric:tabular-nums; }
 
@@ -345,7 +345,7 @@
 
   /* ---------- sleep week view ---------- */
   .sleep-week { display:flex; flex-direction:column; gap:6px; }
-  .sleep-day { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-tile);
+  .sleep-day { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:var(--radius-tile);
     background:var(--surface-card); border:1px solid var(--border); border-left-width:3px; }
   .sleep-day .sd-date { font-size:12px; font-weight:700; width:56px; flex:0 0 auto; }
   .sleep-day .sd-date small { display:block; font-size:10px; font-weight:500; color:var(--text-tertiary); }
@@ -1018,8 +1018,8 @@ function renderHome(){
     const star = e.name.includes('★');
     const name = e.name.replace('★','').trim();
     return `<div class="ex-item${star?' star':''}">
-      <span class="ex-name">${esc(name)}</span>
-      <span class="ex-detail">${e.sets}×${e.reps} · ${e.weight}</span>
+      <div class="ex-row"><span class="ex-name">${esc(name)}</span><span class="ex-detail">${e.sets}组 × ${e.reps}次 · ${e.weight}</span></div>
+      ${e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''}
     </div>`;
   }).join("") : '<div class="rest-day">休息日，散步或完全休息</div>';
   const trainCard = `<div class="home-card" data-go="training">
@@ -1105,7 +1105,16 @@ function quickNote(type){
   store.save();
   input.value = '';
   if(type === 'feedback'){
-    showToast('已记录 · 请在对话中发送给我以获取回复');
+    const fbText = `[反馈] ${text}`;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(fbText).then(()=>{
+        showToast('反馈已复制到剪贴板 · 请粘贴到对话中发给我');
+      }).catch(()=>{
+        showToast('已记录 · 请手动复制到对话中发给我');
+      });
+    } else {
+      showToast('已记录 · 请手动复制到对话中发给我');
+    }
   } else {
     showToast('已记录');
   }
@@ -1258,7 +1267,7 @@ function renderTraining(){
     const star = e.name.includes('★');
     const name = e.name.replace('★','').trim();
     return `<div class="ex-item${star?' star':''}">
-      <div class="ex-row"><span class="ex-name">${esc(name)}</span><span class="ex-detail">${e.sets}×${e.reps} · ${e.weight}</span></div>
+      <div class="ex-row"><span class="ex-name">${esc(name)}</span><span class="ex-detail">${e.sets}组 × ${e.reps}次 · ${e.weight}</span></div>
       ${e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''}
     </div>`;
   }).join("") : '<div class="rest-day">休息日，散步或完全休息</div>';
