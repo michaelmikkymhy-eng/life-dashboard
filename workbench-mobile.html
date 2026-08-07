@@ -577,7 +577,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 7,
+  seedVersion: 8,
   owner: "我的生活",
   slogan: "Life Dashboard",
   brand: "我",
@@ -607,10 +607,10 @@ const CONFIG = {
       { name: "坐姿划船", sets: 3, reps: "12-15", weight: "35kg", note: "背收缩" }
     ], cardio: "爬坡30min · 心率130-150" },
     5: { part: "肩+手臂", exercises: [
-      { name: "侧平举 ★", sets: 5, reps: "15", weight: "7.5kg", note: "核心动作" },
-      { name: "弯举+下压", sets: 4, reps: "12+12", weight: "15kg+35kg", note: "超级组·二头+三头" },
-      { name: "哑铃推举", sets: 4, reps: "10-12", weight: "12.5kg", note: "前束" }
-    ], cardio: "爬坡30min · 心率130-150" },
+      { name: "侧平举 ★", sets: 4, reps: "15", weight: "7.5kg", note: "核心动作·末组吃力" },
+      { name: "哑铃推举", sets: 5, reps: "10-14", weight: "12.5kg", note: "前束·第5组补量" },
+      { name: "下压+弯举", sets: 3, reps: "8-12+15", weight: "35kg+15kg", note: "超级组·手臂力竭" }
+    ], cardio: "爬坡35min · 心率130-150" },
     6: { part: "胸+背(二轮)", exercises: [
       { name: "上斜卧推", sets: 4, reps: "8-10", weight: "12.5kg", note: "下次试15kg" },
       { name: "单臂划船", sets: 4, reps: "10-12", weight: "15kg", note: "单侧控制" },
@@ -667,8 +667,9 @@ const CONFIG = {
         { id:8803, title:"21响弯举", current:15, target:20, unit:"kg", part:"手臂", note:"3组×21，末组力竭" },
         { id:8804, title:"哑铃卧推", current:12.5, target:17.5, unit:"kg", part:"胸", note:"4组×8-12" },
         { id:8805, title:"哑铃飞鸟", current:7.5, target:10, unit:"kg", part:"胸", note:"4组×12-15" },
-        { id:8806, title:"侧平举", current:7.5, target:12.5, unit:"kg", part:"肩", note:"核心动作 5组×15" },
-        { id:8807, title:"哑铃推举", current:12.5, target:17.5, unit:"kg", part:"肩", note:"4组×10-12" }
+        { id:8806, title:"侧平举", current:7.5, target:12.5, unit:"kg", part:"肩", note:"8/7 今日4组×15，末组吃力" },
+        { id:8807, title:"哑铃推举", current:12.5, target:17.5, unit:"kg", part:"肩", note:"8/7 今日5组(10/13/11/14/12)" },
+        { id:8808, title:"下压+弯举超级组", current:35, target:40, unit:"kg", part:"手臂", note:"8/7 3组(8+15/10+15/12+15) 下压35kg+弯举15kg，手臂力竭未做第4组" }
       ] },
 
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
@@ -837,28 +838,7 @@ const store = {
     if(raw){
       try {
         const d = JSON.parse(raw);
-        const curVer = d.__seedVer || 0;
-        if(CONFIG.seedVersion && curVer < CONFIG.seedVersion){
-          CONFIG.modules.forEach(m => {
-            const seed = m.seed || [];
-            const existing = d[m.key] || [];
-            const existingIds = new Set(seed.map(x => x.id));
-            // 清理已移除的 seed 项（不在 seed 中且标题匹配旧项）
-            if(m.key === "checkin"){
-              const validTitles = new Set(seed.map(x=>x.title));
-              d[m.key] = existing.filter(x => validTitles.has(x.title) || !seed.length);
-            } else {
-              // 添加新的 seed 项
-              const existIds = new Set(existing.map(x => x.id));
-              seed.forEach(s => {
-                if(!existIds.has(s.id)) existing.push(structuredClone(s));
-              });
-              d[m.key] = existing;
-            }
-          });
-          d.__seedVer = CONFIG.seedVersion;
-          localStorage.setItem(CONFIG.storageKey, JSON.stringify(d));
-        }
+        migrateSeedData(d);
         return d;
       } catch(e){}
     }
@@ -869,6 +849,36 @@ const store = {
   },
   save(){ localStorage.setItem(CONFIG.storageKey, JSON.stringify(data)); if(window.cloudSave) window.cloudSave(); },
 };
+
+/* ---------- 种子数据迁移（本地+云端共用） ---------- */
+function migrateSeedData(d){
+  const curVer = d.__seedVer || 0;
+  if(!CONFIG.seedVersion || curVer >= CONFIG.seedVersion) return false;
+  CONFIG.modules.forEach(m => {
+    const seed = m.seed || [];
+    const existing = d[m.key] || [];
+    if(m.key === "checkin"){
+      const validTitles = new Set(seed.map(x=>x.title));
+      d[m.key] = existing.filter(x => validTitles.has(x.title) || !seed.length);
+    } else {
+      const existIds = new Set(existing.map(x => x.id));
+      seed.forEach(s => {
+        if(!existIds.has(s.id)) existing.push(structuredClone(s));
+      });
+      // v8: 更新训练项目备注为今日训练数据
+      if(m.key === "training" && curVer < 8){
+        seed.forEach(s => {
+          const item = existing.find(x => x.id === s.id);
+          if(item && s.note) item.note = s.note;
+        });
+      }
+      d[m.key] = existing;
+    }
+  });
+  d.__seedVer = CONFIG.seedVersion;
+  localStorage.setItem(CONFIG.storageKey, JSON.stringify(d));
+  return true;
+}
 let data = store.load();
 let view = "home";
 function persist(){ store.save(); render(); }
@@ -912,11 +922,21 @@ function initCloudSync(){
   fbSyncing = true;
   fbDB.ref('data').once('value').then(snap => {
     const cloud = snap.val();
-    if(cloud && (cloud.__updated || 0) >= (data.__updated || 0)){
+    if(cloud){
+      // 云端数据加载后，检查种子版本是否需要迁移
+      const cloudVer = cloud.__seedVer || 0;
+      const needMigration = cloudVer < CONFIG.seedVersion;
+      // 合并云端数据：优先用云端，但跑种子迁移补齐新增项
       data = cloud;
+      if(needMigration){
+        migrateSeedData(data);
+        seedTodayData();
+        data.__updated = Date.now();
+        fbDB.ref('data').set(data);
+      }
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
       render();
-    } else if(!cloud) {
+    } else {
       data.__updated = Date.now();
       fbDB.ref('data').set(data);
     }
@@ -930,6 +950,12 @@ function initCloudSync(){
     const cloud = snap.val();
     if(cloud && (cloud.__updated || 0) > (data.__updated || 0)){
       data = cloud;
+      // 云端推送的数据也检查种子版本
+      if(migrateSeedData(data)){
+        seedTodayData();
+        data.__updated = Date.now();
+        fbDB.ref('data').set(data);
+      }
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
       render();
       setSyncStatus('synced');
