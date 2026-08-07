@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
-  <rect width="192" height="192" rx="42" fill="#232220"/>
-  <g fill="none" stroke="#6f8f6a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M96 54 C 78 54, 66 70, 66 90 C 66 110, 78 126, 96 126 C 114 126, 126 110, 126 90 C 126 70, 114 54, 96 54 Z"/>
-    <path d="M96 54 L 96 138"/>
-    <path d="M96 90 L 114 72"/>
-    <path d="M96 90 L 78 72"/>
+  <rect width="192" height="192" rx="42" fill="#1c1b18"/>
+  <g fill="none" stroke="#f0eee9" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-18 96 96)">
+    <ellipse cx="96" cy="96" rx="80" ry="32" stroke-width="3" opacity="0.18"/>
+    <ellipse cx="96" cy="96" rx="60" ry="24" stroke-width="3" opacity="0.32"/>
+    <ellipse cx="96" cy="96" rx="40" ry="16" stroke-width="3.6" opacity="0.52"/>
   </g>
-  <circle cx="96" cy="96" r="6" fill="#bd8a4e"/>
-  <text x="96" y="162" text-anchor="middle" fill="#f4f3f0" font-family="sans-serif" font-size="20" font-weight="bold">生活台</text>
+  <circle cx="96" cy="96" r="11" fill="#f0eee9"/>
+  <circle cx="160" cy="64" r="9" fill="#b8995e"/>
+  <circle cx="160" cy="64" r="16" fill="none" stroke="#b8995e" stroke-width="3" opacity="0.32"/>
+  <circle cx="52" cy="120" r="5.5" fill="#f0eee9" opacity="0.38"/>
+  <circle cx="132" cy="124" r="3.5" fill="#f0eee9" opacity="0.22"/>
 </svg>
