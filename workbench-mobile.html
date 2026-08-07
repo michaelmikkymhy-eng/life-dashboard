@@ -20,60 +20,56 @@
      ============================================================ */
   :root {
     /* ---- 页面与表面 ---- */
-    --page-bg: #f4f3f0;              /* 页面底色（body 背景、顶栏渐变） */
-    --surface-card: #fcfbf8;         /* 卡片/面板/输入框/按钮的主背景 */
-    --surface-nested: #f7f6f1;       /* 嵌套区域：图标瓦底、ghost 按钮、hero 底、日历格底 */
+    --page-bg: #f4f3f0;
+    --surface-card: #fcfbf8;
+    --surface-nested: #f7f6f1;
 
     /* ---- 边框 ---- */
-    --border: #ecebe5;               /* 常规边框：卡片、分隔线 */
-    --border-input: #e0ded6;         /* 强边框：输入框、按钮、chip、勾选框、grab */
+    --border: #ecebe5;
+    --border-input: #e0ded6;
 
     /* ---- 文本层级 ---- */
-    --text: #232220;                 /* 主文本：标题、正文、数值 */
-    --text-secondary: #6b665d;       /* 次文本：标签、副标题、描述、字段 label */
-    --text-tertiary: #8c877c;        /* 弱文本：图标色、导航字、占位、星期行、空态 */
+    --text: #232220;
+    --text-secondary: #6b665d;
+    --text-tertiary: #8c877c;
 
-    /* ---- 主色（按钮/选中/强调） ---- */
-    --accent: #2f2e2b;               /* 主色：按钮、选中态、section 竖条、focus 边框 */
-    --accent-muted: #efeee8;         /* 主色浅底：focus ring 光晕、step 按钮 active 底 */
-    --on-accent: #f4f3f0;            /* 主色上的前景文字 */
+    /* ---- 主色 ---- */
+    --accent: #2f2e2b;
+    --accent-muted: #efeee8;
+    --on-accent: #f4f3f0;
 
-    /* ---- 模块色（5 色轮转，新模块按序取下一个未用的） ---- */
-    --module-1: #6f8f6a;             /* 苔绿 — 打卡/完成/收入 */
-    --module-2: #5f7a99;             /* 灰蓝 — 阅读/focus/趋势线 */
-    --module-3: #bd8a4e;             /* 赭黄 — 运动/连续天数/星标 */
-    --module-4: #b5715a;             /* 陶土 — 记账/占比图 */
-    --module-5: #7d7195;             /* 雾紫 — 笔记/日记 */
+    /* ---- 模块色 ---- */
+    --module-1: #6f8f6a;
+    --module-2: #5f7a99;
+    --module-3: #bd8a4e;
+    --module-4: #b5715a;
+    --module-5: #7d7195;
 
     /* ---- 危险色 ---- */
-    --danger: #c25d4f;               /* 删除/危险操作 */
-    --danger-muted: #f6ece9;         /* 危险浅底：删除 hover、P0 标签 */
+    --danger: #c25d4f;
+    --danger-muted: #f6ece9;
 
-    /* ---- 抽屉（深色面板，与主色板同色温） ---- */
-    --drawer-bg: #232220;            /* 抽屉底色 */
-    --drawer-bg-top: #2d2c29;        /* 抽屉渐变上色 */
-    --drawer-text: #f4f3f0;          /* 抽屉前景文字 */
-    --drawer-text-mute: rgba(244,243,240,.55);  /* 抽屉次要文字/图标 */
-    --drawer-hover: rgba(244,243,240,.1);       /* 抽屉悬停底 */
-    --drawer-active: rgba(244,243,240,.09);     /* 抽屉选中底 */
+    /* ---- 抽屉 ---- */
+    --drawer-bg: #232220;
+    --drawer-bg-top: #2d2c29;
+    --drawer-text: #f4f3f0;
+    --drawer-text-mute: rgba(244,243,240,.55);
+    --drawer-hover: rgba(244,243,240,.1);
+    --drawer-active: rgba(244,243,240,.09);
 
-    /* ---- 背景图 ---- */
-    --greet-image: linear-gradient(135deg, #6f8f6a 0%, #5f7a99 50%, #7d7195 100%);  /* 首页 hero 渐变背景 */
-    --page-texture: none;                            /* 页面纹理叠加（none 或 url(...)），不影响内容层 */
-
-    /* ---- 圆角（按组件角色，不要裸写数字） ---- */
-    --radius-control: 8px;           /* 勾选框、步进按钮、日历格 */
-    --radius-tile: 12px;             /* 图标瓦、输入框、按钮、chip、cal-nav */
-    --radius-card: 16px;             /* 卡片、面板、hero、空态图标 */
-    --radius-sheet: 22px;            /* 底部弹窗顶部圆角 */
+    /* ---- 圆角（iPhone 16 紧凑布局：卡片 14px） ---- */
+    --radius-control: 8px;
+    --radius-tile: 12px;
+    --radius-card: 14px;
+    --radius-sheet: 22px;
 
     /* ---- 阴影 ---- */
-    --shadow-card: 0 1px 2px rgba(35,34,32,.04), 0 4px 16px rgba(35,34,32,.05);   /* 卡片/面板 */
-    --shadow-overlay: 0 10px 28px rgba(35,34,32,.12);                             /* 弹窗/toast/悬浮按钮 */
+    --shadow-card: 0 1px 2px rgba(35,34,32,.04), 0 4px 16px rgba(35,34,32,.05);
+    --shadow-overlay: 0 10px 28px rgba(35,34,32,.12);
 
     /* ---- 字体与布局 ---- */
     --font: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-    --nav-h: 62px;                   /* 底部导航栏高度 */
+    --nav-h: 60px;
   }
 
   /* ============ 深色模式 ============ */
@@ -92,7 +88,6 @@
     --shadow-overlay:0 10px 28px rgba(0,0,0,.3);
   }
   body.dark .nav { background:rgba(37,36,33,.92); }
-  body.dark .greet::before { background:linear-gradient(100deg,var(--surface-nested) 42%,color-mix(in srgb,var(--surface-nested) 60%,transparent) 62%,transparent 80%); }
 
   /* ============ 只读模式 ============ */
   body.readonly .add, body.readonly #btn-add,
@@ -111,26 +106,12 @@
   .switch.on { background:var(--module-1); }
   .switch.on::after { transform:translateX(18px); }
 
-  /* ============ 快速记一笔 ============ */
-  .quick-note { margin-top:14px; display:flex; gap:8px; }
-  .quick-note input { flex:1; border:1px solid var(--border-input); border-radius:var(--radius-tile);
-    padding:12px 14px; background:var(--surface-card); color:var(--text); font-family:var(--font); font-size:14px; outline:none; }
-  .quick-note input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-muted); }
-  .quick-note button { flex:0 0 auto; border:none; border-radius:var(--radius-tile); background:var(--accent); color:var(--on-accent);
-    padding:12px 16px; font-size:14px; font-weight:700; cursor:pointer; font-family:var(--font); }
-
   /* ============ 抽屉内设置区 ============ */
   .dset { padding:0 18px; }
   .dset-title { font-size:12px; font-weight:700; color:var(--drawer-text-mute); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; }
   .dset-row { display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--drawer-active); }
   .dset-row:last-child { border-bottom:none; }
   .dset-row span { font-size:14px; color:var(--drawer-text); }
-  .dset .quick-note { margin-top:14px; }
-  .dset .quick-note input { background:var(--drawer-bg-top); border-color:var(--drawer-active); color:var(--drawer-text); }
-  .dset .quick-note input::placeholder { color:var(--drawer-text-mute); }
-  .dset .quick-note input:focus { border-color:var(--module-1); box-shadow:0 0 0 3px rgba(138,163,148,.2); }
-  .dset .quick-note button { background:var(--module-1); color:var(--on-accent); }
-  body.dark .dset .quick-note button { background:var(--module-1); color:#1a1917; }
 
   /* ============ 云同步状态指示 ============ */
   .sync-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--text-tertiary); margin-right:5px; vertical-align:middle; }
@@ -149,202 +130,244 @@
   #login-overlay .login-field { width:100%; border:1px solid var(--border-input); border-radius:var(--radius-tile); padding:14px 16px; background:var(--surface-card); color:var(--text); font-family:var(--font); font-size:15px; outline:none; margin-bottom:12px; }
   #login-overlay .login-field:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-muted); }
   #login-overlay .login-btn { width:100%; border:none; border-radius:var(--radius-tile); background:var(--accent); color:var(--on-accent); padding:14px; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font); margin-bottom:10px; }
-  #login-overlay .login-btn.secondary { background:transparent; color:var(--text-secondary); border:1px solid var(--border-input); }
   #login-overlay .login-err { color:var(--danger); font-size:13px; min-height:18px; margin-bottom:10px; }
   #login-overlay .login-hint { font-size:12px; color:var(--text-tertiary); margin-top:20px; line-height:1.5; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   :focus-visible { outline: 2px solid var(--module-2); outline-offset: 2px; border-radius: 4px; }
-  button { -webkit-focus-ring-color: var(--module-2); }
   html, body { height: 100%; }
   body {
     background: var(--page-bg);
     color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    max-width: 480px; margin: 0 auto; position: relative;
+    max-width: 393px; margin: 0 auto; position: relative;
     min-height: 100vh; overflow-x: hidden;
   }
-  body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background-image: var(--page-texture); background-size: cover; background-position: center; opacity:.5; }
-  .app { padding: 0 16px calc(var(--nav-h) + 26px); }
+  .app { padding: 0 12px calc(var(--nav-h) + 24px); }
   svg { display: block; }
+  .tabular { font-variant-numeric: tabular-nums; }
 
   /* ---------- top bar ---------- */
-  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 12px;
-    padding: 14px 2px 12px; backdrop-filter: blur(10px);
+  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
+    padding: calc(env(safe-area-inset-top) + 10px) 2px 8px; backdrop-filter: blur(10px);
     background: linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 94%, transparent), color-mix(in srgb, var(--page-bg) 50%, transparent)); }
-  .topbar .menu-btn { width: 38px; height: 38px; border: none; border-radius: var(--radius-tile); background: var(--surface-card);
+  .topbar .menu-btn { width: 38px; height: 38px; min-width:44px; min-height:44px; border: none; border-radius: var(--radius-tile); background: var(--surface-card);
     box-shadow: var(--shadow-card); display: grid; place-items: center; cursor: pointer; color: var(--text); }
   .topbar .title { font-size: 16px; font-weight: 700; letter-spacing: -.01em; flex: 1; line-height: 1.2; }
   .topbar .title small { display:block; font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing:.02em; margin-top: 2px; }
   .date-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary);
     background: var(--surface-card); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; box-shadow: var(--shadow-card); }
   .date-chip svg { color: var(--text-tertiary); }
+  .refresh-btn { min-width:44px; min-height:44px; border: none; border-radius: var(--radius-tile); background: var(--surface-card);
+    box-shadow: var(--shadow-card); display: grid; place-items: center; cursor: pointer; color: var(--text); transition: transform .3s; }
+  .refresh-btn:active { transform: scale(.9); }
+  .refresh-btn.spinning svg { animation: spin .6s ease; }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
   /* ---------- generic card / section ---------- */
   .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
-  .sec-title { display:flex; align-items:center; gap:9px; font-size: 14px; font-weight: 700; margin: 24px 2px 12px; letter-spacing: -.01em; }
+  .sec-title { display:flex; align-items:center; gap:9px; font-size: 14px; font-weight: 700; margin: 20px 2px 10px; letter-spacing: -.01em; }
   .sec-title::before { content:""; width: 3px; height: 13px; border-radius: 2px; background: var(--accent); }
   .sec-title .more { margin-left:auto; font-size: 12px; color: var(--text-secondary); font-weight: 500; cursor: pointer; display:inline-flex; align-items:center; gap:2px; }
-  .sec-title .more svg { color: var(--text-tertiary); }
 
-  /* ---------- greeting ---------- */
-  .greet { position: relative; overflow: hidden; margin-top: 10px; padding: 22px 20px 24px; border-radius: var(--radius-card);
-    border: 1px solid var(--border); box-shadow: var(--shadow-card); min-height: 132px;
-    background: var(--surface-nested) var(--greet-image) right center / cover no-repeat; }
-  .greet::before { content:""; position:absolute; inset:0; pointer-events:none;
-    background: linear-gradient(100deg, var(--surface-nested) 30%, color-mix(in srgb, var(--surface-nested) 70%, transparent) 48%, transparent 70%); }
+  /* ---------- module header ---------- */
+  .greet { position: relative; overflow: hidden; margin-top: 8px; padding: 18px 16px 18px; border-radius: var(--radius-card);
+    border: 1px solid var(--border); box-shadow: var(--shadow-card); background: var(--surface-card); }
   .greet > * { position: relative; z-index: 1; }
-  .greet h1 { font-size: 26px; font-weight: 800; letter-spacing: -.03em; }
-  .greet p { color: var(--text-secondary); font-size: 13px; margin-top: 5px; }
-  .greet .add { position: absolute; top: 16px; right: 16px; z-index: 2; border:none; cursor:pointer;
+  .greet h1 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+  .greet p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+  .greet .add { position: absolute; top: 14px; right: 14px; z-index: 2; border:none; cursor:pointer;
     display:inline-flex; align-items:center; gap:6px; background: var(--accent); color:var(--on-accent);
     font-size: 13px; font-weight: 700; padding: 9px 15px 9px 12px; border-radius: 999px; box-shadow: var(--shadow-overlay);
-    transition: transform .12s, filter .15s; }
+    min-height: 44px; transition: transform .12s, filter .15s; }
   .greet .add:active { transform: scale(.95); filter: brightness(1.15); }
   .greet .add svg { margin-top: -1px; }
 
-  /* ---------- quote card ---------- */
-  .quote { margin-top: 16px; padding: 16px 18px; border-radius: var(--radius-card);
-    background: var(--surface-card); border: 1px solid var(--border); box-shadow: var(--shadow-card); position: relative; }
-  .quote::before { content:""; position:absolute; left:0; top:14px; bottom:14px; width:3px; border-radius:2px; background: var(--accent); }
-  .quote .tag { display:inline-flex; align-items:center; gap:6px; font-size: 11px; font-weight: 700; color: var(--text-secondary);
-    letter-spacing: .04em; margin-bottom: 9px; }
-  .quote .tag svg { color: var(--text-tertiary); }
-  .quote .txt { font-size: 16px; font-weight: 600; line-height: 1.55; color: var(--text); }
+  /* ---------- compact greeting (homepage) ---------- */
+  .compact-greet { display:flex; align-items:baseline; gap:8px; padding:8px 2px 4px; }
+  .compact-greet .hi { font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+  .compact-greet .dt { font-size: 12px; color: var(--text-secondary); }
 
-  /* ---------- overview rings ---------- */
-  .rings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 20px 6px; margin-top: 14px; }
-  .ring { display:flex; flex-direction:column; align-items:center; gap: 8px; }
-  .ring .dial { position: relative; width: 68px; height: 68px; }
-  .ring .dial svg.gauge { transform: rotate(-90deg); width: 68px; height: 68px; }
-  .ring .dial .mid { position:absolute; inset:0; display:grid; place-items:center; }
-  .ring .pct { font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
-  .ring .lbl { font-size: 12px; color: var(--text); font-weight: 600; }
-  .ring .sub { font-size: 11px; color: var(--text-secondary); }
+  /* ---------- home card (tappable) ---------- */
+  .home-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card); padding: 13px 14px; margin-top: 10px; cursor: pointer; transition: border-color .15s; }
+  .home-card:active { border-color: var(--border-input); }
+  .home-card.no-tap { cursor: default; }
+  .home-card .hc-title { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:10px; }
+  .home-card .hc-title svg { color: var(--text-tertiary); }
+  .home-card .hc-title .hc-more { margin-left:auto; font-size:11px; color:var(--text-tertiary); font-weight:500; }
 
-  /* ---------- trend + quick record ---------- */
-  .panel { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 14px; }
-  .panel.trend-panel { margin-top: 12px; }
-  .panel .ph { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; }
-  .panel .ph svg { color: var(--text-tertiary); }
-  .panel .ph .avg { margin-left:auto; font-size:11px; color:var(--text-secondary); font-weight:500; }
-  .trend-svg { width:100%; height: auto; margin-top: 12px; display:block; }
-  .trend-x { display:flex; justify-content:space-between; font-size:10px; color:var(--text-secondary); margin-top:4px; padding: 0 6px; }
-  .trend-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; height: 120px;
-    color: var(--text-tertiary); font-size: 12px; margin-top: 8px; }
-  .quick-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .qbtn { display:flex; flex-direction:column; align-items:center; gap:9px; padding: 15px 6px 12px; border:none; cursor:pointer;
-    border-radius: var(--radius-tile); background: var(--surface-card); border:1px solid var(--border); box-shadow: var(--shadow-card);
-    text-align:center; transition: transform .12s, border-color .15s, box-shadow .15s; }
-  .qbtn:active { transform: scale(.95); border-color: var(--border-input); box-shadow: var(--shadow-overlay); }
-  .qbtn .e { position: relative; width: 44px; height: 44px; border-radius: var(--radius-tile); display:grid; place-items:center; }
-  .qbtn .e .qplus { position:absolute; right:-3px; bottom:-3px; width:17px; height:17px; border-radius:50%;
-    background: var(--accent); color:var(--on-accent); display:grid; place-items:center; border: 2px solid var(--surface-card); }
-  .qbtn .l { font-size: 12px; font-weight: 600; color: var(--text); }
+  /* ---------- training card ---------- */
+  .train-part { font-size: 16px; font-weight: 800; color: var(--text); }
+  .ex-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .ex-chip { font-size:12px; font-weight:600; padding:5px 10px; border-radius:999px;
+    background: var(--surface-nested); border:1px solid var(--border); color: var(--text); }
+  .ex-chip.star { background: color-mix(in srgb, var(--module-3) 12%, var(--surface-card)); border-color: color-mix(in srgb, var(--module-3) 30%, var(--border)); color: var(--module-3); }
+  .cardio-line { font-size:12px; color:var(--text-secondary); margin-top:8px; display:flex; align-items:center; gap:5px; }
+  .rest-day { font-size:14px; color:var(--text-secondary); padding:6px 0; }
 
-  /* ---------- pinned tasks ---------- */
-  .pin-list { display:flex; flex-direction:column; gap: 8px; }
-  .pin { display:flex; align-items:center; gap: 11px; padding: 12px 14px; border-radius: var(--radius-tile);
-    background: var(--surface-card); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
-  .pin-ic { width: 32px; height: 32px; border-radius: var(--radius-tile); display:grid; place-items:center; flex:0 0 auto;
-    background: var(--surface-nested); border: 1px solid var(--border); }
-  .pin-b { flex:1; min-width:0; cursor:pointer; }
-  .pin-t { font-size: 14px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .pin-t.done { text-decoration: line-through; color: var(--text-secondary); }
-  .pin-m { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-  .pin .arw { color: var(--text-tertiary); flex:0 0 auto; }
-  .pin-chk { flex:0 0 auto; width: 24px; height: 24px; border-radius: var(--radius-control); border: 1.6px solid var(--border-input);
-    display:grid; place-items:center; cursor:pointer; background:var(--surface-card); color:#fff; transition: all .15s; }
-  .pin-chk.on { background: var(--module-1); border-color: var(--module-1); }
-  .pin-chk svg { opacity: 0; }
-  .pin-chk.on svg { opacity: 1; }
-  .pin-step { flex:0 0 auto; display:flex; gap: 6px; }
-  .pin-step button { width: 28px; height: 28px; border-radius: var(--radius-control); border: 1px solid var(--border-input);
-    background: var(--surface-nested); color: var(--text); font-size: 17px; line-height: 1; cursor:pointer;
-    display:grid; place-items:center; transition: all .15s; }
-  .pin-step button:active { background: var(--accent-muted); border-color: var(--accent); }
-  .pin-empty { padding: 20px 16px; text-align:center; color: var(--text-secondary); font-size: 12px; line-height: 1.7;
-    background: var(--surface-card); border: 1px dashed var(--border-input); border-radius: var(--radius-tile); }
-  .pin-empty .mini-star { display:inline-flex; vertical-align:-2px; color: var(--module-3); }
+  /* ---------- nutrition progress bars ---------- */
+  .nutri-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .nutri-row:last-child { margin-bottom:0; }
+  .nutri-row .nl { font-size:12px; font-weight:600; color:var(--text-secondary); width:46px; flex:0 0 auto; }
+  .nutri-row .np { flex:1; height:6px; border-radius:999px; background:var(--border); overflow:hidden; }
+  .nutri-row .np i { display:block; height:100%; border-radius:999px; }
+  .nutri-row .nv { font-size:11px; font-weight:600; width:72px; text-align:right; flex:0 0 auto; color:var(--text-secondary); font-variant-numeric:tabular-nums; }
 
-  /* ---------- record list (inside a module) ---------- */
-  .rec { position: relative; background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-tile);
-    box-shadow: var(--shadow-card); padding: 13px 14px; margin-bottom: 9px; transition: border-color .15s; }
+  /* ---------- quick note bar (prominent) ---------- */
+  .quick-bar { display:flex; gap:8px; margin-top:14px; }
+  .quick-bar input { flex:1; min-height:48px; border:1.5px solid var(--accent); border-radius:var(--radius-tile);
+    padding:12px 14px; background:var(--surface-card); color:var(--text); font-family:var(--font); font-size:15px; outline:none; }
+  .quick-bar input:focus { box-shadow:0 0 0 3px var(--accent-muted); }
+  .quick-bar button { flex:0 0 auto; min-width:48px; min-height:48px; border:none; border-radius:var(--radius-tile);
+    font-size:14px; font-weight:700; cursor:pointer; font-family:var(--font); padding:0 16px;
+    display:flex; align-items:center; justify-content:center; gap:5px; }
+  .quick-bar .qn-save { background:var(--accent); color:var(--on-accent); }
+  .quick-bar .qn-feedback { background:var(--surface-card); color:var(--text); border:1.5px solid var(--border-input); }
+
+  /* ---------- insight preview (homepage) ---------- */
+  .insight-preview { display:grid; grid-template-columns: repeat(3,1fr); gap:8px; }
+  .insight-preview .ip-cell { text-align:center; }
+  .insight-preview .ip-v { font-size:16px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .insight-preview .ip-l { font-size:10px; color:var(--text-secondary); margin-top:2px; }
+
+  /* ---------- record list ---------- */
+  .rec { position: relative; background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card); padding: 12px 13px; margin-bottom: 8px; transition: border-color .15s; }
   .rec:active { border-color: var(--border-input); }
   .rec .top { display:flex; align-items:flex-start; gap: 11px; }
-  .rec .chk { flex:0 0 auto; width: 22px; height: 22px; border-radius: var(--radius-control); border: 1.6px solid var(--border-input);
-    display:grid; place-items:center; cursor:pointer; background:var(--surface-card); color:#fff; transition: all .15s; margin-top: 1px; }
+  .rec .chk { flex:0 0 auto; width: 24px; height: 24px; min-width:44px; min-height:44px; border-radius: 50%;
+    border: 1.8px solid var(--border-input); display:grid; place-items:center; cursor:pointer;
+    background:var(--surface-card); color:#fff; transition: all .15s; margin-top: 0; }
   .rec .chk.on { background: var(--module-1); border-color: var(--module-1); }
   .rec .chk svg { opacity: 0; }
   .rec .chk.on svg { opacity: 1; }
-  .rec .body { flex:1; min-width:0; padding-right: 52px; }
-  .rec .rname { font-weight: 600; font-size: 14.5px; letter-spacing: -.01em; }
+  .rec .body { flex:1; min-width:0; padding-right: 48px; }
+  .rec .rname { font-weight: 600; font-size: 14.5px; letter-spacing: -.01em; line-height:1.4; }
   .rec .rname.done { text-decoration: line-through; color: var(--text-secondary); }
-  .rec .rmeta { display:flex; flex-wrap:wrap; gap: 7px; margin-top: 7px; align-items:center; }
-  .rec .rnote { color: var(--text-secondary); font-size: 12.5px; margin-top: 7px; white-space: pre-wrap; line-height: 1.55; }
+  .rec .rmeta { display:flex; flex-wrap:wrap; gap: 7px; margin-top: 6px; align-items:center; }
+  .rec .rnote { color: var(--text-secondary); font-size: 12.5px; margin-top: 6px; white-space: pre-wrap; line-height: 1.55; }
   .badge { display:inline-flex; align-items:center; gap:5px; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; }
   .badge .dot { width:6px;height:6px;border-radius:50%;background:currentColor; }
-  .rec .acts { position:absolute; top: 8px; right: 8px; display:flex; gap: 2px; }
+  .prio-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:1px; flex:0 0 auto; }
+  .rec .acts { position:absolute; top: 6px; right: 6px; display:flex; gap: 0; opacity:.35; transition: opacity .15s; }
+  .rec:active .acts { opacity:1; }
   .rec .acts button { border:none; background:transparent; color: var(--text-tertiary); cursor:pointer;
-    width: 30px; height: 30px; border-radius: var(--radius-control); display:grid; place-items:center; transition: all .15s; }
-  .rec .pin-btn:hover { background: var(--surface-nested); color: var(--module-3); }
+    width: 36px; height: 36px; min-width:44px; min-height:44px; border-radius: var(--radius-control); display:grid; place-items:center; transition: all .15s; }
+  .rec .pin-btn:active { background: var(--surface-nested); color: var(--module-3); }
   .rec .pin-btn.on { color: var(--module-3); }
   .rec .pin-btn.on svg { fill: var(--module-3); }
-  .rec .del:hover { background: var(--danger-muted); color: var(--danger); }
-  .rec .pbar { height: 5px; border-radius:999px; background: var(--border); overflow:hidden; margin-top: 10px; }
+  .rec .del:active { background: var(--danger-muted); color: var(--danger); }
+  .rec .pbar { height: 6px; border-radius:999px; background: var(--border); overflow:hidden; margin-top: 8px; }
   .rec .pbar i { display:block; height:100%; border-radius:999px; }
-  .rec .amt { font-size: 16px; font-weight: 700; letter-spacing:-.02em; margin-right: 56px; white-space:nowrap; }
+  .rec .amt { font-size: 16px; font-weight: 700; letter-spacing:-.02em; margin-right: 48px; white-space:nowrap; font-variant-numeric:tabular-nums; }
   .rec .amt.exp { color: var(--danger); }
   .rec .amt.inc { color: var(--module-1); }
   .rec .streak { font-size:12px; color: var(--module-3); font-weight:700; display:inline-flex; align-items:center; gap:4px; }
-
-  .empty { text-align:center; color: var(--text-secondary); padding: 48px 20px; }
-  .empty .e { display:inline-grid; place-items:center; width: 58px; height:58px; border-radius: var(--radius-card); background: var(--surface-card); border:1px solid var(--border); color: var(--text-tertiary); margin-bottom: 14px; }
-
-  /* module header (finance summary) */
-  .mod-summary { display:grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
-  .mini { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-tile); box-shadow: var(--shadow-card); padding: 12px; }
-  .mini .l { font-size: 11px; color: var(--text-secondary); }
-  .mini .v { font-size: 18px; font-weight: 800; margin-top: 3px; letter-spacing: -.02em; }
-
-  /* module hero header (per-type summary) — compact strip */
-  .hero { display:flex; align-items:center; gap: 12px; padding: 12px 14px; border-radius: var(--radius-tile);
-    background: var(--surface-card); border: 1px solid var(--border); box-shadow: var(--shadow-card); position:relative; overflow:hidden; }
-  .hero.has-cover { padding: 0; min-height: 88px; }
-  .hero.has-cover .hero-bg { position:absolute; inset:0; background-size:cover; background-position:center; }
-  .hero.has-cover .hero-bg::after { content:""; position:absolute; inset:0; background: linear-gradient(90deg, var(--surface-card) 28%, color-mix(in srgb, var(--surface-card) 60%, transparent) 55%, transparent 80%); }
-  .hero.has-cover > .hero-inner { position:relative; z-index:1; padding: 12px 14px; display:flex; align-items:center; gap:12px; }
-  .hero-ic { width: 36px; height: 36px; border-radius: var(--radius-tile); display:grid; place-items:center; flex:0 0 auto; }
-  .hero-tx { min-width:0; display:flex; align-items:baseline; gap: 7px; flex-wrap:wrap; }
-  .hero-v { font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
-  .hero-l { font-size: 12px; color: var(--text-secondary); }
-  .hero-bar { height: 5px; border-radius: 999px; background: var(--border); overflow:hidden; margin-top: 10px; }
-  .hero-bar i { display:block; height:100%; border-radius:999px; }
-
-  /* record thumbnail */
   .rec .thumb { width:48px; height:48px; border-radius:var(--radius-tile); object-fit:cover; flex:0 0 auto; margin-right:2px; }
   .rec .meta-line { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:4px; }
   .rec .meta-tag { font-size:12px; font-weight:600; color:var(--text-secondary); }
   .rec .meta-tag::before { content:"·"; margin-right:6px; color:var(--text-tertiary); }
   .rec .meta-tag:first-child::before { display:none; }
 
-  /* ---- layout variants (open-ended: add .rec-layout-xxx in <style> to extend) ---- */
-  /* feature: 大图在上 + 标题覆盖 + 正文在下 */
-  .rec.rec-layout-feature { flex-direction:column; padding:0; overflow:hidden; }
-  .rec.rec-layout-feature .thumb { width:100%; height:140px; border-radius:0; margin:0; }
-  .rec.rec-layout-feature .feat-title { padding:10px 12px 4px; font-size:15px; font-weight:700; color:var(--text); }
-  .rec.rec-layout-feature .feat-body { padding:0 12px 12px; font-size:13px; color:var(--text-secondary); }
-  /* quote: 大字居中 + 留白 */
-  .rec.rec-layout-quote { flex-direction:column; align-items:center; text-align:center; padding:20px 16px; }
-  .rec.rec-layout-quote .quote-text { font-size:16px; font-weight:600; line-height:1.6; color:var(--text); }
-  .rec.rec-layout-quote .quote-meta { margin-top:8px; font-size:12px; color:var(--text-tertiary); }
+  .empty { text-align:center; color: var(--text-secondary); padding: 40px 20px; }
+  .empty .e { display:inline-grid; place-items:center; width: 58px; height:58px; border-radius: var(--radius-card); background: var(--surface-card); border:1px solid var(--border); color: var(--text-tertiary); margin-bottom: 14px; }
+
+  /* ---------- panel ---------- */
+  .panel { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 13px; }
+  .panel .ph { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; }
+
+  /* ---------- module summary (money) ---------- */
+  .mod-summary { display:grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+  .mini { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 11px; }
+  .mini .l { font-size: 11px; color: var(--text-secondary); }
+  .mini .v { font-size: 17px; font-weight: 800; margin-top: 3px; letter-spacing: -.02em; font-variant-numeric:tabular-nums; }
+
+  /* ---------- money tabs ---------- */
+  .money-tabs { display:flex; gap:6px; margin-bottom:12px; }
+  .money-tab { flex:1; text-align:center; padding:10px; border-radius:var(--radius-tile); border:1px solid var(--border-input);
+    cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); background:var(--surface-card);
+    min-height:44px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .money-tab.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+
+  /* ---------- category chips ---------- */
+  .cat-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .cat-chip { font-size:12px; font-weight:600; padding:6px 11px; border-radius:999px;
+    border:1px solid var(--border-input); background:var(--surface-card); color:var(--text-secondary);
+    cursor:pointer; transition:all .15s; font-variant-numeric:tabular-nums; }
+  .cat-chip.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+
+  /* ---------- stage goals ---------- */
+  .stage-goal { margin-bottom:14px; }
+  .stage-goal:last-child { margin-bottom:0; }
+  .sg-head { display:flex; align-items:center; justify-content:space-between; }
+  .sg-name { font-size:14px; font-weight:700; color:var(--text); }
+  .sg-pct { font-size:13px; font-weight:700; color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+  .sg-bar { height:6px; border-radius:999px; background:var(--border); overflow:hidden; margin-top:7px; }
+  .sg-bar i { display:block; height:100%; border-radius:999px; }
+  .sg-desc { font-size:12px; color:var(--text-secondary); margin-top:5px; }
+
+  /* ---------- gym cost stats ---------- */
+  .gym-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .gym-stat { text-align:center; }
+  .gs-v { font-size:17px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .gs-l { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+
+  /* ---------- body metrics ---------- */
+  .body-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .bm-cell { text-align:center; }
+  .bm-v { font-size:18px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; display:flex; align-items:center; justify-content:center; gap:3px; }
+  .bm-l { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+  .trend-arrow { font-size:13px; font-weight:700; }
+  .trend-arrow.up { color: var(--danger); }
+  .trend-arrow.down { color: var(--module-1); }
+  .trend-arrow.flat { color: var(--text-tertiary); }
+
+  /* ---------- advice section ---------- */
+  .advice-box { background:var(--surface-nested); border:1px solid var(--border); border-radius:var(--radius-tile); padding:12px 14px; margin-bottom:12px; font-size:13px; color:var(--text-secondary); line-height:1.6; }
+  .advice-box .ab-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:5px; display:flex; align-items:center; gap:6px; }
+
+  /* ---------- food inventory ---------- */
+  .food-list { display:flex; flex-direction:column; gap:6px; }
+  .food-item { display:flex; align-items:center; gap:8px; font-size:13px; padding:6px 0; border-bottom:1px solid var(--border); }
+  .food-item:last-child { border-bottom:none; }
+  .food-item .fn { flex:1; font-weight:600; color:var(--text); }
+  .food-item .fa { color:var(--text-secondary); font-size:12px; }
+  .food-item .fc { color:var(--text-tertiary); font-size:12px; width:60px; text-align:right; font-variant-numeric:tabular-nums; }
+
+  /* ---------- sleep week view ---------- */
+  .sleep-week { display:flex; flex-direction:column; gap:6px; }
+  .sleep-day { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-tile);
+    background:var(--surface-card); border:1px solid var(--border); border-left-width:3px; }
+  .sleep-day .sd-date { font-size:12px; font-weight:700; width:56px; flex:0 0 auto; }
+  .sleep-day .sd-date small { display:block; font-size:10px; font-weight:500; color:var(--text-tertiary); }
+  .sleep-day .sd-time { font-size:13px; flex:1; color:var(--text); font-variant-numeric:tabular-nums; }
+  .sleep-day .sd-time small { display:block; font-size:11px; color:var(--text-secondary); }
+  .sleep-day .sd-dur { font-size:12px; font-weight:600; color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+  .sleep-day.good { border-left-color: var(--module-1); }
+  .sleep-day.late { border-left-color: var(--module-3); }
+  .sleep-day.vlate { border-left-color: var(--danger); }
+
+  /* ---------- sleep summary ---------- */
+  .sleep-summary { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+  .ss-cell { text-align:center; }
+  .ss-v { font-size:16px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .ss-l { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+
+  /* ---------- sleep view toggle ---------- */
+  .view-toggle { display:flex; gap:6px; margin-bottom:12px; }
+  .vt-btn { flex:1; text-align:center; padding:9px; border-radius:var(--radius-tile); border:1px solid var(--border-input);
+    cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); background:var(--surface-card);
+    min-height:44px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .vt-btn.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
 
   /* ---------- bottom nav ---------- */
-  .nav { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 480px; height: var(--nav-h);
+  .nav { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 393px; height: var(--nav-h);
     background: rgba(252,251,248,.92); backdrop-filter: blur(14px); border-top: 1px solid var(--border);
-    display: grid; grid-template-columns: repeat(3,1fr); align-items: center; z-index: 30; padding-bottom: env(safe-area-inset-bottom); }
-  .nav .n { display:flex; flex-direction:column; align-items:center; gap: 4px; cursor:pointer; color: var(--text-tertiary); font-size: 10px; font-weight: 500; }
+    display: grid; grid-template-columns: repeat(3,1fr); align-items: center; z-index: 30;
+    padding-bottom: env(safe-area-inset-bottom); }
+  .nav .n { display:flex; flex-direction:column; align-items:center; gap: 4px; cursor:pointer; color: var(--text-tertiary); font-size: 10px; font-weight: 500;
+    min-height:44px; justify-content:center; }
   .nav .n.active { color: var(--accent); font-weight: 700; }
 
   /* ---------- drawer ---------- */
@@ -354,7 +377,7 @@
     transition: transform .26s cubic-bezier(.2,.8,.25,1); overflow-y:auto;
     background: linear-gradient(180deg, var(--drawer-bg-top), var(--drawer-bg)); color:var(--drawer-text); }
   .drawer.show { transform: translateX(0); }
-  .drawer .dh { padding: 26px 22px 18px; display:flex; align-items:center; gap: 12px; position: relative; }
+  .drawer .dh { padding: calc(env(safe-area-inset-top) + 22px) 22px 18px; display:flex; align-items:center; gap: 12px; position: relative; }
   .drawer .dh .brand { position: relative; width: 44px; height: 44px; border-radius: var(--radius-tile); overflow: hidden; flex: 0 0 auto;
     background: var(--drawer-hover); box-shadow: 0 0 0 1px var(--drawer-active); cursor: pointer; }
   .drawer .dh .brand img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -363,21 +386,21 @@
   .drawer .dh .brand:active .brand-cam { opacity:1; }
   .drawer .dh h2 { font-size: 17px; font-weight: 800; }
   .drawer .dh p { font-size: 11px; opacity: .55; margin-top: 3px; letter-spacing: .05em; }
-  .drawer .dclose { position:absolute; top:18px; right:16px; width:32px;height:32px;border-radius:var(--radius-tile); border:none; cursor:pointer;
+  .drawer .dclose { position:absolute; top:calc(env(safe-area-inset-top) + 16px); right:16px; width:36px;height:36px; min-width:44px; min-height:44px; border-radius:var(--radius-tile); border:none; cursor:pointer;
     background: var(--drawer-hover); color:var(--drawer-text); display:grid; place-items:center; }
   .drawer .dsep { height:1px; background: var(--drawer-active); margin: 6px 22px 8px; }
-  .drawer .ditem { display:flex; align-items:center; gap: 13px; padding: 12px 22px; cursor:pointer; font-size: 15px; font-weight: 500; color: color-mix(in srgb, var(--drawer-text) 82%, transparent); }
+  .drawer .ditem { display:flex; align-items:center; gap: 13px; padding: 12px 22px; cursor:pointer; font-size: 15px; font-weight: 500; color: color-mix(in srgb, var(--drawer-text) 82%, transparent); min-height:44px; }
   .drawer .ditem svg { color: var(--drawer-text-mute); }
   .drawer .ditem.active { background: var(--drawer-active); color:var(--drawer-text); font-weight: 700; }
   .drawer .ditem.active svg { color:var(--drawer-text); }
-  .drawer .dfoot { font-size: 11px; opacity:.45; padding: 20px 22px 28px; }
+  .drawer .dfoot { font-size: 11px; opacity:.45; padding: 20px 22px calc(20px + env(safe-area-inset-bottom)); }
 
   /* ---------- modal ---------- */
   .overlay { position: fixed; inset: 0; background: color-mix(in srgb, var(--text) 44%, transparent); backdrop-filter: blur(3px); z-index: 60;
     display:flex; align-items:flex-end; justify-content:center; animation: fade .16s ease; }
   @keyframes fade { from { opacity:0; } }
   .modal { background: var(--surface-card); border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
-    width: 100%; max-width: 480px; box-shadow: 0 -20px 50px color-mix(in srgb, var(--text) 24%, transparent); animation: up .24s cubic-bezier(.2,.8,.25,1); max-height: 88vh; overflow-y:auto; }
+    width: 100%; max-width: 393px; box-shadow: 0 -20px 50px color-mix(in srgb, var(--text) 24%, transparent); animation: up .24s cubic-bezier(.2,.8,.25,1); max-height: 88vh; overflow-y:auto; }
   @keyframes up { from { transform: translateY(30px); opacity:0; } }
   .modal .grab { width: 40px; height: 4px; border-radius:999px; background: var(--border-input); margin: 0 auto 16px; }
   .modal h2 { font-size: 18px; font-weight: 800; letter-spacing:-.01em; }
@@ -395,36 +418,24 @@
     cursor:pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
   .seg .opt.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .modal-actions { display:flex; align-items:center; gap: 10px; margin-top: 18px; }
-  .btn { flex:1; background: var(--accent); color:var(--on-accent); border:none; border-radius: var(--radius-tile); padding: 13px; font-size: 15px; font-weight: 700; cursor:pointer; }
+  .btn { flex:1; background: var(--accent); color:var(--on-accent); border:none; border-radius: var(--radius-tile); padding: 13px; font-size: 15px; font-weight: 700; cursor:pointer; min-height:44px; }
   .btn.ghost { flex: 0 0 auto; background: var(--surface-nested); color: var(--text-secondary); border: 1px solid var(--border-input); padding: 13px 20px; }
   .btn.danger { background: var(--danger); }
-  .link-danger { color: var(--danger); background:none; border:none; font-size: 14px; font-weight: 600; cursor:pointer; }
+  .link-danger { color: var(--danger); background:none; border:none; font-size: 14px; font-weight: 600; cursor:pointer; min-height:44px; }
 
-  /* ---------- insight charts ---------- */
-  .bar-list { display:flex; flex-direction:column; gap:11px; margin-top:14px; }
-  .bar-row { display:flex; align-items:center; gap:10px; }
+  /* ---------- insight bar list ---------- */
+  .bar-list { display:flex; flex-direction:column; gap:11px; }
+  .bar-row { display:flex; align-items:center; gap:10px; cursor:pointer; }
   .bar-ic { width:30px; height:30px; border-radius:var(--radius-tile); display:grid; place-items:center; flex:0 0 auto;
     background:var(--surface-nested); border:1px solid var(--border); }
-  .bar-name { font-size:13px; font-weight:600; width:64px; flex:0 0 auto; color:var(--text); }
+  .bar-name { font-size:13px; font-weight:600; width:56px; flex:0 0 auto; color:var(--text); }
   .bar-row .pbar { flex:1; margin:0; height:7px; }
-  .bar-pct { font-size:12px; font-weight:600; color:var(--text-secondary); width:54px; text-align:right; flex:0 0 auto; }
-
-  .donut-wrap { display:flex; gap:18px; align-items:center; margin-top:14px; }
-  .donut { position:relative; width:104px; height:104px; flex:0 0 auto; }
-  .donut svg { transform:rotate(-90deg); width:104px; height:104px; }
-  .donut-mid { position:absolute; inset:0; display:grid; place-items:center; font-size:13px; font-weight:800; color:var(--text); text-align:center; line-height:1.2; }
-  .donut-legend { flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
-  .legend-item { display:flex; align-items:center; gap:8px; font-size:12.5px; }
-  .legend-dot { width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
-  .legend-name { color:var(--text); font-weight:600; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .legend-amt { color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; }
-  .legend-pct { color:var(--text-secondary); width:38px; text-align:right; font-variant-numeric:tabular-nums; }
-  .donut-empty { width:68px; height:68px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; color:var(--text-tertiary); font-size:10px; }
+  .bar-pct { font-size:12px; font-weight:600; color:var(--text-secondary); flex:1; text-align:right; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; }
 
   /* ---------- calendar grid ---------- */
   .cal-panel { margin-top:12px; }
   .cal-hd { display:flex; align-items:center; gap:10px; }
-  .cal-nav { width:30px; height:30px; border-radius:var(--radius-tile); border:1px solid var(--border-input); background:var(--surface-nested);
+  .cal-nav { width:36px; height:36px; min-width:44px; min-height:44px; border-radius:var(--radius-tile); border:1px solid var(--border-input); background:var(--surface-nested);
     color:var(--text); cursor:pointer; display:grid; place-items:center; transition: all .15s; }
   .cal-nav:active { background:var(--accent-muted); border-color:var(--accent); }
   .cal-nav[data-cal="prev"] svg { transform: scaleX(-1); }
@@ -435,7 +446,7 @@
     border:1px solid var(--border-input); background:var(--surface-card); color:var(--text-secondary); cursor:pointer; white-space:nowrap; transition: all .15s;
     font-family:var(--font); }
   .cal-chip.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
-  .cal-dow { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:12px; color:var(--text-tertiary); font-weight:600; margin-bottom:6px; }
+  .cal-dow { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:11px; color:var(--text-tertiary); font-weight:600; margin-bottom:6px; }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
   .cal-cell { aspect-ratio:1; border-radius:var(--radius-control); display:grid; place-items:center; font-size:12px; font-weight:600;
     color:var(--text-secondary); background:var(--surface-nested); border:1px solid var(--border); cursor:pointer; transition: all .15s;
@@ -451,6 +462,12 @@
   .cal-toast button { background:var(--module-2); color:#fff; border:none; border-radius:999px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; font-family:var(--font); }
   .cal-foot { margin-top:12px; font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; }
   .cal-foot svg { color:var(--module-3); }
+
+  /* ---------- toast ---------- */
+  .toast { position:fixed; left:50%; bottom:calc(var(--nav-h) + 20px); transform:translateX(-50%) translateY(16px);
+    background:var(--text); color:var(--surface-card); font-size:13px; font-weight:600; padding:11px 18px; border-radius:999px;
+    box-shadow:var(--shadow-overlay); z-index:80; opacity:0; transition:opacity .2s, transform .2s; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
   .hidden { display: none !important; }
 </style>
@@ -473,7 +490,7 @@
   <div class="topbar">
     <button class="menu-btn" id="btn-menu"></button>
     <div class="title" id="topTitle">我的生活<small id="topSub">Life Dashboard</small></div>
-    <span class="date-chip" id="dateChip"></span>
+    <button class="refresh-btn" id="btn-refresh" title="刷新数据"></button>
   </div>
   <div id="screen"></div>
 </div>
@@ -501,10 +518,6 @@
     <div class="dset-title">设置</div>
     <div class="dset-row"><span>深色模式</span><div class="switch" id="sw-dark"></div></div>
     <div class="dset-row"><span>编辑模式</span><div class="switch" id="sw-edit"></div></div>
-    <div class="quick-note">
-      <input id="qn-input" placeholder="快速记一笔…回车保存" />
-      <button id="qn-btn">记</button>
-    </div>
   </div>
   <div class="dsep"></div>
   <div class="dfoot" id="drawerFoot">
@@ -522,61 +535,48 @@
 
 <script>
 /* ============================================================
-   CONFIG — 唯一需要定制的地方。
-   modules 里每个模块 = 一个功能页；type 决定它长什么样、记什么字段。
-   支持的 type：
-     todo     今日计划/待办（勾选 + 优先级）
-     checkin  习惯打卡（连续天数，每天清零）
-     progress 长期计划（进度条：当前/目标）
-     finance  记账（收入/支出 + 分类 + 金额）
-     note     内容记录/日记（标题 + 正文 + 心情标签）
-   图标用 icon 字段（取自下方 ICONS 图标库，全部为单色线性图标）。
+   CONFIG
    ============================================================ */
 const CONFIG = {
-  storageKey: "my-life-dashboard-v3",   // 与桌面版同 key 共享数据
-  seedVersion: 3,                        // v3: 清除源码中的个人数据，数据仅存云端+本地
-  owner: "我的生活",                    // 抽屉顶部标题
+  storageKey: "my-life-dashboard-v3",
+  seedVersion: 4,
+  owner: "我的生活",
   slogan: "Life Dashboard",
-  brand: "我",                          // 抽屉左上角字符标
+  brand: "我",
 
-  // 每日一句（一周七天各一句，按星期轮换：周一→周日）
-  quotes: [
-    "新的一周，从把最重要的一件事做好开始。",
-    "保持节奏，稳一点也没关系。",
-    "把大目标拆小，今天只推进一步。",
-    "坚持到一半时最难，也最值得。",
-    "收个尾，给这一周一个交代。",
-    "允许自己慢下来，好好休息也是正事。",
-    "复盘本周，为下一周留点方向。",
-  ],
+  nutrition: { calories: 1900, protein: 125, fat: 53, carbs: 231 },
 
-  // 今日概览环形（value 为 0-100 的完成度，calc 返回 {value, sub}）
-  overview: [
-    { key:"training", label:"训练", icon:"activity", color:"var(--module-3)", calc: d => avgProgress(d.training) },
-    { key:"mantra", label:"功课", icon:"star", color:"var(--module-2)", calc: d => avgProgress(d.mantra) },
-    { key:"checkin", label:"打卡", icon:"leaf", color:"var(--module-1)",
-      calc: d => { const it=d.checkin||[]; const t=today(); const done=it.filter(x=>x.log&&x.log[t]).length; return { value: it.length?Math.round(done/it.length*100):0, sub:`${done}/${it.length} 项` }; } },
-    { key:"money", label:"本月支出", icon:"wallet", color:"var(--module-4)",
-      calc: d => { const it=d.money||[]; const total=it.reduce((s,x)=>x.type==='expense'?s+x.amount:s-x.amount,0); return { value:Math.min(100,Math.round(total/5)), sub:`¥${total}` }; } },
-  ],
-
-  // 本周状态趋势
-  trend: {
-    title:"本周状态", unit:"分",
-    series: d => (Array.isArray(d.__trend) && d.__trend.length===7) ? d.__trend : [],
+  trainingPlan: {
+    1: { part: "胸+三头", exercises: ["卧推", "飞鸟", "绳索下压"], cardio: "爬坡30min" },
+    2: { part: "背+二头", exercises: ["高位下拉", "坐姿划船", "21响弯举"], cardio: "爬坡30min" },
+    3: { part: "肩", exercises: ["侧平举★", "哑铃推举", "反向飞鸟"], cardio: "爬坡30min" },
+    4: { part: "胸+背", exercises: ["卧推+下拉", "飞鸟+划船"], cardio: "爬坡30min" },
+    5: { part: "肩+手臂", exercises: ["侧平举★", "弯举+下压", "推举"], cardio: "爬坡30min" },
+    6: { part: "胸+背(二轮)", exercises: ["上斜卧推", "单臂划船", "窄距卧推"], cardio: "爬坡30min" },
+    0: { part: "休息", exercises: [], cardio: "散步或完全休息" },
   },
 
-  // 快速记录按钮（4 个核心操作）
-  quickAdd: [
-    { label:"记饮食", icon:"pen",      module:"diet",     tint:"#f1eef4", color:"var(--module-5)" },
-    { label:"记打卡", icon:"check",    module:"checkin",  tint:"#eef3ec", color:"var(--module-1)" },
-    { label:"记训练", icon:"activity", module:"training", tint:"#f6f0e6", color:"var(--module-3)" },
-    { label:"记一笔", icon:"wallet",   module:"money",    tint:"#f6efe8", color:"var(--module-4)" },
+  stageGoals: [
+    { name: "薄肌身材", progress: 70, desc: "体脂18%以下，肌肉线条可见" },
+    { name: "漫画身材", progress: 15, desc: "体脂15%以下，肌肉围度明显" },
   ],
 
-  // ============ 8 个模块 = 你生活的 8 个维度 ============
+  gymCard: { totalCost: 1754.80, visits: 52, perVisit: 33.7, expireDate: "2027-07", targetPerVisit: 5 },
+
+  foodInventory: [
+    { name: "溏心卤蛋", amount: "4枚", calories: 280 },
+    { name: "帕斯雀牛肉片", amount: "300g", calories: 600 },
+    { name: "凉拌牛肉", amount: "90g", calories: 180 },
+    { name: "欧包", amount: "15个", calories: 3750 },
+    { name: "苹果蕉", amount: "1根", calories: 90 },
+    { name: "牛奶", amount: "2300ml", calories: 1380 },
+    { name: "凉拌干豆丝", amount: "80g", calories: 120 },
+    { name: "卤味拼盘", amount: "220g", calories: 440 },
+    { name: "蛋白粉", amount: "~500g", calories: 2000 },
+    { name: "冰激凌", amount: "~100g", calories: 200 },
+  ],
+
   modules: [
-    // --- 1. 今日计划 ---
     { key:"todo", name:"今日计划", icon:"list", tint:"#efeee8", color:"var(--accent)", type:"todo",
       desc:"每日待办事项",
       priorities:[ {key:"P0",label:"重要",color:"#f6ece9",text:"#c25d4f"},
@@ -584,28 +584,23 @@ const CONFIG = {
                    {key:"P2",label:"随手",color:"#eef2ec",text:"#6f8f6a"} ],
       seed:[] },
 
-    // --- 2. 习惯打卡 ---
     { key:"checkin", name:"习惯打卡", icon:"leaf", tint:"#eef3ec", color:"var(--module-1)", type:"checkin",
       desc:"每日习惯追踪",
       seed:[] },
 
-    // --- 3. 训练重量 ---
     { key:"training", name:"训练重量", icon:"activity", tint:"#f6f0e6", color:"var(--module-3)", type:"progress",
       unit:"kg", desc:"力量训练进度",
       seed:[] },
 
-    // --- 4. 记账本 ---
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
       desc:"收支记录",
       categories:["食","住","行","娱乐","衣","设备","医疗","特殊事件","其他"],
       seed:[] },
 
-    // --- 5. 功课进度 ---
     { key:"mantra", name:"功课进度", icon:"star", tint:"#edf1f5", color:"var(--module-2)", type:"progress",
       unit:"遍", desc:"每日功课累计",
       seed:[] },
 
-    // --- 6. 身体指标 ---
     { key:"body", name:"身体指标", icon:"target", tint:"#edf1f5", color:"var(--module-2)", type:"note",
       desc:"体重·体脂·围度记录",
       moods:["记录","目标"],
@@ -616,7 +611,6 @@ const CONFIG = {
       ],
       seed:[] },
 
-    // --- 7. 饮食日志 ---
     { key:"diet", name:"饮食日志", icon:"pen", tint:"#f1eef4", color:"var(--module-5)", type:"note",
       desc:"每日饮食与营养记录",
       moods:["达标","脂肪超","碳水不足","热量不足","热量超"],
@@ -628,7 +622,6 @@ const CONFIG = {
       ],
       seed:[] },
 
-    // --- 8. 作息日志 ---
     { key:"sleep", name:"作息日志", icon:"moon", tint:"#f6ece9", color:"var(--danger)", type:"note",
       desc:"入睡·起床·时长记录",
       moods:["良好","偏晚","严重偏晚","失眠"],
@@ -642,7 +635,7 @@ const CONFIG = {
 };
 
 /* ============================================================
-   ICONS — 单色线性图标库（stroke 跟随 color）
+   ICONS
    ============================================================ */
 const ICONS = {
   home:'<path d="M4 11.5 12 5l8 6.5"/><path d="M6 10.5V19h12v-8.5"/>',
@@ -670,6 +663,7 @@ const ICONS = {
   close:'<path d="M6 6l12 12M18 6 6 18"/>',
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>',
   moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>',
 };
 function icon(name, size=22, sw=1.7){
   const path = ICONS[name] || ICONS.grid;
@@ -677,10 +671,12 @@ function icon(name, size=22, sw=1.7){
 }
 
 /* ============================================================
-   ENGINE — 一般无需改动
+   ENGINE
    ============================================================ */
 function isoToday(){ return new Date().toISOString().slice(0,10); }
 function today(){ return isoToday(); }
+function fmtMoney(x){ return Math.round(x * 100) / 100; }
+function fmtDate(d){ return d ? d.slice(5).replace('-','/') : ''; }
 function avgProgress(list){
   if(!list||!list.length) return { value: 0, sub: "0" };
   const v = Math.round(list.reduce((s,x)=>s+Math.min(100,(x.current/x.target)*100||0),0)/list.length);
@@ -689,20 +685,84 @@ function avgProgress(list){
 const modOf = k => CONFIG.modules.find(m=>m.key===k);
 const $ = s => document.querySelector(s);
 
+function showToast(msg){
+  let t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(() => { t.classList.remove('show'); }, 1500);
+  setTimeout(() => t.remove(), 2000);
+}
+
+/* ---------- nutrition helpers ---------- */
+function todayNutrition(){
+  const t = isoToday();
+  const recs = (data.diet||[]).filter(x=>x.date===t);
+  return {
+    calories: recs.reduce((s,x)=>s+ (+x.calories||0), 0),
+    protein: recs.reduce((s,x)=>s+ (+x.protein||0), 0),
+    fat: recs.reduce((s,x)=>s+ (+x.fat||0), 0),
+    carbs: recs.reduce((s,x)=>s+ (+x.carbs||0), 0),
+  };
+}
+
+/* ---------- money helpers ---------- */
+function todayExpense(){
+  const t = isoToday();
+  return (data.money||[]).filter(x=>x.type==="expense" && x.date===t).reduce((s,x)=>s+ +x.amount, 0);
+}
+function monthExpense(){
+  const ym = isoToday().slice(0,7);
+  return (data.money||[]).filter(x=>x.type==="expense" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+}
+function monthIncome(){
+  const ym = isoToday().slice(0,7);
+  return (data.money||[]).filter(x=>x.type==="income" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+}
+
+/* ---------- sleep helpers ---------- */
+function parseBedtimeMinutes(bt){
+  if(!bt) return null;
+  const parts = bt.split(':').map(Number);
+  if(parts.length < 2 || isNaN(parts[0])) return null;
+  return parts[0]*60 + (parts[1]||0);
+}
+function avgBedtime(records){
+  const recent = records.filter(x=>x.bedtime).slice(-7);
+  if(!recent.length) return '--';
+  const mins = recent.map(x=>parseBedtimeMinutes(x.bedtime)).filter(x=>x!==null);
+  if(!mins.length) return '--';
+  const avg = mins.reduce((a,b)=>a+b,0) / mins.length;
+  const h = Math.floor(avg/60);
+  const m = Math.round(avg%60);
+  return `${h}:${String(m).padStart(2,'0')}`;
+}
+
+/* ---------- body helpers ---------- */
+function bodyTrend(records, field){
+  if(records.length < 2) return 'flat';
+  const latest = records[records.length-1];
+  const prev = records[records.length-2];
+  const lv = +latest[field] || 0;
+  const pv = +prev[field] || 0;
+  if(lv > pv) return 'up';
+  if(lv < pv) return 'down';
+  return 'flat';
+}
+
 const store = {
   load(){
     const raw = localStorage.getItem(CONFIG.storageKey);
     if(raw){
       try {
         const d = JSON.parse(raw);
-        // 种子版本同步：AI 更新了 seed 数据后，自动合并新记录到 localStorage
         const curVer = d.__seedVer || 0;
         if(CONFIG.seedVersion && curVer < CONFIG.seedVersion){
           CONFIG.modules.forEach(m => {
             const seed = m.seed || [];
             const existing = d[m.key] || [];
             const existingIds = new Set(existing.map(x => x.id));
-            // 只添加 localStorage 里不存在的记录（按 ID 判断）
             seed.forEach(s => {
               if(!existingIds.has(s.id)) existing.push(structuredClone(s));
             });
@@ -714,7 +774,6 @@ const store = {
         return d;
       } catch(e){}
     }
-    // 首次加载：克隆种子数据
     const d = {};
     CONFIG.modules.forEach(m => d[m.key] = structuredClone(m.seed||[]));
     d.__seedVer = CONFIG.seedVersion || 1;
@@ -723,11 +782,11 @@ const store = {
   save(){ localStorage.setItem(CONFIG.storageKey, JSON.stringify(data)); if(window.cloudSave) window.cloudSave(); },
 };
 let data = store.load();
-let view = "home";            // home | insight | <moduleKey>
+let view = "home";
 function persist(){ store.save(); render(); }
 
 /* ============================================================
-   FIREBASE CLOUD SYNC — 配置就绪后自动激活
+   FIREBASE CLOUD SYNC
    ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAI_RuVs0ygTkt5jiLNm9ImJCq29DNFjRI",
@@ -753,7 +812,7 @@ function setSyncStatus(state){
   else txt.textContent = '本地存储 · 每日更新';
 }
 
-/* ---------- 登录/注册逻辑 ---------- */
+/* ---------- 登录逻辑 ---------- */
 function showLogin(){ document.getElementById('login-overlay').classList.remove('hidden'); }
 function hideLogin(){ document.getElementById('login-overlay').classList.add('hidden'); }
 
@@ -807,7 +866,6 @@ if(FB_ENABLED && typeof firebase !== 'undefined'){
     firebase.initializeApp(FIREBASE_CONFIG);
     fbDB = firebase.database();
 
-    // 监听登录状态
     firebase.auth().onAuthStateChanged(user => {
       if(user){
         hideLogin();
@@ -818,7 +876,6 @@ if(FB_ENABLED && typeof firebase !== 'undefined'){
       }
     });
 
-    // 登录按钮
     document.getElementById('li-login').onclick = () => {
       const email = document.getElementById('li-email').value.trim();
       const pass = document.getElementById('li-pass').value;
@@ -829,7 +886,6 @@ if(FB_ENABLED && typeof firebase !== 'undefined'){
         .catch(e => { err.textContent = '登录失败：' + (e.code === 'auth/invalid-credential' ? '邮箱或密码错误' : e.message); });
     };
 
-    // 回车登录
     document.getElementById('li-pass').addEventListener('keydown', e => {
       if(e.key === 'Enter') document.getElementById('li-login').click();
     });
@@ -849,7 +905,7 @@ function loadPref(){
 function savePref(p){ localStorage.setItem(PREF_KEY, JSON.stringify(p)); }
 let pref = loadPref();
 if(pref.dark === undefined) pref.dark = false;
-if(pref.readonly === undefined) pref.readonly = true;   // 默认只读
+if(pref.readonly === undefined) pref.readonly = true;
 function applyPref(){
   document.body.classList.toggle('dark', !!pref.dark);
   document.body.classList.toggle('readonly', !!pref.readonly);
@@ -861,11 +917,7 @@ applyPref();
 /* ---------- chrome icons ---------- */
 $("#btn-menu").innerHTML = icon("menu", 20);
 $("#drawerClose").innerHTML = icon("close", 16);
-(function(){
-  const now = new Date();
-  const wd = "日一二三四五六"[now.getDay()];
-  $("#dateChip").innerHTML = `${icon("calendar",13)} ${now.getMonth()+1}/${String(now.getDate()).padStart(2,'0')} 周${wd}`;
-})();
+$("#btn-refresh").innerHTML = icon("refresh", 18);
 document.querySelectorAll('#nav .n').forEach(n=>{
   const t=n.dataset.nav;
   if(t==="home") n.innerHTML = icon("home",21)+"<span>首页</span>";
@@ -873,106 +925,727 @@ document.querySelectorAll('#nav .n').forEach(n=>{
   else n.innerHTML = icon("grid",21)+"<span>模块</span>";
 });
 
-/* ---------- ring svg ---------- */
-function ringSVG(pct, color){
-  const r=25, c=2*Math.PI*r, off=c*(1-Math.min(100,pct)/100);
-  return `<svg class="gauge" viewBox="0 0 60 60"><circle cx="30" cy="30" r="${r}" fill="none" stroke="var(--border)" stroke-width="5.5"/>
-    <circle cx="30" cy="30" r="${r}" fill="none" stroke="${color}" stroke-width="5.5" stroke-linecap="round"
-      stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg>`;
+/* ---------- refresh button ---------- */
+$("#btn-refresh").onclick = function(){
+  const btn = this;
+  btn.classList.add('spinning');
+  setSyncStatus('syncing');
+  // 强制从云端拉取最新数据
+  if(fbDB){
+    fbDB.ref('data').once('value').then(snap => {
+      const cloud = snap.val();
+      if(cloud){
+        data = cloud;
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
+        render();
+        setSyncStatus('synced');
+        showToast('已刷新');
+      } else {
+        setSyncStatus('synced');
+        showToast('云端无数据');
+      }
+      setTimeout(()=>btn.classList.remove('spinning'), 600);
+    }).catch(e => {
+      setSyncStatus('offline');
+      showToast('刷新失败，离线模式');
+      setTimeout(()=>btn.classList.remove('spinning'), 600);
+    });
+  } else {
+    // 无 Firebase，仅重新渲染
+    render();
+    showToast('已刷新');
+    setTimeout(()=>btn.classList.remove('spinning'), 600);
+  }
+};
+
+function showToast(msg){
+  let t = document.createElement('div');
+  t.style.cssText = 'position:fixed;left:50%;bottom:calc(var(--nav-h)+24px);transform:translateX(-50%);background:var(--text);color:var(--surface-card);font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow-overlay);z-index:80;transition:opacity .3s;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; }, 1500);
+  setTimeout(() => t.remove(), 2000);
 }
 
-/* ---------- HOME ---------- */
+/* ============================================================
+   HOME — 全新设计
+   ============================================================ */
 function renderHome(){
   const now = new Date();
-  const dow = (now.getDay()+6)%7;               // 周一=0 … 周日=6
-  const q = CONFIG.quotes[dow % CONFIG.quotes.length];
+  const dow = now.getDay();
   const hour = now.getHours();
   const hi = hour<5?"夜深了":hour<11?"早上好":hour<13?"中午好":hour<18?"下午好":"晚上好";
+  const wd = "日一二三四五六"[dow];
+  const dateStr = `${now.getMonth()+1}月${now.getDate()}日 周${wd}`;
 
-  // overview rings
-  const rings = CONFIG.overview.map(o=>{
-    const r=o.calc(data);
-    return `<div class="ring" data-open="${o.key}"><div class="dial">${ringSVG(r.value,o.color)}<span class="mid" style="color:${o.color}">${icon(o.icon,23)}</span></div>
-      <div class="pct">${r.value}%</div><div class="lbl">${o.label}</div><div class="sub">${r.sub}</div></div>`;
+  // 今日训练卡片
+  const plan = CONFIG.trainingPlan[dow];
+  const isRest = dow === 0;
+  const trainCard = `<div class="home-card" data-go="training">
+    <div class="hc-title">${icon("activity",15)} 今日训练<span class="hc-more">查看 ›</span></div>
+    <div class="train-part">${plan.part}</div>
+    ${plan.exercises.length ? `<div class="ex-list">${plan.exercises.map(e=>{
+      const star = e.includes('★');
+      return `<span class="ex-chip${star?' star':''}">${esc(e.replace('★',''))}</span>`;
+    }).join("")}</div>` : '<div class="rest-day">休息日，散步或完全休息</div>'}
+    <div class="cardio-line">${icon("flame",13)} ${plan.cardio}</div>
+  </div>`;
+
+  // 饮食余额卡片
+  const nut = todayNutrition();
+  const goals = CONFIG.nutrition;
+  const nutriRows = [
+    { label:'热量', consumed:nut.calories, goal:goals.calories, unit:'kcal', color:'var(--module-4)' },
+    { label:'蛋白质', consumed:nut.protein, goal:goals.protein, unit:'g', color:'var(--module-1)' },
+    { label:'脂肪', consumed:nut.fat, goal:goals.fat, unit:'g', color:'var(--module-3)' },
+    { label:'碳水', consumed:nut.carbs, goal:goals.carbs, unit:'g', color:'var(--module-2)' },
+  ].map(r=>{
+    const remaining = Math.max(0, r.goal - r.consumed);
+    const pct = Math.min(100, r.goal ? (r.consumed/r.goal*100) : 0);
+    const over = r.consumed > r.goal;
+    return `<div class="nutri-row">
+      <span class="nl">${r.label}</span>
+      <div class="np"><i style="width:${pct}%;background:${over?'var(--danger)':r.color}"></i></div>
+      <span class="nv">${over?`超${fmtMoney(r.consumed-r.goal)}`:`余${fmtMoney(remaining)}`}${r.unit}</span>
+    </div>`;
   }).join("");
+  const dietCard = `<div class="home-card" data-go="diet">
+    <div class="hc-title">${icon("pen",15)} 今日饮食<span class="hc-more">查看 ›</span></div>
+    ${nutriRows}
+  </div>`;
 
-  // pinned tasks (置顶) — 跨模块收集 item.pinned；就地交互，不跳转
-  const pins=[];
-  CONFIG.modules.forEach(m=>(data[m.key]||[]).forEach(x=>{ if(x.pinned) pins.push({m,x}); }));
-  const chkMark=icon("check",13,2.6);
-  const pinSub=(m,x)=>{
-    if(m.type==="checkin") return `${m.name} · 连续 ${streak(x.log)} 天`;
-    if(m.type==="progress"){ const pct=Math.round((x.current/x.target)*100||0); return `${m.name} · ${x.current}/${x.target} ${x.unit||m.unit||''} · ${Math.min(100,pct)}%`; }
-    return m.name;
-  };
-  const pinCtl=(m,x)=>{
-    if(m.type==="checkin"){ const on=!!(x.log&&x.log[today()]); return `<div class="pin-chk js-pin-chk ${on?'on':''}" data-mkey="${m.key}" data-id="${x.id}">${chkMark}</div>`; }
-    if(m.type==="todo"){ return `<div class="pin-chk js-pin-chk ${x.done?'on':''}" data-mkey="${m.key}" data-id="${x.id}">${chkMark}</div>`; }
-    if(m.type==="progress"){ return `<div class="pin-step"><button class="js-pin-dec" data-mkey="${m.key}" data-id="${x.id}" aria-label="减">−</button><button class="js-pin-inc" data-mkey="${m.key}" data-id="${x.id}" aria-label="加">+</button></div>`; }
-    return `<span class="arw">${icon("chevron",14,2)}</span>`;
-  };
-  const pinned = pins.length ? pins.map(({m,x})=>`<div class="pin">
-      <span class="pin-ic" style="color:${m.color}">${icon(m.icon,17)}</span>
-      <div class="pin-b js-pin-open" data-mkey="${m.key}" data-id="${x.id}"><div class="pin-t ${(m.type==='todo'&&x.done)?'done':''}">${esc(x.title)}</div><div class="pin-m">${pinSub(m,x)}</div></div>
-      ${pinCtl(m,x)}</div>`).join("")
-    : `<div class="pin-empty">在任意模块点击 <span class="mini-star">${icon("star",13)}</span> 即可把重要任务置顶到这里</div>`;
+  // 快速记一笔栏（最突出）
+  const quickBar = `<div class="quick-bar">
+    <input id="qn-input" placeholder="记一笔…" enterkeyhint="done" />
+    <button class="qn-save" id="qn-btn">${icon("pen",16,2)}<span>记</span></button>
+    <button class="qn-feedback" id="qn-feedback">${icon("bolt",16,2)}<span>反馈</span></button>
+  </div>`;
 
-  // trend
-  const series = CONFIG.trend.series(data);
-  const hasTrend = series.length>0;
-  const avg = hasTrend ? Math.round(series.reduce((a,b)=>a+b,0)/series.length) : 0;
-  const trend = hasTrend ? trendSVG(series)
-    : `<div class="trend-empty">${icon("chart",22)}<span>暂无本周数据</span></div>`;
-
-  const quick = CONFIG.quickAdd.map(q=>`<button class="qbtn" data-quick="${q.module}"><span class="e" style="background:${q.tint};color:${q.color}">${icon(q.icon,20)}<i class="qplus">${icon("plus",10,3)}</i></span><span class="l">${q.label}</span></button>`).join("");
+  // 洞察预览卡片
+  const todayExp = todayExpense();
+  const monthExp = monthExpense();
+  const sleepRecords = data.sleep || [];
+  const sleepAvg = avgBedtime(sleepRecords);
+  const insightPreview = `<div class="home-card" data-go="insight">
+    <div class="hc-title">${icon("chart",15)} 今日概览<span class="hc-more">洞察 ›</span></div>
+    <div class="insight-preview">
+      <div class="ip-cell"><div class="ip-v" style="color:var(--danger)">¥${fmtMoney(todayExp)}</div><div class="ip-l">今日支出</div></div>
+      <div class="ip-cell"><div class="ip-v" style="color:var(--module-4)">¥${fmtMoney(monthExp)}</div><div class="ip-l">本月支出</div></div>
+      <div class="ip-cell"><div class="ip-v" style="color:var(--module-3)">${sleepAvg}</div><div class="ip-l">平均入睡</div></div>
+    </div>
+  </div>`;
 
   $("#screen").innerHTML = `
-    <div class="greet"><div><h1>${hi}</h1><p>欢迎回到${CONFIG.owner}</p></div></div>
-    <div class="quote"><span class="tag">${icon("quote",13)} 今日一句</span><div class="txt">${esc(q)}</div></div>
-    <div class="sec-title">今日概览</div>
-    <div class="card rings">${rings}</div>
-    <div class="sec-title">置顶任务</div>
-    <div class="pin-list">${pinned}</div>
-    <div class="sec-title">快速记录</div>
-    <div class="quick-grid">${quick}</div>
-    <div class="panel trend-panel"><div class="ph">${icon("chart",15)} ${CONFIG.trend.title}${hasTrend?`<span class="avg">均 ${avg}${CONFIG.trend.unit}</span>`:''}</div>
-      ${trend}${hasTrend?`<div class="trend-x"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>`:''}</div>`;
+    <div class="compact-greet"><span class="hi">${hi}</span><span class="dt">${dateStr}</span></div>
+    ${trainCard}
+    ${dietCard}
+    ${quickBar}
+    ${insightPreview}`;
 
   wireHome();
 }
 
-function trendSVG(series){
-  const w=320, h=120, padX=10, padTop=14, padBot=18;
-  const max=Math.max(...series), min=Math.min(...series);
-  const rng=(max-min)||1;
-  const innerW=w-2*padX, innerH=h-padTop-padBot;
-  const pts=series.map((v,i)=>{
-    const x=padX+innerW*i/(series.length-1);
-    const y=padTop+innerH*(1-(v-min)/rng);
-    return [x,y];
-  });
-  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
-  const area=line+` L ${padX+innerW} ${h-padBot} L ${padX} ${h-padBot} Z`;
-  const dots=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="#fff" stroke="var(--module-2)" stroke-width="2"/>`).join('');
-  return `<svg class="trend-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
-    <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--module-2)" stop-opacity=".22"/><stop offset="1" stop-color="var(--module-2)" stop-opacity="0"/></linearGradient></defs>
-    <path d="${area}" fill="url(#tg)"/><path d="${line}" fill="none" stroke="var(--module-2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>${dots}</svg>`;
+function wireHome(){
+  // 卡片跳转
+  $("#screen").querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>go(el.dataset.go));
+  // 快速记一笔
+  const qnInput = $("#qn-input");
+  const qnBtn = $("#qn-btn");
+  const qnFeedback = $("#qn-feedback");
+  if(qnBtn) qnBtn.onclick = ()=>quickNote('note');
+  if(qnFeedback) qnFeedback.onclick = ()=>quickNote('feedback');
+  if(qnInput) qnInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); quickNote('note'); } });
 }
 
-/* ---------- donut chart (支出占比) ---------- */
-function donutSVG(segs){
-  const total=segs.reduce((s,x)=>s+x.amount,0)||1;
-  const r=42, c=2*Math.PI*r; let acc=0; const out=[];
-  segs.forEach(s=>{
-    const len=(s.amount/total)*c;
-    out.push(`<circle cx="52" cy="52" r="${r}" fill="none" stroke="${s.color}" stroke-width="14"
-      stroke-dasharray="${len.toFixed(2)} ${(c-len).toFixed(2)}" stroke-dashoffset="${(c-acc).toFixed(2)}" transform="rotate(-90 52 52)"/>`);
-    acc+=len;
-  });
-  return `<svg viewBox="0 0 104 104" width="104" height="104">${out.join("")}</svg>`;
+function quickNote(type){
+  const input = $('#qn-input');
+  if(!input) return;
+  const text = input.value.trim();
+  if(!text) return;
+  if(!data.__memos) data.__memos = [];
+  data.__memos.unshift({ id:'m'+Date.now(), text, date:isoToday(), time:new Date().toTimeString().slice(0,5), type: type || 'note' });
+  store.save();
+  input.value = '';
+  showToast(type === 'feedback' ? '反馈已记录' : '已记录');
 }
 
-/* ---------- calendar grid (打卡月视图) ---------- */
+/* ============================================================
+   INSIGHT — 修改版
+   ============================================================ */
+function renderInsight(){
+  const bars = CONFIG.modules.map(m=>{
+    const it = data[m.key] || [];
+    let pct = 0, label = "";
+    if(m.key === "training"){
+      pct = CONFIG.stageGoals[0].progress;
+      const remaining = 100 - pct;
+      label = `距薄肌身材 约${remaining}天`;
+    } else if(m.key === "money"){
+      const todayExp = todayExpense();
+      const monthExp = monthExpense();
+      label = `今日 ¥${fmtMoney(todayExp)} · 本月 ¥${fmtMoney(monthExp)}`;
+      pct = Math.min(100, Math.round(monthExp / 100));
+    } else if(m.key === "body"){
+      const latest = it[it.length-1];
+      if(latest && latest.bodyFat){
+        const trend = bodyTrend(it, 'bodyFat');
+        const arrow = trend==='down'?' ↓趋势良好':trend==='up'?' ↑需注意':' →持平';
+        label = `体脂${latest.bodyFat}%${arrow}`;
+        pct = Math.max(0, Math.min(100, Math.round((1 - (+latest.bodyFat-12)/10) * 100)));
+      } else { label = "暂无数据"; }
+    } else if(m.key === "diet"){
+      const nut = todayNutrition();
+      label = `今日热量${Math.round(nut.calories)}/${CONFIG.nutrition.calories}kcal`;
+      pct = Math.min(100, Math.round(nut.calories / CONFIG.nutrition.calories * 100));
+    } else if(m.key === "sleep"){
+      const sleepAvg = avgBedtime(it);
+      const mins = parseBedtimeMinutes(sleepAvg);
+      let status = "良好";
+      if(mins !== null){
+        if(mins >= 120) status = "偏晚";
+        else status = "良好";
+      }
+      label = `平均入睡${sleepAvg} · ${status}`;
+      const recent = it.filter(x=>x.bedtime).slice(-7);
+      const goodCount = recent.filter(x=>{
+        const bm = parseBedtimeMinutes(x.bedtime);
+        return bm !== null && bm < 120;
+      }).length;
+      pct = recent.length ? Math.round(goodCount/recent.length*100) : 0;
+    } else if(m.type === "todo"){
+      const d = it.filter(x=>x.done).length;
+      pct = it.length ? Math.round(d/it.length*100) : 0;
+      label = `${d}/${it.length}`;
+    } else if(m.type === "checkin"){
+      const t = today();
+      const d = it.filter(x=>x.log&&x.log[t]).length;
+      pct = it.length ? Math.round(d/it.length*100) : 0;
+      label = `${d}/${it.length}`;
+    } else if(m.type === "progress"){
+      pct = avgProgress(it).value;
+      label = `${pct}%`;
+    } else {
+      label = `${it.length} 条`;
+    }
+    return {m, pct, label};
+  });
+  const barList = bars.map(b=>`<div class="bar-row" data-open="${b.m.key}" role="button" tabindex="0">
+    <span class="bar-ic" style="color:${b.m.color}">${icon(b.m.icon,17)}</span>
+    <span class="bar-name">${b.m.name}</span>
+    <div class="pbar"><i style="width:${Math.min(100,b.pct)}%;background:${b.m.color}"></i></div>
+    <span class="bar-pct">${b.label}</span></div>`).join("");
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>洞察</h1><p>各模块进展一览 · 记录—执行—统计—反馈</p></div></div>
+    <div class="sec-title">模块状态</div>
+    <div class="panel"><div class="ph">${icon("chart",15)} 各模块进展</div>
+      <div class="bar-list" style="margin-top:12px">${barList}</div></div>`;
+  $("#screen").querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>go(el.dataset.open));
+}
+
+/* ============================================================
+   MODULE VIEW — 分发到自定义渲染器
+   ============================================================ */
+function renderModule(key){
+  // 自定义渲染器
+  if(key === "training") { renderTraining(); return; }
+  if(key === "money") { renderMoney(); return; }
+  if(key === "body") { renderBody(); return; }
+  if(key === "diet") { renderDiet(); return; }
+  if(key === "sleep") { renderSleep(); return; }
+
+  // 默认：基于 type 的渲染（todo, checkin, mantra）
+  const m = modOf(key); const it = data[key] || [];
+  const t = today();
+  let head = "", extra = "";
+  if(m.type === "todo"){
+    const done = it.filter(x=>x.done).length;
+    const pct = it.length ? Math.round(done/it.length*100) : 0;
+    head = headHero(m, `${done}/${it.length}`, "今日已完成", pct);
+  } else if(m.type === "checkin"){
+    const done = it.filter(x=>x.log&&x.log[t]).length;
+    const pct = it.length ? Math.round(done/it.length*100) : 0;
+    head = headHero(m, `${done}/${it.length}`, "今日已打卡", pct);
+  } else if(m.type === "progress"){
+    const p = avgProgress(it);
+    head = headHero(m, `${p.value}%`, `平均进度 · ${it.length} 项`, p.value);
+  } else if(m.type === "note"){
+    const todayN = it.filter(x=>x.date===t).length;
+    head = headHero(m, `${it.length}`, `条记录 · 今日 ${todayN} 条`, null);
+  }
+  if(m.type === "checkin") extra = renderCalendar(m, it);
+  const body = it.length ? it.map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录，点上方「新建」添加第一条吧</div></div>`;
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">${head}${extra}
+      <div class="sec-title">记录</div>${body}</div>`;
+  wireModule(key);
+}
+
+function headHero(m, big, label, pct){
+  const inner = `<div class="hero-ic" style="background:${m.tint};color:${m.color}">${icon(m.icon,20)}</div>
+    <div style="flex:1;min-width:0"><div style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap">
+      <span style="font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums">${big}</span>
+      <span style="font-size:12px;color:var(--text-secondary)">${label}</span></div>
+    ${pct!=null?`<div class="pbar" style="height:6px;border-radius:999px;background:var(--border);overflow:hidden;margin-top:8px"><i style="display:block;height:100%;width:${Math.min(100,pct)}%;background:${m.color};border-radius:999px"></i></div>`:''}</div>`;
+  return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-card);background:var(--surface-card);border:1px solid var(--border);box-shadow:var(--shadow-card)">${inner}</div>`;
+}
+
+/* ============================================================
+   TRAINING MODULE — 自定义渲染
+   ============================================================ */
+function renderTraining(){
+  const m = modOf("training"); const it = data.training || [];
+  const now = new Date();
+  const dow = now.getDay();
+  const plan = CONFIG.trainingPlan[dow];
+
+  // 阶段目标
+  const goals = CONFIG.stageGoals.map((g,i)=>{
+    const color = i===0 ? 'var(--module-3)' : 'var(--module-2)';
+    return `<div class="stage-goal">
+      <div class="sg-head"><span class="sg-name">${g.name}</span><span class="sg-pct">${g.progress}%</span></div>
+      <div class="sg-bar"><i style="width:${g.progress}%;background:${color}"></i></div>
+      <div class="sg-desc">${g.desc}</div>
+    </div>`;
+  }).join("");
+
+  // 今日训练
+  const isRest = dow === 0;
+  const workout = `<div class="home-card no-tap" style="margin-top:10px">
+    <div class="hc-title">${icon("activity",15)} 今日训练</div>
+    <div class="train-part">${plan.part}</div>
+    ${plan.exercises.length ? `<div class="ex-list">${plan.exercises.map(e=>{
+      const star = e.includes('★');
+      return `<span class="ex-chip${star?' star':''}">${esc(e.replace('★',''))}</span>`;
+    }).join("")}</div>` : '<div class="rest-day">休息日，散步或完全休息</div>'}
+    <div class="cardio-line">${icon("flame",13)} ${plan.cardio}</div>
+  </div>`;
+
+  // 健身卡性价比
+  const gc = CONFIG.gymCard;
+  const gymCost = `<div class="home-card no-tap" style="margin-top:10px">
+    <div class="hc-title">${icon("wallet",15)} 健身卡性价比</div>
+    <div class="gym-stats">
+      <div class="gym-stat"><div class="gs-v" style="color:var(--module-4)">¥${fmtMoney(gc.perVisit)}</div><div class="gs-l">单次成本</div></div>
+      <div class="gym-stat"><div class="gs-v">${gc.visits}</div><div class="gs-l">已去次数</div></div>
+      <div class="gym-stat"><div class="gs-v" style="color:var(--module-1)">≤¥${fmtMoney(gc.targetPerVisit)}</div><div class="gs-l">目标/次</div></div>
+    </div>
+  </div>`;
+
+  // 训练进度记录
+  const body = it.length ? it.map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有训练记录，点上方「新建」添加</div></div>`;
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">
+      <div class="sec-title">阶段目标</div>
+      <div class="panel">${goals}</div>
+      ${workout}
+      ${gymCost}
+      <div class="sec-title">训练进度</div>${body}
+    </div>`;
+  wireModule("training");
+}
+
+/* ============================================================
+   MONEY MODULE — 支付宝风格
+   ============================================================ */
+let moneyFilter = 'all';
+let moneyCatFilter = null;
+
+function renderMoney(){
+  const m = modOf("money"); const it = (data.money || []).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const ym = isoToday().slice(0,7);
+
+  // 月度汇总
+  const monthInc = it.filter(x=>x.type==="income" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+  const monthExp = it.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+  const balance = monthInc - monthExp;
+  const summary = `<div class="mod-summary">
+    <div class="mini"><div class="l">本月收入</div><div class="v" style="color:var(--module-1)">¥${fmtMoney(monthInc)}</div></div>
+    <div class="mini"><div class="l">本月支出</div><div class="v" style="color:var(--danger)">¥${fmtMoney(monthExp)}</div></div>
+    <div class="mini"><div class="l">结余</div><div class="v">¥${fmtMoney(balance)}</div></div></div>`;
+
+  // 标签栏
+  const tabs = `<div class="money-tabs">
+    <div class="money-tab ${moneyFilter==='all'?'on':''}" data-filter="all">全部</div>
+    <div class="money-tab ${moneyFilter==='expense'?'on':''}" data-filter="expense">支出</div>
+    <div class="money-tab ${moneyFilter==='income'?'on':''}" data-filter="income">收入</div></div>`;
+
+  // 分类汇总
+  const cats = m.categories || [];
+  const monthExps = it.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym));
+  const catAmounts = cats.map(c=>({
+    cat: c,
+    amount: monthExps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
+  })).filter(x=>x.amount > 0).sort((a,b)=>b.amount-a.amount);
+  const catChips = catAmounts.length ? `<div class="cat-chips">${catAmounts.map(c=>{
+    const on = moneyCatFilter === c.cat;
+    return `<div class="cat-chip ${on?'on':''}" data-cat="${esc(c.cat)}">${esc(c.cat)} ¥${fmtMoney(c.amount)}</div>`;
+  }).join("")}</div>` : '';
+
+  // 筛选记录
+  let filtered = it;
+  if(moneyFilter !== 'all') filtered = filtered.filter(x=>x.type===moneyFilter);
+  if(moneyCatFilter) filtered = filtered.filter(x=>x.category===moneyCatFilter);
+
+  const body = filtered.length ? filtered.map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>暂无记录</div></div>`;
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">
+      ${summary}
+      ${tabs}
+      ${catChips}
+      <div class="sec-title">记录</div>${body}
+    </div>`;
+
+  wireModule("money");
+
+  // 标签栏交互
+  $("#screen").querySelectorAll(".money-tab").forEach(el=>el.onclick=()=>{
+    moneyFilter = el.dataset.filter;
+    moneyCatFilter = null;
+    render();
+  });
+  // 分类筛选交互
+  $("#screen").querySelectorAll(".cat-chip").forEach(el=>el.onclick=()=>{
+    const cat = el.dataset.cat;
+    moneyCatFilter = (moneyCatFilter === cat) ? null : cat;
+    render();
+  });
+}
+
+/* ============================================================
+   BODY MODULE — 趋势 + 建议
+   ============================================================ */
+function renderBody(){
+  const m = modOf("body"); const it = data.body || [];
+  const t = today();
+
+  let latestCard = "";
+  if(it.length){
+    const latest = it[it.length-1];
+    const wTrend = bodyTrend(it, 'weight');
+    const bfTrend = bodyTrend(it, 'bodyFat');
+    const waTrend = bodyTrend(it, 'waist');
+    const arrowHTML = (trend, goodWhenDown) => {
+      if(trend==='up') return `<span class="trend-arrow ${goodWhenDown?'up':'flat'}">↑</span>`;
+      if(trend==='down') return `<span class="trend-arrow ${goodWhenDown?'down':'flat'}">↓</span>`;
+      return `<span class="trend-arrow flat">→</span>`;
+    };
+    latestCard = `<div class="panel" style="margin-bottom:12px">
+      <div class="ph" style="margin-bottom:12px">${icon("target",15)} 最新指标 · ${fmtDate(latest.date)}</div>
+      <div class="body-metrics">
+        <div class="bm-cell"><div class="bm-v">${latest.weight||'--'} ${arrowHTML(wTrend)}</div><div class="bm-l">体重(kg)</div></div>
+        <div class="bm-cell"><div class="bm-v">${latest.bodyFat||'--'}% ${arrowHTML(bfTrend,true)}</div><div class="bm-l">体脂率</div></div>
+        <div class="bm-cell"><div class="bm-v">${latest.waist||'--'} ${arrowHTML(waTrend,true)}</div><div class="bm-l">腰围(cm)</div></div>
+      </div></div>`;
+  }
+
+  // 建议
+  let advice = "暂无身体指标数据，开始记录吧。";
+  if(it.length){
+    const latest = it[it.length-1];
+    const bf = +latest.bodyFat || 0;
+    if(bf > 18){
+      advice = `体脂率${bf}%，距离薄肌身材目标(18%)还有${(bf-18).toFixed(1)}个百分点。建议保持热量缺口，继续力量训练。`;
+    } else if(bf > 15){
+      advice = `体脂率${bf}%，薄肌身材目标已达成！继续向漫画身材(15%)努力。`;
+    } else {
+      advice = `体脂率${bf}%，身材线条分明，保持当前节奏即可。`;
+    }
+  }
+  const adviceBox = `<div class="advice-box">
+    <div class="ab-title">${icon("bolt",14)} 建议</div>${advice}</div>`;
+
+  const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">
+      ${latestCard}
+      ${adviceBox}
+      <div class="sec-title">记录</div>${body}
+    </div>`;
+  wireModule("body");
+}
+
+/* ============================================================
+   DIET MODULE — 营养 + 库存 + 建议
+   ============================================================ */
+function renderDiet(){
+  const m = modOf("diet"); const it = data.diet || [];
+  const t = today();
+
+  // 今日营养
+  const nut = todayNutrition();
+  const goals = CONFIG.nutrition;
+  const nutriRows = [
+    { label:'热量', consumed:nut.calories, goal:goals.calories, unit:'kcal', color:'var(--module-4)' },
+    { label:'蛋白质', consumed:nut.protein, goal:goals.protein, unit:'g', color:'var(--module-1)' },
+    { label:'脂肪', consumed:nut.fat, goal:goals.fat, unit:'g', color:'var(--module-3)' },
+    { label:'碳水', consumed:nut.carbs, goal:goals.carbs, unit:'g', color:'var(--module-2)' },
+  ].map(r=>{
+    const pct = Math.min(100, r.goal ? (r.consumed/r.goal*100) : 0);
+    const over = r.consumed > r.goal;
+    return `<div class="nutri-row">
+      <span class="nl">${r.label}</span>
+      <div class="np"><i style="width:${pct}%;background:${over?'var(--danger)':r.color}"></i></div>
+      <span class="nv">${Math.round(r.consumed)}/${r.goal}${r.unit}</span>
+    </div>`;
+  }).join("");
+  const nutriCard = `<div class="panel" style="margin-bottom:12px">
+    <div class="ph" style="margin-bottom:10px">${icon("pen",15)} 今日营养</div>
+    ${nutriRows}</div>`;
+
+  // 食材库存
+  const inv = CONFIG.foodInventory;
+  const foodList = inv.length ? `<div class="food-list">${inv.map(f=>
+    `<div class="food-item"><span class="fn">${esc(f.name)}</span><span class="fa">${esc(f.amount)}</span><span class="fc">${f.calories}kcal</span></div>`
+  ).join("")}</div>` : '<div style="font-size:13px;color:var(--text-secondary);padding:8px 0">暂无库存数据</div>';
+  const invCard = `<div class="panel" style="margin-bottom:12px">
+    <div class="ph" style="margin-bottom:8px">${icon("wallet",15)} 食材库存</div>
+    ${foodList}</div>`;
+
+  // 建议
+  let advice = "暂无饮食记录。";
+  if(nut.calories > 0 || it.length){
+    if(nut.protein < goals.protein * 0.8 && nut.calories > 0){
+      advice = `蛋白质摄入不足（${Math.round(nut.protein)}/${goals.protein}g），建议补充蛋白粉或鸡胸肉。库存有蛋白粉~500g。`;
+    } else if(nut.calories > goals.calories){
+      advice = `热量超标（${Math.round(nut.calories)}/${goals.calories}kcal），注意控制油脂摄入。`;
+    } else if(nut.fat > goals.fat){
+      advice = `脂肪摄入超标（${Math.round(nut.fat)}/${goals.fat}g），减少油炸食品。`;
+    } else if(nut.calories > 0){
+      advice = "今日营养摄入均衡，继续保持。";
+    } else {
+      advice = "今日尚未记录饮食，记得记录每餐营养数据。";
+    }
+  }
+  const adviceBox = `<div class="advice-box">
+    <div class="ab-title">${icon("bolt",14)} 建议</div>${advice}</div>`;
+
+  const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">
+      ${nutriCard}
+      ${invCard}
+      ${adviceBox}
+      <div class="sec-title">记录</div>${body}
+    </div>`;
+  wireModule("diet");
+}
+
+/* ============================================================
+   SLEEP MODULE — 日历 + 建议
+   ============================================================ */
+let sleepViewMode = 'week';
+
+function renderSleep(){
+  const m = modOf("sleep"); const it = data.sleep || [];
+
+  // 视图切换
+  const toggle = `<div class="view-toggle">
+    <div class="vt-btn ${sleepViewMode==='week'?'on':''}" data-vm="week">周视图</div>
+    <div class="vt-btn ${sleepViewMode==='month'?'on':''}" data-vm="month">月视图</div></div>`;
+
+  let viewContent = "";
+  if(sleepViewMode === 'week'){
+    // 周视图
+    const days = [];
+    for(let i=6; i>=0; i--){
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const ds = d.toISOString().slice(0,10);
+      const rec = it.find(x=>x.date === ds);
+      let status = null;
+      let cls = '';
+      if(rec){
+        status = rec.mood;
+        if(status === '良好') cls = 'good';
+        else if(status === '偏晚') cls = 'late';
+        else if(status === '严重偏晚' || status === '失眠') cls = 'vlate';
+      }
+      days.push({
+        ds, short: `${d.getMonth()+1}/${d.getDate()}`,
+        weekday: "日一二三四五六"[d.getDay()],
+        bedtime: rec ? rec.bedtime : '--',
+        wakeTime: rec ? rec.wakeTime : '--',
+        duration: rec ? rec.duration : '--',
+        status: status || '未记录',
+        cls
+      });
+    }
+    viewContent = `<div class="sleep-week">${days.map(d=>`
+      <div class="sleep-day ${d.cls}">
+        <div class="sd-date">${d.short}<small>周${d.weekday}</small></div>
+        <div class="sd-time">${d.bedtime} → ${d.wakeTime}<small>${d.status}</small></div>
+        <div class="sd-dur">${d.duration}</div>
+      </div>`).join("")}</div>`;
+  } else {
+    // 月视图
+    const now = new Date();
+    const y = now.getFullYear(), mo = now.getMonth();
+    const startDow = new Date(y, mo, 1).getDay();
+    const days = new Date(y, mo+1, 0).getDate();
+    const todayIso = isoToday();
+    const dateMap = {};
+    it.forEach(r=>{ if(r.date) dateMap[r.date] = r; });
+    const colorMap = { '良好':'var(--module-1)', '偏晚':'var(--module-3)', '严重偏晚':'var(--danger)', '失眠':'var(--danger)' };
+    let cells = "";
+    for(let i=0; i<startDow; i++) cells += `<div class="cal-cell blank"></div>`;
+    for(let d=1; d<=days; d++){
+      const ds = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const rec = dateMap[ds];
+      const bg = rec && colorMap[rec.mood] ? colorMap[rec.mood] : '';
+      cells += `<div class="cal-cell ${rec?'on':''} ${ds===todayIso?'today':''}"${rec&&bg?` style="background:${bg};border-color:${bg}"`:''}${rec?` data-edit="${rec.id}"`:''}>${d}</div>`;
+    }
+    viewContent = `<div class="panel">
+      <div class="cal-dow">${"日一二三四五六".split("").map(x=>`<span>${x}</span>`).join("")}</div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-foot" style="margin-top:10px">
+        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--module-1)"></span>良好</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;margin-left:12px"><span style="width:8px;height:8px;border-radius:50%;background:var(--module-3)"></span>偏晚</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;margin-left:12px"><span style="width:8px;height:8px;border-radius:50%;background:var(--danger)"></span>严重偏晚</span>
+      </div></div>`;
+  }
+
+  // 汇总
+  const recent7 = it.filter(x=>x.bedtime).slice(-7);
+  const sleepAvg = avgBedtime(it);
+  let avgDur = '--';
+  if(recent7.length){
+    const durNums = recent7.map(x=>{
+      const m = (x.duration||'').match(/[\d.]+/);
+      return m ? parseFloat(m[0]) : null;
+    }).filter(x=>x!==null);
+    if(durNums.length) avgDur = (durNums.reduce((a,b)=>a+b,0)/durNums.length).toFixed(1) + 'h';
+  }
+  const summary = `<div class="sleep-summary">
+    <div class="ss-cell"><div class="ss-v">${sleepAvg}</div><div class="ss-l">平均入睡</div></div>
+    <div class="ss-cell"><div class="ss-v">${avgDur}</div><div class="ss-l">平均时长</div></div></div>`;
+
+  // 建议
+  let advice = "暂无作息记录。";
+  if(recent7.length){
+    const avgMins = parseBedtimeMinutes(sleepAvg);
+    if(avgMins !== null && avgMins >= 120){
+      advice = "作息持续偏晚（凌晨3-5点入睡），影响恢复和减脂效率。建议每周提前15分钟入睡。";
+    } else if(avgMins !== null && avgMins >= 0){
+      advice = "入睡时间偏晚（凌晨0-2点），建议逐步调整到0点前入睡。";
+    } else {
+      advice = "作息时间良好，继续保持。";
+    }
+  }
+  const adviceBox = `<div class="advice-box">
+    <div class="ab-title">${icon("bolt",14)} 建议</div>${advice}</div>`;
+
+  const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
+    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
+
+  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
+      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
+    <div style="margin-top:14px">
+      ${summary}
+      ${toggle}
+      ${viewContent}
+      ${adviceBox}
+      <div class="sec-title">记录</div>${body}
+    </div>`;
+  wireModule("sleep");
+
+  // 视图切换交互
+  $("#screen").querySelectorAll(".vt-btn").forEach(el=>el.onclick=()=>{
+    sleepViewMode = el.dataset.vm;
+    render();
+  });
+}
+
+/* ============================================================
+   RECORD HTML — ticktick-like todo/checkin
+   ============================================================ */
+function recHTML(m, x){
+  const pin = `<button class="pin-btn js-pin ${x.pinned?'on':''}" data-id="${x.id}" title="置顶">${icon("star",15)}</button>`;
+  const del = `<button class="del js-del" data-id="${x.id}" title="删除">${icon("trash",16)}</button>`;
+  const acts = `<div class="acts">${pin}${del}</div>`;
+  const chkMark = icon("check",14,2.4);
+  const thumb = x.image ? `<img class="thumb" src="${attr(x.image)}" alt="">` : '';
+  const customMeta = (m.fields||[]).filter(f=>x[f.key]).map(f=>`<span class="meta-tag">${esc(f.label.split('(')[0])}: ${esc(x[f.key])}</span>`).join("");
+  const customBlock = customMeta ? `<div class="meta-line">${customMeta}</div>` : '';
+
+  if(m.type === "todo"){
+    const p = (m.priorities||[]).find(p=>p.key===x.priority);
+    const dotColor = p ? p.text : 'var(--text-tertiary)';
+    return `<div class="rec">${acts}<div class="top">
+      <div class="chk js-chk ${x.done?'on':''}" data-id="${x.id}">${chkMark}</div>
+      ${thumb}
+      <div class="body" data-edit="${x.id}"><div class="rname ${x.done?'done':''}">
+        ${p?`<span class="prio-dot" style="background:${dotColor}"></span>`:''}${esc(x.title)}
+      </div>
+      ${x.note?`<div class="rnote">${esc(x.note)}</div>`:''}${customBlock}</div></div></div>`;
+  }
+  if(m.type === "checkin"){
+    const on = !!(x.log && x.log[today()]); const st = streak(x.log);
+    return `<div class="rec">${acts}<div class="top">
+      <div class="chk js-chk ${on?'on':''}" data-id="${x.id}">${chkMark}</div>
+      ${thumb}
+      <div class="body" data-edit="${x.id}"><div class="rname">${esc(x.title)}</div>
+      <div class="rmeta"><span class="streak">${icon("flame",13)} 连续 ${st} 天</span>${on?'<span class="badge" style="background:var(--accent-muted);color:var(--accent)">今日已打卡</span>':''}</div>${customBlock}</div></div></div>`;
+  }
+  if(m.type === "progress"){
+    const pct = Math.min(100, Math.round((x.current/x.target)*100||0));
+    return `<div class="rec">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
+      <div class="rname">${esc(x.title)}</div>
+      <div class="rmeta"><span style="color:var(--text-secondary);font-size:13px;font-variant-numeric:tabular-nums">${x.current}/${x.target} ${esc(x.unit||m.unit||'')} · ${pct}%</span></div>
+      <div class="pbar"><i style="width:${pct}%;background:${m.color}"></i></div>
+      ${x.note?`<div class="rnote">${esc(x.note)}</div>`:''}${customBlock}</div></div></div>`;
+  }
+  if(m.type === "finance"){
+    const inc = x.type === "income";
+    return `<div class="rec">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
+      <div class="rname">${esc(x.title)}</div>
+      <div class="rmeta"><span class="badge" style="background:var(--surface-nested);color:var(--text-secondary)">${esc(x.category||'其他')}</span><span style="color:var(--text-secondary);font-size:12px">${fmtDate(x.date)}</span></div>${customBlock}</div>
+      <div class="amt ${inc?'inc':'exp'}" style="margin-left:auto">${inc?'+':'-'}¥${fmtMoney(+x.amount||0)}</div></div></div>`;
+  }
+  // note
+  return `<div class="rec">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
+    <div class="rname">${esc(x.title||'无标题')}</div>
+    <div class="rmeta">${x.mood?`<span class="badge" style="background:var(--accent-muted);color:var(--accent)">${esc(x.mood)}</span>`:''}<span style="color:var(--text-secondary);font-size:12px">${fmtDate(x.date)}</span></div>
+    ${x.content?`<div class="rnote">${esc(x.content)}</div>`:''}${customBlock}</div></div></div>`;
+}
+
+function streak(log){
+  if(!log) return 0; let n=0; const d=new Date();
+  for(;;){ const key=d.toISOString().slice(0,10); if(log[key]){ n++; d.setDate(d.getDate()-1); } else break; }
+  return n;
+}
+
+function wireModule(key){
+  const m = modOf(key);
+  $("#screen").querySelectorAll(".js-chk").forEach(el=>el.onclick=e=>{
+    e.stopPropagation(); const x=(data[key]).find(i=>i.id==el.dataset.id);
+    if(m.type==="todo"){ x.done=!x.done; }
+    else if(m.type==="checkin"){ x.log=x.log||{}; const t=today(); x.log[t]?delete x.log[t]:x.log[t]=true; }
+    persist();
+  });
+  $("#screen").querySelectorAll("[data-edit]").forEach(el=>el.onclick=()=>openEditor(key,(data[key]).find(i=>i.id==el.dataset.edit)));
+  $("#screen").querySelectorAll(".js-del").forEach(el=>el.onclick=e=>{ e.stopPropagation(); confirmDelete(key, el.dataset.id); });
+  $("#screen").querySelectorAll(".js-pin").forEach(el=>el.onclick=e=>{ e.stopPropagation(); const x=(data[key]).find(i=>i.id==el.dataset.id); x.pinned=!x.pinned; persist(); });
+  const add=$("#btn-add"); if(add) add.onclick=()=>openEditor(key,null);
+  if(m.type==="checkin") wireCalendar(key, data[key]||[]);
+}
+
+/* ============================================================
+   CALENDAR (checkin)
+   ============================================================ */
 let calMonth=null, calItemId=null;
 function renderCalendar(m, it){
   if(!it.length) return "";
@@ -1015,7 +1688,6 @@ function wireCalendar(key, it){
     const ds=el.dataset.date; item.log=item.log||{};
     const wasOn=!!item.log[ds];
     const todayIso=isoToday();
-    // 今天之前的日期取消打卡：高风险（会断连续），先确认
     if(wasOn && ds<todayIso){
       confirmCalUncheck(item, ds);
       return;
@@ -1048,205 +1720,11 @@ function confirmCalUncheck(item, ds){
   overlay.querySelector("#cu-ok").onclick=()=>{ delete item.log[ds]; persist(); close(); showCalUndo(item, ds); };
 }
 
-function wireHome(){
-  $("#screen").querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>go(el.dataset.open));
-  $("#screen").querySelectorAll("[data-quick]").forEach(el=>el.onclick=()=>{ go(el.dataset.quick); openEditor(el.dataset.quick,null); });
-  const find=el=>(data[el.dataset.mkey]||[]).find(i=>i.id==el.dataset.id);
-  // 置顶卡：就地打卡 / 完成
-  $("#screen").querySelectorAll(".js-pin-chk").forEach(el=>el.onclick=e=>{
-    e.stopPropagation(); const m=modOf(el.dataset.mkey), x=find(el); if(!x) return;
-    if(m.type==="todo"){ x.done=!x.done; }
-    else if(m.type==="checkin"){ x.log=x.log||{}; const t=today(); x.log[t]?delete x.log[t]:x.log[t]=true; }
-    persist();
-  });
-  // 置顶卡：就地改数字
-  $("#screen").querySelectorAll(".js-pin-inc").forEach(el=>el.onclick=e=>{ e.stopPropagation(); const x=find(el); if(!x) return; x.current=(+x.current||0)+1; persist(); });
-  $("#screen").querySelectorAll(".js-pin-dec").forEach(el=>el.onclick=e=>{ e.stopPropagation(); const x=find(el); if(!x) return; x.current=Math.max(0,(+x.current||0)-1); persist(); });
-  // 置顶卡：点标题区查看详情 / 改状态
-  $("#screen").querySelectorAll(".js-pin-open").forEach(el=>el.onclick=()=>openEditor(el.dataset.mkey, find(el)));
-}
-
-/* ---------- INSIGHT ---------- */
-function renderInsight(){
-  // 模块完成度柱状条
-  const DONUT_COLORS=["var(--module-4)","var(--module-3)","var(--module-5)","var(--module-2)","var(--module-1)","var(--danger)","var(--text-tertiary)"];
-  const bars = CONFIG.modules.map(m=>{
-    const it=data[m.key]||[]; let pct=0, label="";
-    if(m.type==="todo"){ const d=it.filter(x=>x.done).length; pct=it.length?Math.round(d/it.length*100):0; label=`${d}/${it.length}`; }
-    else if(m.type==="checkin"){ const t=today(); const d=it.filter(x=>x.log&&x.log[t]).length; pct=it.length?Math.round(d/it.length*100):0; label=`${d}/${it.length}`; }
-    else if(m.type==="progress"){ pct=avgProgress(it).value; label=`${pct}%`; }
-    else if(m.type==="finance"){ const e=it.filter(x=>x.type==="expense").reduce((s,x)=>s+ +x.amount,0); label=`¥${e}`; }
-    else { label=`${it.length} 条`; }
-    return {m, pct, label};
-  });
-  const barAvg = bars.length ? Math.round(bars.reduce((s,b)=>s+b.pct,0)/bars.length) : 0;
-  const barList = bars.map(b=>`<div class="bar-row" data-open="${b.m.key}" role="button" tabindex="0">
-    <span class="bar-ic" style="color:${b.m.color}">${icon(b.m.icon,17)}</span>
-    <span class="bar-name">${b.m.name}</span>
-    <div class="pbar"><i style="width:${Math.min(100,b.pct)}%;background:${b.m.color}"></i></div>
-    <span class="bar-pct">${b.label}</span></div>`).join("");
-
-  // 支出构成 donut
-  const money = data.money||[];
-  const exps = money.filter(x=>x.type==="expense");
-  const totalExp = exps.reduce((s,x)=>s+ +x.amount,0);
-  const cats = (modOf("money")&&modOf("money").categories)||[];
-  let segs = cats.map(c=>({ cat:c, amount: exps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount,0) }))
-    .filter(s=>s.amount>0).sort((a,b)=>b.amount-a.amount);
-  segs.forEach((s,i)=>s.color=DONUT_COLORS[i%DONUT_COLORS.length]);
-  const donut = segs.length ? donutSVG(segs) : `<div class="donut-empty">${icon("wallet",22)}<span>暂无</span></div>`;
-  const legend = segs.map(s=>{ const p=totalExp?Math.round(s.amount/totalExp*100):0;
-    return `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span>
-      <span class="legend-name">${esc(s.cat)}</span><span class="legend-amt">¥${s.amount}</span><span class="legend-pct">${p}%</span></div>`; }).join("");
-
-  $("#screen").innerHTML = `<div class="greet"><div><h1>洞察</h1><p>各模块进展一览 · 记录—执行—统计—反馈</p></div></div>
-    <div class="sec-title">模块完成度</div>
-    <div class="panel"><div class="ph">${icon("chart",15)} 模块完成度<span class="avg">均 ${barAvg}%</span></div>
-      <div class="bar-list">${barList}</div></div>
-    <div class="sec-title">支出构成</div>
-    <div class="panel"><div class="ph">${icon("wallet",15)} 支出构成<span class="avg">合计 ¥${totalExp}</span></div>
-      <div class="donut-wrap"><div class="donut">${donut}${segs.length?`<span class="donut-mid">¥${totalExp}</span>`:''}</div>
-        <div class="donut-legend">${legend}</div></div></div>`;
-  $("#screen").querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>go(el.dataset.open));
-}
-
-/* ---------- MODULE VIEW ---------- */
-function renderModule(key){
-  const m=modOf(key); const it=data[key]||[];
-  const t=today();
-  let head="", extra="";
-  if(m.type==="finance"){
-    const inc=it.filter(x=>x.type==="income").reduce((s,x)=>s+ +x.amount,0);
-    const exp=it.filter(x=>x.type==="expense").reduce((s,x)=>s+ +x.amount,0);
-    head=`<div class="mod-summary">
-      <div class="mini"><div class="l">收入</div><div class="v" style="color:var(--module-1)">¥${inc}</div></div>
-      <div class="mini"><div class="l">支出</div><div class="v" style="color:var(--danger)">¥${exp}</div></div>
-      <div class="mini"><div class="l">结余</div><div class="v">¥${inc-exp}</div></div></div>`;
-  } else if(m.type==="todo"){
-    const done=it.filter(x=>x.done).length; const pct=it.length?Math.round(done/it.length*100):0;
-    head=headHero(m, `${done}/${it.length}`, "今日已完成", pct);
-  } else if(m.type==="checkin"){
-    const done=it.filter(x=>x.log&&x.log[t]).length; const pct=it.length?Math.round(done/it.length*100):0;
-    head=headHero(m, `${done}/${it.length}`, "今日已打卡", pct);
-  } else if(m.type==="progress"){
-    const p=avgProgress(it);
-    head=headHero(m, `${p.value}%`, `平均进度 · ${it.length} 项`, p.value);
-  } else if(m.type==="note"){
-    const todayN=it.filter(x=>x.date===t).length;
-    head=headHero(m, `${it.length}`, `条记录 · 今日 ${todayN} 条`, null);
-  }
-  if(m.type==="checkin") extra=renderCalendar(m,it);
-  const body = it.length ? it.map(x=>recHTML(m,x)).join("")
-    : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录，点上方「新建」添加第一条吧</div></div>`;
-  $("#screen").innerHTML = `<div class="greet"><div><h1>${m.name}</h1><p>${m.desc}</p></div>
-      <button class="add" id="btn-add">${icon("plus",16,2.2)}新建</button></div>
-    <div style="margin-top:16px">${head}${extra}
-      <div class="sec-title">记录</div>${body}</div>`;
-  wireModule(key);
-}
-
-/* per-module hero header: compact strip — icon + big number + label + optional progress bar */
-function headHero(m, big, label, pct){
-  const inner=`<div class="hero-ic" style="background:${m.tint};color:${m.color}">${icon(m.icon,20)}</div>
-    <div style="flex:1;min-width:0"><div class="hero-tx"><span class="hero-v">${big}</span><span class="hero-l">${label}</span></div>
-    ${pct!=null?`<div class="hero-bar"><i style="width:${Math.min(100,pct)}%;background:${m.color}"></i></div>`:''}</div>`;
-  if(m.cover) return `<div class="hero has-cover"><div class="hero-bg" style="background-image:url('${attr(m.cover)}')"></div><div class="hero-inner">${inner}</div></div>`;
-  return `<div class="hero">${inner}</div>`;
-}
-
-function recHTML(m,x){
-  const pin=`<button class="pin-btn js-pin ${x.pinned?'on':''}" data-id="${x.id}" title="置顶">${icon("star",15)}</button>`;
-  const del=`<button class="del js-del" data-id="${x.id}" title="删除">${icon("trash",16)}</button>`;
-  const acts=`<div class="acts">${pin}${del}</div>`;
-  const chkMark=icon("check",14,2.4);
-  const thumb=x.image?`<img class="thumb" src="${attr(x.image)}" alt="">`:'';
-  const customMeta=(m.fields||[]).filter(f=>x[f.key]).map(f=>`<span class="meta-tag">${esc(x[f.key])}</span>`).join("");
-  const customBlock=customMeta?`<div class="meta-line">${customMeta}</div>`:'';
-  const layout=x.layout||'default';
-  const layoutCls=`rec-layout-${layout}`;
-
-  // feature layout: 大图在上 + 标题 + 正文 (适合有图记录)
-  if(layout==='feature' && x.image){
-    const body=(x.content||x.note||'').trim();
-    return `<div class="rec ${layoutCls}">${acts}<div class="top" data-edit="${x.id}" style="flex-direction:column">
-      ${thumb}
-      <div class="feat-title">${esc(x.title||'无标题')}</div>
-      ${body?`<div class="feat-body">${esc(body)}</div>`:''}
-      ${customBlock?`<div style="padding:0 12px 12px">${customBlock}</div>`:''}</div></div>`;
-  }
-  // quote layout: 大字居中 (适合短文本/灵感/金句)
-  if(layout==='quote'){
-    const text=(x.content||x.title||'').trim();
-    return `<div class="rec ${layoutCls}">${acts}<div class="top" data-edit="${x.id}" style="flex-direction:column;align-items:center;text-align:center">
-      <div class="quote-text">${esc(text)}</div>
-      ${x.mood?`<div class="quote-meta">${esc(x.mood)}${x.date?` · ${esc(x.date)}`:''}</div>`:(x.date?`<div class="quote-meta">${esc(x.date)}</div>`:'')}
-      ${customBlock?`<div style="margin-top:8px">${customBlock}</div>`:''}</div></div>`;
-  }
-
-  // default layout (原有逻辑)
-  if(m.type==="todo"){
-    const p=(m.priorities||[]).find(p=>p.key===x.priority);
-    return `<div class="rec ${layoutCls}">${acts}<div class="top">
-      <div class="chk js-chk ${x.done?'on':''}" data-id="${x.id}">${chkMark}</div>
-      ${thumb}
-      <div class="body" data-edit="${x.id}"><div class="rname ${x.done?'done':''}">${esc(x.title)}</div>
-      <div class="rmeta">${p?`<span class="badge" style="background:${p.color};color:${p.text}"><span class="dot"></span>${p.label}</span>`:''}</div>
-      ${x.note?`<div class="rnote">${esc(x.note)}</div>`:''}${customBlock}</div></div></div>`;
-  }
-  if(m.type==="checkin"){
-    const on=!!(x.log&&x.log[today()]); const st=streak(x.log);
-    return `<div class="rec ${layoutCls}">${acts}<div class="top">
-      <div class="chk js-chk ${on?'on':''}" data-id="${x.id}">${chkMark}</div>
-      ${thumb}
-      <div class="body" data-edit="${x.id}"><div class="rname">${esc(x.title)}</div>
-      <div class="rmeta"><span class="streak">${icon("flame",13)} 连续 ${st} 天</span>${on?'<span class="badge" style="background:var(--accent-muted);color:var(--accent)">今日已打卡</span>':''}</div>${customBlock}</div></div></div>`;
-  }
-  if(m.type==="progress"){
-    const pct=Math.min(100,Math.round((x.current/x.target)*100||0));
-    return `<div class="rec ${layoutCls}">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
-      <div class="rname">${esc(x.title)}</div>
-      <div class="rmeta"><span style="color:var(--text-secondary);font-size:13px">${x.current}/${x.target} ${x.unit||m.unit||''} · ${pct}%</span></div>
-      <div class="pbar"><i style="width:${pct}%;background:${m.color}"></i></div>
-      ${x.note?`<div class="rnote">${esc(x.note)}</div>`:''}${customBlock}</div></div></div>`;
-  }
-  if(m.type==="finance"){
-    const inc=x.type==="income";
-    return `<div class="rec ${layoutCls}">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
-      <div class="rname">${esc(x.title)}</div>
-      <div class="rmeta"><span class="badge" style="background:var(--surface-nested);color:var(--text-secondary)">${esc(x.category||'其他')}</span><span style="color:var(--text-secondary);font-size:12px">${x.date||''}</span></div>${customBlock}</div>
-      <div class="amt ${inc?'inc':'exp'}" style="margin-left:auto">${inc?'+':'-'}¥${x.amount}</div></div></div>`;
-  }
-  // note
-  return `<div class="rec ${layoutCls}">${acts}<div class="top">${thumb}<div class="body" data-edit="${x.id}">
-    <div class="rname">${esc(x.title||'无标题')}</div>
-    <div class="rmeta">${x.mood?`<span class="badge" style="background:var(--accent-muted);color:var(--accent)">${esc(x.mood)}</span>`:''}<span style="color:var(--text-secondary);font-size:12px">${x.date||''}</span></div>
-    ${x.content?`<div class="rnote">${esc(x.content)}</div>`:''}${customBlock}</div></div></div>`;
-}
-
-function streak(log){
-  if(!log) return 0; let n=0; const d=new Date();
-  for(;;){ const key=d.toISOString().slice(0,10); if(log[key]){ n++; d.setDate(d.getDate()-1); } else break; }
-  return n;
-}
-
-function wireModule(key){
-  const m=modOf(key);
-  $("#screen").querySelectorAll(".js-chk").forEach(el=>el.onclick=e=>{
-    e.stopPropagation(); const x=(data[key]).find(i=>i.id==el.dataset.id);
-    if(m.type==="todo"){ x.done=!x.done; }
-    else if(m.type==="checkin"){ x.log=x.log||{}; const t=today(); x.log[t]?delete x.log[t]:x.log[t]=true; }
-    persist();
-  });
-  $("#screen").querySelectorAll("[data-edit]").forEach(el=>el.onclick=()=>openEditor(key,(data[key]).find(i=>i.id==el.dataset.edit)));
-  $("#screen").querySelectorAll(".js-del").forEach(el=>el.onclick=e=>{ e.stopPropagation(); confirmDelete(key, el.dataset.id); });
-  $("#screen").querySelectorAll(".js-pin").forEach(el=>el.onclick=e=>{ e.stopPropagation(); const x=(data[key]).find(i=>i.id==el.dataset.id); x.pinned=!x.pinned; persist(); });
-  const add=$("#btn-add"); if(add) add.onclick=()=>openEditor(key,null);
-  if(m.type==="checkin") wireCalendar(key, data[key]||[]);
-}
-
-/* ---------- EDITOR MODAL (per type) ---------- */
+/* ============================================================
+   EDITOR MODAL
+   ============================================================ */
 function openEditor(key, item){
-  if(pref.readonly) return;               // 只读模式：禁止打开编辑器
+  if(pref.readonly) return;
   const m=modOf(key); const editing=!!item;
   const d = item || newItem(m);
   let fields="";
@@ -1256,9 +1734,9 @@ function openEditor(key, item){
       <div class="field"><label>备注</label><textarea id="f-note" placeholder="补充说明">${esc(d.note||'')}</textarea></div>`;
   } else if(m.type==="checkin"){
     fields=`<div class="field"><label>打卡项</label><input id="f-title" value="${attr(d.title)}" placeholder="例如：喝够 8 杯水"/></div>
-      <p class="sub" style="margin:0">保存后可在列表点击左侧方块打卡；连续天数自动统计，每天从零开始。</p>`;
+      <p class="sub" style="margin:0">保存后可在列表点击左侧圆圈打卡；连续天数自动统计，每天从零开始。</p>`;
   } else if(m.type==="progress"){
-    fields=`<div class="field"><label>名称</label><input id="f-title" value="${attr(d.title)}" placeholder="书名 / 目标"/></div>
+    fields=`<div class="field"><label>名称</label><input id="f-title" value="${attr(d.title)}" placeholder="动作名称"/></div>
       <div class="frow"><div class="field"><label>当前</label><input id="f-cur" type="number" value="${d.current??0}"/></div>
       <div class="field"><label>目标</label><input id="f-tgt" type="number" value="${d.target??1}"/></div>
       <div class="field"><label>单位</label><input id="f-unit" value="${attr(d.unit||m.unit||'')}"/></div></div>
@@ -1278,11 +1756,9 @@ function openEditor(key, item){
       <div class="field"><label>日期</label><input id="f-date" type="date" value="${d.date||isoToday()}"/></div>`;
   }
 
-  // layout variant selector
   const layoutOpts=[{v:'default',l:'标准'},{v:'feature',l:'大图'},{v:'quote',l:'引文'}];
   fields=`<div class="field"><label>卡片样式</label><div class="seg" id="f-layout">${layoutOpts.map(o=>`<div class="opt ${o.v===(d.layout||'default')?'on':''}" data-v="${o.v}">${o.l}</div>`).join("")}</div></div>`+fields;
 
-  // custom fields (from m.fields config) — rendered after type-specific fields
   (m.fields||[]).forEach(f=>{
     const v=d[f.key]||"";
     if(f.type==="select") fields+=`<div class="field"><label>${esc(f.label)}</label><div class="seg" style="flex-wrap:wrap" id="f-cf-${f.key}">${(f.options||[]).map(o=>`<div class="opt ${o===v?'on':''}" data-v="${attr(o)}" style="flex:0 0 auto">${esc(o)}</div>`).join("")}</div></div>`;
@@ -1290,7 +1766,6 @@ function openEditor(key, item){
     else if(f.type==="number") fields+=`<div class="field"><label>${esc(f.label)}</label><input id="f-cf-${f.key}" type="number" value="${attr(v)}" placeholder="${attr(f.placeholder||'')}"/></div>`;
     else fields+=`<div class="field"><label>${esc(f.label)}</label><input id="f-cf-${f.key}" value="${attr(v)}" placeholder="${attr(f.placeholder||'')}"/></div>`;
   });
-  // shared image URL field (all types)
   fields+=`<div class="field"><label>图片 URL（可选）</label><input id="f-image" value="${attr(d.image||'')}" placeholder="https://..."/></div>`;
 
   const overlay=document.createElement("div"); overlay.className="overlay";
@@ -1303,7 +1778,6 @@ function openEditor(key, item){
   const close=()=>overlay.remove();
   overlay.onclick=e=>{ if(e.target===overlay) close(); };
   overlay.querySelector("#m-cancel").onclick=close;
-  // segmented pickers
   overlay.querySelectorAll(".seg").forEach(seg=>seg.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{
     seg.querySelectorAll(".opt").forEach(x=>x.classList.remove("on")); o.classList.add("on");
   }));
@@ -1317,13 +1791,11 @@ function openEditor(key, item){
     else if(m.type==="progress"){ d.current=Math.max(0,+val("#f-cur")||0); d.target=Math.max(1,+val("#f-tgt")||1); d.unit=(val("#f-unit")||"").trim(); d.note=(val("#f-note")||"").trim(); }
     else if(m.type==="finance"){ d.type=seg("#f-ftype")||"expense"; d.amount=Math.max(0,+val("#f-amt")||0); d.category=seg("#f-cat")||(m.categories&&m.categories[0])||"其他"; d.date=val("#f-date"); }
     else if(m.type==="note"){ d.mood=seg("#f-mood")||d.mood||""; d.content=(val("#f-content")||"").trim(); d.date=val("#f-date"); }
-    // save custom fields
     (m.fields||[]).forEach(f=>{
       if(f.type==="select") d[f.key]=seg("#f-cf-"+f.key)||d[f.key]||"";
       else if(f.type==="number") d[f.key]=Math.max(0,+val("#f-cf-"+f.key)||0);
       else d[f.key]=(val("#f-cf-"+f.key)||"").trim();
     });
-    // save image
     d.image=(val("#f-image")||"").trim();
     if(!editing) (data[key]=data[key]||[]).unshift(d);
     persist(); close();
@@ -1338,7 +1810,6 @@ function newItem(m){
   else if(m.type==="progress") item={...base, title:"", current:0, target: (m.unit==="页"?100:20), unit:m.unit||"", note:""};
   else if(m.type==="finance") item={...base, title:"", type:"expense", amount:"", category:(m.categories&&m.categories[0])||"其他", date:isoToday()};
   else item={...base, title:"", content:"", mood:(m.moods&&m.moods[0])||"", date:isoToday()};
-  // initialize custom fields
   (m.fields||[]).forEach(f=>{ if(!(f.key in item)) item[f.key]= f.type==="select"?(f.options&&f.options[0]||""):""; });
   return item;
 }
@@ -1357,23 +1828,24 @@ function confirmDelete(key,id){
   overlay.querySelector("#c-ok").onclick=()=>{ data[key]=data[key].filter(i=>i.id!=id); persist(); close(); };
 }
 
-/* ---------- router / nav ---------- */
+/* ============================================================
+   ROUTER / NAV
+   ============================================================ */
 function go(v){ view=v; closeDrawer(); render(); window.scrollTo({top:0}); }
 function render(){
-  // top title
   if(view==="home"){ $("#topTitle").firstChild.textContent="我的生活"; $("#topSub").textContent=CONFIG.slogan; }
   else if(view==="insight"){ $("#topTitle").firstChild.textContent="洞察"; $("#topSub").textContent="统计与复盘"; }
   else { const m=modOf(view); $("#topTitle").firstChild.textContent=m?m.name:"我的生活"; $("#topSub").textContent=m?m.desc:""; }
-  // nav active
   $("#nav").querySelector('[data-nav="home"]').classList.toggle("active", view==="home");
   $("#nav").querySelector('[data-nav="insight"]').classList.toggle("active", view==="insight");
-  // render body
   if(view==="home") renderHome();
   else if(view==="insight") renderInsight();
   else renderModule(view);
 }
 
-/* ---------- data export ---------- */
+/* ============================================================
+   DATA EXPORT
+   ============================================================ */
 function exportData(){
   const exportObj = {
     exportDate: isoToday(),
@@ -1391,16 +1863,12 @@ function exportData(){
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  // toast 提示
-  let t = document.createElement('div');
-  t.style.cssText = 'position:fixed;left:50%;bottom:calc(var(--nav-h)+20px);transform:translateX(-50%);background:var(--text);color:var(--surface-card);font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;box-shadow:var(--shadow-overlay);z-index:80;';
-  t.textContent = '数据已导出';
-  document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 2000);
-  setTimeout(() => t.remove(), 2500);
+  showToast('数据已导出');
 }
 
-/* ---------- drawer ---------- */
+/* ============================================================
+   DRAWER
+   ============================================================ */
 function buildDrawer(){
   $("#drawerName").textContent=CONFIG.owner;
   $("#drawerSlogan").textContent=CONFIG.slogan;
@@ -1416,35 +1884,18 @@ function openDrawer(){
 }
 function closeDrawer(){ $("#drawer").classList.remove("show"); $("#scrim").classList.remove("show"); }
 
-/* ---------- wire chrome ---------- */
+/* ============================================================
+   WIRE CHROME
+   ============================================================ */
 $("#btn-menu").onclick=openDrawer;
 $("#drawerClose").onclick=closeDrawer;
 $("#scrim").onclick=closeDrawer;
 $("#btn-export").onclick=exportData;
 
-/* ---------- preferences & quick note wiring ---------- */
+/* ---------- preferences wiring ---------- */
 $("#sw-dark").onclick = () => { pref.dark = !pref.dark; savePref(pref); applyPref(); };
 $("#sw-edit").onclick = () => { pref.readonly = !pref.readonly; savePref(pref); applyPref(); render(); };
-$("#qn-btn").onclick = quickNote;
-$("#qn-input").addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); quickNote(); } });
 
-function quickNote(){
-  const input = $('#qn-input');
-  const text = input.value.trim();
-  if(!text) return;
-  // 存入 __memos，导出时一并带出，AI 可据此处理
-  if(!data.__memos) data.__memos = [];
-  data.__memos.unshift({ id:'m'+Date.now(), text, date:isoToday(), time:new Date().toTimeString().slice(0,5) });
-  store.save();
-  input.value = '';
-  // toast
-  let t = document.createElement('div');
-  t.style.cssText = 'position:fixed;left:50%;bottom:calc(var(--nav-h)+20px);transform:translateX(-50%);background:var(--text);color:var(--surface-card);font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;box-shadow:var(--shadow-overlay);z-index:80;';
-  t.textContent = '已记录';
-  document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 1500);
-  setTimeout(() => t.remove(), 2000);
-}
 $("#nav").querySelectorAll(".n").forEach(n=>n.onclick=()=>{
   const t=n.dataset.nav;
   if(t==="drawer") openDrawer();
