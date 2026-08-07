@@ -368,6 +368,11 @@
   .food-item .fa { color:var(--text-secondary); font-size:12px; }
   .food-item .fc { color:var(--text-tertiary); font-size:12px; width:60px; text-align:right; font-variant-numeric:tabular-nums; }
 
+  /* ---------- diet daily detail ---------- */
+  .diet-detail-day { margin-bottom:12px; }
+  .diet-detail-day:last-child { margin-bottom:0; }
+  .ddd-head { display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; color:var(--text); padding:6px 0 4px; }
+
   /* ---------- sleep week view ---------- */
   .sleep-week { display:flex; flex-direction:column; gap:6px; }
   .sleep-day { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:var(--radius-tile);
@@ -461,9 +466,9 @@
   .bar-row { display:flex; align-items:center; gap:10px; cursor:pointer; }
   .bar-ic { width:30px; height:30px; border-radius:var(--radius-tile); display:grid; place-items:center; flex:0 0 auto;
     background:var(--surface-nested); border:1px solid var(--border); }
-  .bar-name { font-size:12px; font-weight:600; width:48px; flex:0 0 auto; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .bar-row .pbar { flex:1; margin:0; height:7px; min-width:0; }
-  .bar-pct { font-size:11px; font-weight:600; color:var(--text-secondary); flex:1; text-align:right; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; max-width:120px; }
+  .bar-name { font-size:12px; font-weight:600; width:56px; flex:0 0 auto; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar-row .pbar { flex:1; margin:0; height:7px; min-width:20px; }
+  .bar-pct { font-size:11px; font-weight:600; color:var(--text-secondary); flex:0 0 auto; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
 
   /* ---------- calendar grid ---------- */
   .cal-panel { margin-top:12px; }
@@ -572,7 +577,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 5,
+  seedVersion: 7,
   owner: "我的生活",
   slogan: "Life Dashboard",
   brand: "我",
@@ -653,7 +658,18 @@ const CONFIG = {
 
     { key:"training", name:"训练情况", icon:"activity", tint:"#f6f0e6", color:"var(--module-3)", type:"progress",
       unit:"kg", desc:"力量训练进度",
-      seed:[] },
+      fields:[
+        {key:"part", label:"训练部位", type:"select", options:["肩","胸","背","手臂","腿","核心","其他"]}
+      ],
+      seed:[
+        { id:8801, title:"高位下拉", current:35, target:45, unit:"kg", part:"背", note:"4组×15个，第4组力竭分解" },
+        { id:8802, title:"坐姿划船", current:35, target:40, unit:"kg", part:"背", note:"首组35kg试重，降回30kg做容量" },
+        { id:8803, title:"21响弯举", current:15, target:20, unit:"kg", part:"手臂", note:"3组×21，末组力竭" },
+        { id:8804, title:"哑铃卧推", current:12.5, target:17.5, unit:"kg", part:"胸", note:"4组×8-12" },
+        { id:8805, title:"哑铃飞鸟", current:7.5, target:10, unit:"kg", part:"胸", note:"4组×12-15" },
+        { id:8806, title:"侧平举", current:7.5, target:12.5, unit:"kg", part:"肩", note:"核心动作 5组×15" },
+        { id:8807, title:"哑铃推举", current:12.5, target:17.5, unit:"kg", part:"肩", note:"4组×10-12" }
+      ] },
 
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
       desc:"收支记录",
@@ -826,11 +842,19 @@ const store = {
           CONFIG.modules.forEach(m => {
             const seed = m.seed || [];
             const existing = d[m.key] || [];
-            const existingIds = new Set(existing.map(x => x.id));
-            seed.forEach(s => {
-              if(!existingIds.has(s.id)) existing.push(structuredClone(s));
-            });
-            d[m.key] = existing;
+            const existingIds = new Set(seed.map(x => x.id));
+            // 清理已移除的 seed 项（不在 seed 中且标题匹配旧项）
+            if(m.key === "checkin"){
+              const validTitles = new Set(seed.map(x=>x.title));
+              d[m.key] = existing.filter(x => validTitles.has(x.title) || !seed.length);
+            } else {
+              // 添加新的 seed 项
+              const existIds = new Set(existing.map(x => x.id));
+              seed.forEach(s => {
+                if(!existIds.has(s.id)) existing.push(structuredClone(s));
+              });
+              d[m.key] = existing;
+            }
           });
           d.__seedVer = CONFIG.seedVersion;
           localStorage.setItem(CONFIG.storageKey, JSON.stringify(d));
@@ -1161,23 +1185,23 @@ function renderInsight(){
     if(m.key === "training"){
       pct = CONFIG.stageGoals[0].progress;
       const remaining = 100 - pct;
-      label = `距薄肌身材 约${remaining}天`;
+      label = `约${remaining}天`;
     } else if(m.key === "money"){
       const todayExp = todayExpense();
       const monthExp = monthExpense();
-      label = `今日 ¥${fmtMoney(todayExp)} · 本月 ¥${fmtMoney(monthExp)}`;
+      label = `今¥${fmtMoney(todayExp)} 月¥${fmtMoney(monthExp)}`;
       pct = Math.min(100, Math.round(monthExp / 100));
     } else if(m.key === "body"){
       const latest = it[it.length-1];
       if(latest && latest.bodyFat){
         const trend = bodyTrend(it, 'bodyFat');
-        const arrow = trend==='down'?' ↓趋势良好':trend==='up'?' ↑需注意':' →持平';
-        label = `体脂${latest.bodyFat}%${arrow}`;
+        const arrow = trend==='down'?'↓':trend==='up'?'↑':'→';
+        label = `${latest.bodyFat}%${arrow}`;
         pct = Math.max(0, Math.min(100, Math.round((1 - (+latest.bodyFat-12)/10) * 100)));
-      } else { label = "暂无数据"; }
+      } else { label = "暂无"; }
     } else if(m.key === "diet"){
       const nut = todayNutrition();
-      label = `今日热量${Math.round(nut.calories)}/${CONFIG.nutrition.calories}kcal`;
+      label = `${Math.round(nut.calories)}/${CONFIG.nutrition.calories}kcal`;
       pct = Math.min(100, Math.round(nut.calories / CONFIG.nutrition.calories * 100));
     } else if(m.key === "sleep"){
       const sleepAvg = avgBedtime(it);
@@ -1187,7 +1211,7 @@ function renderInsight(){
         if(mins >= 120) status = "偏晚";
         else status = "良好";
       }
-      label = `平均入睡${sleepAvg} · ${status}`;
+      label = `${sleepAvg} ${status}`;
       const recent = it.filter(x=>x.bedtime).slice(-7);
       const goodCount = recent.filter(x=>{
         const bm = parseBedtimeMinutes(x.bedtime);
@@ -1199,15 +1223,14 @@ function renderInsight(){
       pct = it.length ? Math.round(d/it.length*100) : 0;
       label = `${d}/${it.length}`;
     } else if(m.type === "checkin"){
-      const t = today();
-      const d = it.filter(x=>x.log&&x.log[t]).length;
-      pct = it.length ? Math.round(d/it.length*100) : 0;
-      label = `${d}/${it.length}`;
+      const maxStreak = it.length ? Math.max(...it.map(x=>streak(x.log))) : 0;
+      label = `${maxStreak}天`;
+      pct = Math.min(100, maxStreak * 10);
     } else if(m.type === "progress"){
       pct = avgProgress(it).value;
       label = `${pct}%`;
     } else {
-      label = `${it.length} 条`;
+      label = `${it.length}条`;
     }
     return {m, pct, label};
   });
@@ -1244,9 +1267,11 @@ function renderModule(key){
     const pct = it.length ? Math.round(done/it.length*100) : 0;
     head = headHero(m, `${done}/${it.length}`, "今日已完成", pct);
   } else if(m.type === "checkin"){
-    const done = it.filter(x=>x.log&&x.log[t]).length;
-    const pct = it.length ? Math.round(done/it.length*100) : 0;
-    head = headHero(m, `${done}/${it.length}`, "今日坚持", pct);
+    // 不显示"今日坚持x/x"——只显示累计坚持天数
+    const allStreaks = it.map(x=>streak(x.log));
+    const maxStreak = allStreaks.length ? Math.max(...allStreaks) : 0;
+    const totalDays = it.reduce((s,x)=> s + (x.log ? Object.keys(x.log).length : 0), 0);
+    head = headHero(m, `${maxStreak}`, `天最长连续 · 累计 ${totalDays} 天`, null);
   } else if(m.type === "progress"){
     const p = avgProgress(it);
     head = headHero(m, `${p.value}%`, `平均进度 · ${it.length} 项`, p.value);
@@ -1300,10 +1325,10 @@ function renderTraining(){
     </div>`;
   }).join("");
 
-  // 训练进度按部位分区
+  // 训练进度按部位分区——不显示进度条，只显示动作名和重量
   const partGroups = {};
   it.forEach(x=>{
-    const part = x.note || '其他';
+    const part = x.part || '其他';
     if(!partGroups[part]) partGroups[part] = [];
     partGroups[part].push(x);
   });
@@ -1312,11 +1337,19 @@ function renderTraining(){
     const ia = partOrder.indexOf(a), ib = partOrder.indexOf(b);
     return (ia===-1?99:ia) - (ib===-1?99:ib);
   });
+  const trainRecHTML = (x)=>{
+    const del = `<button class="del js-del" data-id="${x.id}" title="删除">${icon("trash",16)}</button>`;
+    const acts = `<div class="acts">${del}</div>`;
+    return `<div class="rec">${acts}<div class="top"><div class="body" data-edit="${x.id}">
+      <div class="rname">${esc(x.title)}</div>
+      <div class="rmeta"><span style="color:var(--text-secondary);font-size:13px;font-variant-numeric:tabular-nums">当前 ${x.current}${esc(x.unit||'kg')} → 目标 ${x.target}${esc(x.unit||'kg')}</span></div>
+      </div></div></div>`;
+  };
   const body = it.length ? sortedParts.map(part=>{
     const items = partGroups[part];
     return `<div class="train-part-group">
       <div class="tpg-head">${esc(part)} <small>${items.length}项</small></div>
-      ${items.map(x=>recHTML(m,x)).join("")}
+      ${items.map(x=>trainRecHTML(x)).join("")}
     </div>`;
   }).join("") : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有训练记录，点右下角「+」添加</div></div>`;
 
@@ -1467,56 +1500,72 @@ function renderBody(){
 
 /* ---------- body silhouette ---------- */
 function renderSilhouette(curBF, tgtBF, curWaist, tgtWaist, chest){
-  // 根据体脂率调整轮廓宽度——体脂越高腰越宽
-  const bfFactor = (bf) => Math.max(0.8, Math.min(1.5, 1 + (bf - 12) * 0.04));
-  const curF = bfFactor(curBF);
-  const tgtF = bfFactor(tgtBF);
-  const waistScale = (w) => Math.max(0.75, Math.min(1.4, w / 85));
+  // 体脂率影响整体围度，腰围直接影响腰部宽度——差异要明显
+  const bfF = (bf) => Math.max(0.85, Math.min(1.35, 1 + (bf - 12) * 0.035));
+  const wF = (w) => Math.max(6, Math.min(15, (w - 60) * 0.42));
 
-  // 简化人体剪影 SVG——正面视角
-  function bodySVG(scale, waist, color, label, bf){
-    const ws = waistScale(waist);
-    const shoulderW = 36;
-    const waistW = 26 * ws * scale;
-    const hipW = 32 * scale;
-    const headR = 12;
-    const cy = 20; // head center y
-    const neckY = cy + headR + 2;
-    const shoulderY = neckY + 8;
-    const waistY = shoulderY + 40;
-    const hipY = waistY + 18;
-    const feetY = hipY + 55;
-    return `<svg viewBox="0 0 100 ${feetY + 5}" width="100%" style="max-width:140px" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="50" cy="${cy}" r="${headR}"/>
-      <path d="M${50-shoulderW/2} ${shoulderY} Q50 ${neckY-2} ${50+shoulderW/2} ${shoulderY}"/>
-      <path d="M${50-shoulderW/2} ${shoulderY} L${50-waistW/2} ${waistY} L${50-hipW/2} ${hipY} L${50-hipW/2+4} ${feetY}"/>
-      <path d="M${50+shoulderW/2} ${shoulderY} L${50+waistW/2} ${waistY} L${50+hipW/2} ${hipY} L${50+hipW/2-4} ${feetY}"/>
-      <text x="50" y="${feetY+18}" text-anchor="middle" fill="${color}" font-size="10" font-weight="700" font-family="-apple-system,sans-serif">${label}</text>
-      <text x="50" y="${feetY+30}" text-anchor="middle" fill="${color}" font-size="9" font-family="-apple-system,sans-serif" opacity="0.7">体脂 ${bf}%</text>
-    </svg>`;
+  function silhouette(bf, waist) {
+    const b = bfF(bf);
+    const wHalf = wF(waist);
+    const cx = 50;
+
+    const hR = 7, hY = 10, nH = 3.5;
+    const sH = 17;            // 肩宽固定（骨架）
+    const cH = 14 + (b-1)*3;  // 胸围略受体脂影响
+    const hH = 13 + (b-1)*5;  // 髋围受体脂影响
+    const aH = 2 + (b-1)*1.5; // 手臂粗细
+    const aG = 2.5;
+    const lH = 4.5 + (b-1)*1.5;
+    const lG = 2;
+
+    const nY = hY + hR, sY = nY + 5, cY = sY + 7, wY = sY + 18;
+    const hY2 = wY + 9, cY2 = hY2 + 7, kY = hY2 + 22, fY = hY2 + 42, hY3 = wY + 6;
+
+    // 闭合路径：头顶顺时针 → 右臂外→手→臂内→腋→胸→腰→髋→腿→脚 → 左侧镜像 → 闭合
+    return `M ${cx} ${hY-hR}
+C ${cx+hR} ${hY-hR*0.5} ${cx+hR*0.95} ${hY+hR*0.6} ${cx+nH} ${nY}
+C ${cx+sH-4} ${nY+1} ${cx+sH} ${sY-3} ${cx+sH} ${sY}
+L ${cx+sH+aH} ${hY3}
+Q ${cx+sH+aH} ${hY3+3} ${cx+sH+aH-1.5} ${hY3+3}
+L ${cx+sH-aG} ${hY3-3}
+C ${cx+cH+1} ${cY} ${cx+cH} ${cY+3} ${cx+wHalf} ${wY-2}
+C ${cx+wHalf} ${wY+2} ${cx+wHalf+1} ${wY+4} ${cx+wHalf+2} ${wY+5}
+C ${cx+hH-2} ${hY2-3} ${cx+hH} ${hY2-1} ${cx+hH} ${hY2}
+L ${cx+hH+1} ${kY} L ${cx+hH-1} ${fY}
+L ${cx+lH+2} ${fY+1} L ${cx+lH+2} ${fY-1}
+L ${cx+lG+0.5} ${kY-2} L ${cx+lG} ${cY2}
+L ${cx-lG} ${cY2} L ${cx-lG-0.5} ${kY-2}
+L ${cx-lH-2} ${fY-1} L ${cx-lH-2} ${fY+1}
+L ${cx-hH+1} ${fY} L ${cx-hH-1} ${kY} L ${cx-hH} ${hY2}
+C ${cx-hH} ${hY2-1} ${cx-hH+2} ${hY2-3} ${cx-wHalf-2} ${wY+5}
+C ${cx-wHalf-1} ${wY+4} ${cx-wHalf} ${wY+2} ${cx-wHalf} ${wY-2}
+C ${cx-cH} ${cY+3} ${cx-cH-1} ${cY} ${cx-sH+aG} ${hY3-3}
+L ${cx-sH-aH+1.5} ${hY3+3}
+Q ${cx-sH-aH} ${hY3+3} ${cx-sH-aH} ${hY3}
+L ${cx-sH} ${sY}
+C ${cx-sH} ${sY-3} ${cx-sH+4} ${nY+1} ${cx-nH} ${nY}
+C ${cx-hR*0.95} ${hY+hR*0.6} ${cx-hR} ${hY-hR*0.5} ${cx} ${hY-hR} Z`;
   }
 
   return `<div class="panel" style="margin-bottom:12px">
     <div class="ph" style="margin-bottom:10px">${icon("target",15)} 身材剪影对比</div>
-    <div class="silhouette-compare">
-      <div class="sil-col">
-        ${bodySVG(curF, curWaist, 'var(--module-4)', '当前', curBF)}
-      </div>
-      <div class="sil-arrow">→</div>
-      <div class="sil-col">
-        ${bodySVG(tgtF, tgtWaist, 'var(--module-1)', '目标', tgtBF)}
-      </div>
+    <div style="display:flex;justify-content:center;position:relative">
+      <svg viewBox="0 0 100 96" width="100%" style="max-width:180px" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${silhouette(curBF, curWaist)}" stroke="var(--module-4)" stroke-width="1.5" fill="color-mix(in srgb, var(--module-4) 18%, transparent)" opacity="0.7"/>
+        <path d="${silhouette(tgtBF, tgtWaist)}" stroke="var(--module-1)" stroke-width="1.5" stroke-dasharray="3 2" fill="color-mix(in srgb, var(--module-1) 8%, transparent)" opacity="0.85"/>
+      </svg>
     </div>
-    <div style="font-size:12px;color:var(--text-secondary);margin-top:8px;text-align:center">腰围 ${curWaist}cm → ${tgtWaist}cm · 胸围 ${chest}cm</div>
+    <div style="display:flex;justify-content:center;gap:20px;margin-top:6px">
+      <span style="font-size:11px;color:var(--module-4);font-weight:600">━ 当前 ${curBF}%</span>
+      <span style="font-size:11px;color:var(--module-1);font-weight:600">┄ 目标 ${tgtBF}%</span>
+    </div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;text-align:center">腰围 ${curWaist}→${tgtWaist}cm · 胸围 ${chest}cm</div>
   </div>`;
 }
 
 /* ============================================================
-   DIET MODULE — 营养 + 库存 + 建议
+   DIET MODULE — 营养 + 库存 + 建议 + 每日详情
    ============================================================ */
-let dietViewMode = 'week';
-let dietWeekOffset = 0;
-
 function renderDiet(){
   const m = modOf("diet"); const it = data.diet || [];
   const t = today();
@@ -1542,15 +1591,15 @@ function renderDiet(){
     <div class="ph" style="margin-bottom:10px">${icon("pen",15)} 今日营养</div>
     ${nutriRows}</div>`;
 
-  // 建议（上调到最前面）
+  // 建议
   let advice = "暂无饮食记录。";
   if(nut.calories > 0 || it.length){
     if(nut.protein < goals.protein * 0.8 && nut.calories > 0){
-      advice = `蛋白质摄入不足（${Math.round(nut.protein)}/${goals.protein}g），建议补充蛋白粉或鸡胸肉。库存有蛋白粉~500g。`;
+      advice = `蛋白质不足（${Math.round(nut.protein)}/${goals.protein}g），建议补充蛋白粉。`;
     } else if(nut.calories > goals.calories){
-      advice = `热量超标（${Math.round(nut.calories)}/${goals.calories}kcal），注意控制油脂摄入。`;
+      advice = `热量超标（${Math.round(nut.calories)}/${goals.calories}kcal），注意控制油脂。`;
     } else if(nut.fat > goals.fat){
-      advice = `脂肪摄入超标（${Math.round(nut.fat)}/${goals.fat}g），减少油炸食品。`;
+      advice = `脂肪超标（${Math.round(nut.fat)}/${goals.fat}g），减少油炸食品。`;
     } else if(nut.calories > 0){
       advice = "今日营养摄入均衡，继续保持。";
     } else {
@@ -1569,63 +1618,25 @@ function renderDiet(){
     <div class="ph" style="margin-bottom:8px">${icon("wallet",15)} 食材库存</div>
     ${foodList}</div>`;
 
-  // 日历视图切换
-  const toggle = `<div class="view-toggle">
-    <div class="vt-btn ${dietViewMode==='week'?'on':''}" data-vm="week">周历</div>
-    <div class="vt-btn ${dietViewMode==='month'?'on':''}" data-vm="month">月历</div></div>`;
-
-  // 构建日期到记录的映射
+  // 每日详情——按日期分组显示记录内容
   const dateMap = {};
   it.forEach(r=>{ if(r.date) { if(!dateMap[r.date]) dateMap[r.date] = []; dateMap[r.date].push(r); } });
-
-  let calContent = "";
-  if(dietViewMode === 'week'){
-    // 周历——显示当前周（可切换上下周）
-    const weekStart = new Date();
-    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + dietWeekOffset * 7);
-    const days = [];
-    for(let i=0; i<7; i++){
-      const d = new Date(weekStart);
-      d.setDate(d.getDate() + i);
-      const ds = d.toISOString().slice(0,10);
-      const recs = dateMap[ds] || [];
-      const totalCal = recs.reduce((s,x)=>s+(+x.calories||0), 0);
-      const hasRec = recs.length > 0;
-      days.push({ ds, short: `${d.getMonth()+1}/${d.getDate()}`, weekday: "日一二三四五六"[d.getDay()], totalCal, hasRec });
-    }
-    const weekLabel = `${days[0].short} - ${days[6].short}`;
-    calContent = `<div class="panel">
-      <div class="cal-hd"><button class="cal-nav" data-diet-w="-1" aria-label="上周">${icon("chevron",16,2)}</button>
-        <span class="cal-title">${weekLabel}</span>
-        <button class="cal-nav" data-diet-w="1" aria-label="下周">${icon("chevron",16,2)}</button></div>
-      <div class="diet-week">${days.map(d=>`
-        <div class="diet-day ${d.hasRec?'has':''} ${d.ds===t?'today':''}">
-          <div class="dd-date">${d.short}<small>周${d.weekday}</small></div>
-          <div class="dd-cal">${d.hasRec?Math.round(d.totalCal)+'kcal':'--'}</div>
-        </div>`).join("")}</div>
+  const sortedDates = Object.keys(dateMap).sort().reverse();
+  const dailyDetail = sortedDates.length ? sortedDates.map(ds=>{
+    const recs = dateMap[ds];
+    const totalCal = recs.reduce((s,x)=>s+(+x.calories||0), 0);
+    const dt = new Date(ds);
+    const label = `${dt.getMonth()+1}/${dt.getDate()} 周${"日一二三四五六"[dt.getDay()]}`;
+    const items = recs.map(r=>`<div style="padding:6px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--text)">${esc(r.title||'未命名')}</div>
+      ${r.content?`<div style="font-size:12px;color:var(--text-secondary);margin-top:2px">${esc(r.content)}</div>`:''}
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px">${r.calories?Math.round(r.calories)+'kcal':''}${r.protein?' · 蛋白'+Math.round(r.protein)+'g':''}${r.fat?' · 脂肪'+Math.round(r.fat)+'g':''}${r.carbs?' · 碳水'+Math.round(r.carbs)+'g':''}</div>
+    </div>`).join("");
+    return `<div class="diet-detail-day">
+      <div class="ddd-head"><span>${label}</span><span style="color:var(--module-4);font-weight:700">${Math.round(totalCal)}kcal</span></div>
+      ${items}
     </div>`;
-  } else {
-    // 月历
-    const now = new Date();
-    const y = now.getFullYear(), mo = now.getMonth();
-    const startDow = new Date(y, mo, 1).getDay();
-    const daysInMonth = new Date(y, mo+1, 0).getDate();
-    const todayIso = isoToday();
-    let cells = "";
-    for(let i=0; i<startDow; i++) cells += `<div class="cal-cell blank"></div>`;
-    for(let d=1; d<=daysInMonth; d++){
-      const ds = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const recs = dateMap[ds] || [];
-      const hasRec = recs.length > 0;
-      cells += `<div class="cal-cell ${hasRec?'on':''} ${ds===todayIso?'today':''}"${hasRec?` style="background:var(--module-5);border-color:var(--module-5)"`:''}>${d}</div>`;
-    }
-    calContent = `<div class="panel">
-      <div class="cal-dow">${"日一二三四五六".split("").map(x=>`<span>${x}</span>`).join("")}</div>
-      <div class="cal-grid">${cells}</div>
-      <div class="cal-foot" style="margin-top:10px">
-        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--module-5)"></span>有记录</span>
-      </div></div>`;
-  }
+  }).join("") : '<div style="font-size:13px;color:var(--text-secondary);padding:8px 0">暂无记录</div>';
 
   const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
@@ -1633,22 +1644,13 @@ function renderDiet(){
   $("#screen").innerHTML = `<div style="margin-top:10px">
       ${adviceBox}
       ${nutriCard}
-      ${toggle}
-      ${calContent}
       ${invCard}
+      <div class="sec-title">每日详情</div>
+      <div class="panel">${dailyDetail}</div>
       <div class="sec-title">记录</div>${body}
     </div>
     <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
   wireModule("diet");
-
-  // 视图切换
-  $("#screen").querySelectorAll(".vt-btn").forEach(el=>el.onclick=()=>{
-    dietViewMode = el.dataset.vm; dietWeekOffset = 0; render();
-  });
-  // 周历切换
-  $("#screen").querySelectorAll("[data-diet-w]").forEach(el=>el.onclick=()=>{
-    dietWeekOffset += parseInt(el.dataset.dietW); render();
-  });
 }
 
 /* ============================================================
@@ -1763,6 +1765,25 @@ function renderSleep(){
   const adviceBox = `<div class="advice-box">
     <div class="ab-title">${icon("bolt",14)} 建议</div>${advice}</div>`;
 
+  // 每日详情——按日期分组显示记录内容
+  const sleepDateMap = {};
+  it.forEach(r=>{ if(r.date) { if(!sleepDateMap[r.date]) sleepDateMap[r.date] = []; sleepDateMap[r.date].push(r); } });
+  const sleepSortedDates = Object.keys(sleepDateMap).sort().reverse();
+  const sleepDailyDetail = sleepSortedDates.length ? sleepSortedDates.map(ds=>{
+    const recs = sleepDateMap[ds];
+    const dt = new Date(ds);
+    const label = `${dt.getMonth()+1}/${dt.getDate()} 周${"日一二三四五六"[dt.getDay()]}`;
+    const items = recs.map(r=>`<div style="padding:6px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--text)">${r.bedtime||'--'} → ${r.wakeTime||'--'} · ${r.duration||'--'}</div>
+      ${r.content?`<div style="font-size:12px;color:var(--text-secondary);margin-top:2px">${esc(r.content)}</div>`:''}
+      ${r.mood?`<span class="badge" style="background:var(--accent-muted);color:var(--accent);margin-top:3px">${esc(r.mood)}</span>`:''}
+    </div>`).join("");
+    return `<div class="diet-detail-day">
+      <div class="ddd-head"><span>${label}</span></div>
+      ${items}
+    </div>`;
+  }).join("") : '<div style="font-size:13px;color:var(--text-secondary);padding:8px 0">暂无记录</div>';
+
   const body = it.length ? it.slice().reverse().map(x=>recHTML(m,x)).join("")
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>还没有记录</div></div>`;
 
@@ -1771,6 +1792,8 @@ function renderSleep(){
       ${adviceBox}
       ${toggle}
       ${viewContent}
+      <div class="sec-title">每日详情</div>
+      <div class="panel">${sleepDailyDetail}</div>
       <div class="sec-title">记录</div>${body}
     </div>
     <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
