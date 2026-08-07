@@ -4,13 +4,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>我的生活 · 生活台</title>
+<title>HAVING · 生活台</title>
 <!-- PWA: 手机添加到主屏幕后像原生 App 一样全屏运行 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="我的生活">
-<meta name="theme-color" content="#2f2e2b">
+<meta name="apple-mobile-web-app-title" content="HAVING">
+<meta name="theme-color" content="#1e1d1a">
 <link rel="manifest" href="assets/manifest.json">
 <link rel="apple-touch-icon" href="assets/app-icon.svg">
 <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
@@ -20,38 +20,38 @@
      ============================================================ */
   :root {
     /* ---- 页面与表面 ---- */
-    --page-bg: #f4f3f0;
-    --surface-card: #fcfbf8;
-    --surface-nested: #f7f6f1;
+    --page-bg: #f2f1ed;
+    --surface-card: #ffffff;
+    --surface-nested: #f6f5f1;
 
     /* ---- 边框 ---- */
-    --border: #ecebe5;
-    --border-input: #e0ded6;
+    --border: #e8e6df;
+    --border-input: #d8d6cd;
 
     /* ---- 文本层级 ---- */
-    --text: #232220;
-    --text-secondary: #6b665d;
-    --text-tertiary: #8c877c;
+    --text: #1a1916;
+    --text-secondary: #615c52;
+    --text-tertiary: #8a857a;
 
-    /* ---- 主色 ---- */
-    --accent: #2f2e2b;
-    --accent-muted: #efeee8;
-    --on-accent: #f4f3f0;
+    /* ---- 主色（墨黑——锐利、果断） ---- */
+    --accent: #1a1916;
+    --accent-muted: #ebe9e2;
+    --on-accent: #f2f1ed;
 
-    /* ---- 模块色 ---- */
-    --module-1: #6f8f6a;
-    --module-2: #5f7a99;
-    --module-3: #bd8a4e;
-    --module-4: #b5715a;
-    --module-5: #7d7195;
+    /* ---- 模块色（更饱和、更有辨识度） ---- */
+    --module-1: #5a8a52;
+    --module-2: #4a6f8e;
+    --module-3: #c4923a;
+    --module-4: #b56042;
+    --module-5: #7d6b9e;
 
     /* ---- 危险色 ---- */
     --danger: #c25d4f;
     --danger-muted: #f6ece9;
 
     /* ---- 抽屉 ---- */
-    --drawer-bg: #232220;
-    --drawer-bg-top: #2d2c29;
+    --drawer-bg: #1a1916;
+    --drawer-bg-top: #252420;
     --drawer-text: #f4f3f0;
     --drawer-text-mute: rgba(244,243,240,.55);
     --drawer-hover: rgba(244,243,240,.1);
@@ -64,8 +64,8 @@
     --radius-sheet: 22px;
 
     /* ---- 阴影 ---- */
-    --shadow-card: 0 1px 2px rgba(35,34,32,.04), 0 4px 16px rgba(35,34,32,.05);
-    --shadow-overlay: 0 10px 28px rgba(35,34,32,.12);
+    --shadow-card: 0 1px 2px rgba(26,25,22,.04), 0 2px 12px rgba(26,25,22,.05);
+    --shadow-overlay: 0 8px 24px rgba(26,25,22,.14);
 
     /* ---- 字体与布局 ---- */
     --font: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
@@ -74,20 +74,20 @@
 
   /* ============ 深色模式 ============ */
   body.dark {
-    --page-bg:#1a1917; --surface-card:#252421; --surface-nested:#2d2b27;
-    --border:#383631; --border-input:#45423c;
-    --text:#ece9e3; --text-secondary:#a09a8e; --text-tertiary:#716b60;
-    --accent:#d8d5cf; --accent-muted:#383631; --on-accent:#1a1917;
-    --module-1:#8aa394; --module-2:#7a8da3; --module-3:#d4a55e;
-    --module-4:#c8836a; --module-5:#9b8db5;
+    --page-bg:#131210; --surface-card:#1e1d1a; --surface-nested:#272622;
+    --border:#33322d; --border-input:#403e38;
+    --text:#eeebe5; --text-secondary:#9a948a; --text-tertiary:#6b665c;
+    --accent:#e8e5df; --accent-muted:#33322d; --on-accent:#131210;
+    --module-1:#7aaa72; --module-2:#6a8fa8; --module-3:#d4a548;
+    --module-4:#c87058; --module-5:#8d7bae;
     --danger:#d66b5d; --danger-muted:#3a2a26;
-    --drawer-bg:#1a1917; --drawer-bg-top:#252421; --drawer-text:#ece9e3;
-    --drawer-text-mute:rgba(236,233,227,.55);
-    --drawer-hover:rgba(236,233,227,.1); --drawer-active:rgba(236,233,227,.09);
-    --shadow-card:0 1px 2px rgba(0,0,0,.2),0 4px 16px rgba(0,0,0,.15);
-    --shadow-overlay:0 10px 28px rgba(0,0,0,.3);
+    --drawer-bg:#131210; --drawer-bg-top:#1e1d1a; --drawer-text:#eeebe5;
+    --drawer-text-mute:rgba(238,235,229,.5);
+    --drawer-hover:rgba(238,235,229,.08); --drawer-active:rgba(238,235,229,.07);
+    --shadow-card:0 1px 2px rgba(0,0,0,.25),0 4px 16px rgba(0,0,0,.2);
+    --shadow-overlay:0 10px 28px rgba(0,0,0,.4);
   }
-  body.dark .nav { background:rgba(37,36,33,.92); }
+  body.dark .nav { background:rgba(30,29,26,.92); }
 
   /* ============ 只读模式 ============ */
   body.readonly .add, body.readonly #btn-add,
@@ -124,9 +124,9 @@
   #login-overlay { position:fixed; inset:0; z-index:200; background:var(--page-bg); display:flex; align-items:center; justify-content:center; padding:24px; }
   #login-overlay.hidden { display:none; }
   #login-overlay .login-card { width:100%; max-width:340px; text-align:center; }
-  #login-overlay .login-logo { width:64px; height:64px; border-radius:18px; background:linear-gradient(135deg,var(--module-1),var(--module-2)); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; }
-  #login-overlay h2 { font-size:22px; font-weight:800; margin-bottom:4px; color:var(--text); }
-  #login-overlay .login-sub { font-size:13px; color:var(--text-tertiary); margin-bottom:28px; }
+  #login-overlay .login-logo { width:72px; height:72px; border-radius:20px; background:var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+  #login-overlay h2 { font-size:26px; font-weight:800; margin-bottom:4px; color:var(--text); letter-spacing:.04em; }
+  #login-overlay .login-sub { font-size:12px; color:var(--text-tertiary); margin-bottom:28px; letter-spacing:.06em; }
   #login-overlay .login-field { width:100%; border:1px solid var(--border-input); border-radius:var(--radius-tile); padding:14px 16px; background:var(--surface-card); color:var(--text); font-family:var(--font); font-size:15px; outline:none; margin-bottom:12px; }
   #login-overlay .login-field:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-muted); }
   #login-overlay .login-btn { width:100%; border:none; border-radius:var(--radius-tile); background:var(--accent); color:var(--on-accent); padding:14px; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font); margin-bottom:10px; }
@@ -158,8 +158,8 @@
     background: linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 94%, transparent), color-mix(in srgb, var(--page-bg) 50%, transparent)); }
   .topbar .menu-btn { width: 38px; height: 38px; min-width:44px; min-height:44px; border: none; border-radius: var(--radius-tile); background: var(--surface-card);
     box-shadow: var(--shadow-card); display: grid; place-items: center; cursor: pointer; color: var(--text); }
-  .topbar .title { font-size: 16px; font-weight: 700; letter-spacing: -.01em; flex: 1; line-height: 1.2; }
-  .topbar .title small { display:block; font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing:.02em; margin-top: 2px; }
+  .topbar .title { font-size: 17px; font-weight: 800; letter-spacing: .02em; flex: 1; line-height: 1.2; }
+  .topbar .title small { display:block; font-size: 10px; font-weight: 500; color: var(--text-tertiary); letter-spacing:.08em; margin-top: 2px; }
   .date-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary);
     background: var(--surface-card); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; box-shadow: var(--shadow-card); }
   .date-chip svg { color: var(--text-tertiary); }
@@ -179,7 +179,7 @@
   .greet { position: relative; overflow: hidden; margin-top: 8px; padding: 18px 14px; border-radius: var(--radius-card);
     border: 1px solid var(--border); box-shadow: var(--shadow-card); background: var(--surface-card); }
   .greet > * { position: relative; z-index: 1; }
-  .greet h1 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+  .greet h1 { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
   .greet p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
   .greet .add { position: absolute; top: 14px; right: 14px; z-index: 2; border:none; cursor:pointer;
     display:inline-flex; align-items:center; gap:6px; background: var(--accent); color:var(--on-accent);
@@ -195,7 +195,7 @@
 
   /* ---------- compact greeting (homepage) ---------- */
   .compact-greet { display:flex; align-items:baseline; gap:8px; padding:8px 0 4px; }
-  .compact-greet .hi { font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+  .compact-greet .hi { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
   .compact-greet .dt { font-size: 12px; color: var(--text-secondary); }
 
   /* ---------- home card (tappable) ---------- */
@@ -514,9 +514,9 @@
 <!-- 登录界面 -->
 <div id="login-overlay">
   <div class="login-card">
-    <div class="login-logo">🏠</div>
-    <h2>我的生活</h2>
-    <p class="login-sub">私人生活台 · 请登录</p>
+    <div class="login-logo"><svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="var(--on-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40 C14 39, 9 31, 11 22 C13 14, 20 11, 25 14 C30 17, 32 23, 29 28 C26 32, 21 32, 18 29 C16 27, 16 23, 19 21 C21 19, 24 20, 25 22" stroke="var(--on-accent)" opacity="0.3" stroke-dasharray="2 2"/><path d="M24 40 C14 39, 9 31, 11 22 C13 14, 20 11, 25 14 C30 17, 32 23, 29 28 C26 32, 21 32, 18 29 C16 27, 16 23, 19 21 C21 19, 24 20, 25 22" stroke="var(--on-accent)"/><circle cx="24" cy="40" r="3.5" fill="var(--on-accent)" stroke="none"/><circle cx="25" cy="22" r="2.5" fill="none" stroke="var(--accent)" stroke-width="2"/></svg></div>
+    <h2>HAVING</h2>
+    <p class="login-sub">持续拥有中 · 私人生活台</p>
     <input type="email" class="login-field" id="li-email" placeholder="邮箱" autocomplete="email" />
     <input type="password" class="login-field" id="li-pass" placeholder="密码" autocomplete="current-password" />
     <div class="login-err" id="li-err"></div>
@@ -527,7 +527,7 @@
 <div class="app">
   <div class="topbar">
     <button class="menu-btn" id="btn-menu"></button>
-    <div class="title" id="topTitle">我的生活<small id="topSub">Life Dashboard</small></div>
+    <div class="title" id="topTitle">HAVING<small id="topSub">持续拥有中</small></div>
     <button class="refresh-btn" id="btn-refresh" title="刷新数据"></button>
   </div>
   <div id="screen"></div>
@@ -545,9 +545,9 @@
 <aside class="drawer" id="drawer">
   <div class="dh">
     <button class="dclose" id="drawerClose"></button>
-    <div class="brand" id="drawerBrand" title="点击更换头像"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Crect width='46' height='46' rx='13' fill='%236f8f6a'/%3E%3Ctext x='23' y='31' text-anchor='middle' fill='%23f4f3f0' font-size='22' font-family='sans-serif' font-weight='bold'%3E%E6%88%91%3C/text%3E%3C/svg%3E" alt="头像" id="brandImg"/><span class="brand-cam" id="brandCam"></span></div>
+    <div class="brand" id="drawerBrand" title="点击更换头像"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Crect width='46' height='46' rx='13' fill='%231e1d1a'/%3E%3Cpath d='M23 38 C15 37, 11 30, 12 22 C13 15, 19 12, 23 14 C27 16, 29 22, 27 26 C25 29, 21 29, 19 27 C17 25, 17 22, 19 20 C21 18, 23 19, 24 21' fill='none' stroke='%23f4f3f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.3' stroke-dasharray='2 2'/%3E%3Cpath d='M23 38 C15 37, 11 30, 12 22 C13 15, 19 12, 23 14 C27 16, 29 22, 27 26 C25 29, 21 29, 19 27 C17 25, 17 22, 19 20 C21 18, 23 19, 24 21' fill='none' stroke='%23f4f3f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='23' cy='38' r='3' fill='%23f4f3f0'/%3E%3Ccircle cx='24' cy='21' r='2.5' fill='none' stroke='%23bd8a4e' stroke-width='1.8'/%3E%3C/svg%3E" alt="HAVING" id="brandImg"/><span class="brand-cam" id="brandCam"></span></div>
     <input type="file" id="avatarInput" accept="image/*" hidden/>
-    <div><h2 id="drawerName">我的生活</h2><p id="drawerSlogan">Life Dashboard</p></div>
+    <div><h2 id="drawerName">HAVING</h2><p id="drawerSlogan">持续拥有中</p></div>
   </div>
   <div class="dsep"></div>
   <div id="drawerList"></div>
@@ -578,8 +578,8 @@
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
   seedVersion: 8,
-  owner: "我的生活",
-  slogan: "Life Dashboard",
+  owner: "HAVING",
+  slogan: "持续拥有中",
   brand: "我",
 
   nutrition: { calories: 1900, protein: 125, fat: 53, carbs: 231 },
