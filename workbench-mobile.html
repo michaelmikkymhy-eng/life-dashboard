@@ -609,7 +609,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 10,
+  seedVersion: 11,
   owner: "HAVING",
   slogan: "持续拥有中",
   brand: "我",
@@ -925,10 +925,10 @@ function migrateSeedData(d){
     const habit = (d.checkin || []).find(x => x.id === 9903);
     if(habit){ habit.log = habit.log || {}; habit.log["2026-08-07"] = true; }
   }
-  // v10: 8/8 晚间消费记录 + 晚餐饮食记录
+  // v10: 8/7 深夜消费 + 晚餐饮食记录（按睡眠规则：8号7:30睡前的归属7号）
   if(curVer < 10){
-    const t8 = "2026-08-08";
-    // 支出：打车×3 + 请欣雨吃饭 + 酒吧
+    const t8 = "2026-08-07";
+    // 支出：打车×3 + 请欣雨吃饭 + 酒吧 + TRAE会员
     d.money = d.money || [];
     const moneyIds = new Set(d.money.map(x=>x.id));
     const newExpenses = [
@@ -937,6 +937,7 @@ function migrateSeedData(d){
       { id: 10103, date: t8, title: "酒吧·起泡酒+甜食", type: "expense", amount: 210, category: "娱乐" },
       { id: 10104, date: t8, title: "打车", type: "expense", amount: 13, category: "行" },
       { id: 10105, date: t8, title: "打车", type: "expense", amount: 33.4, category: "行" },
+      { id: 10106, date: t8, title: "TRAE会员 Lite 权益", type: "expense", amount: 9.9, category: "设备" },
     ];
     newExpenses.forEach(e => { if(!moneyIds.has(e.id)) d.money.push(e); });
     // 晚餐+夜宵饮食记录
@@ -965,6 +966,24 @@ function migrateSeedData(d){
         mood: "热量超",
         calories: 350, protein: 4, fat: 3, carbs: 55
       });
+    }
+  }
+  // v11: 按睡眠规则修正日期——8号7:30睡前的消费/饮食归属7号
+  if(curVer < 11){
+    const fixMoney = (d.money||[]).filter(x => [10101,10102,10103,10104,10105].includes(x.id) && x.date==="2026-08-08");
+    fixMoney.forEach(x => x.date = "2026-08-07");
+    const fixDiet = (d.diet||[]).filter(x => [10001,10002,10003].includes(x.id) && x.date==="2026-08-08");
+    fixDiet.forEach(x => x.date = "2026-08-07");
+    // 奶茶33（title匹配）归7号
+    (d.money||[]).forEach(x => { if(x.title==="给马女士买奶茶" && x.date==="2026-08-08") x.date="2026-08-07"; });
+    // sleep（4:57入睡）归7号
+    (d.sleep||[]).forEach(x => { if(x.bedtime==="4:57" && x.date==="2026-08-08") x.date="2026-08-07"; });
+    // 早餐（8:34起床餐）归7号
+    (d.diet||[]).forEach(x => { if(x.title==="早餐（8:34起床餐）" && x.date==="2026-08-08") x.date="2026-08-07"; });
+    // 补 TRAE 会员 Lite 9.9
+    d.money = d.money || [];
+    if(!(d.money||[]).some(x=>x.id===10106)){
+      d.money.push({ id:10106, date:"2026-08-07", title:"TRAE会员 Lite 权益", type:"expense", amount:9.9, category:"设备" });
     }
   }
   d.__seedVer = CONFIG.seedVersion;
@@ -2349,8 +2368,9 @@ function attr(s){ return esc(s).replace(/"/g,'&quot;'); }
 
 /* ---------- seed today's data ---------- */
 function seedTodayData(){
-  const t = isoToday();
-  // 检查是否已有今日记录，避免重复
+  // 按睡眠规则：当前作息日=7号（8号7:30才睡，睡前的消费/饮食/作息归属7号）
+  const t = "2026-08-07";
+  // 检查是否已有该作息日记录，避免重复
   const hasSleep = (data.sleep||[]).some(x=>x.date===t);
   const hasDiet = (data.diet||[]).some(x=>x.date===t);
   const hasFinance = (data.money||[]).some(x=>x.date===t && x.category==="社交");
@@ -2398,7 +2418,7 @@ function seedTodayData(){
     });
   }
 
-  // 8/8 晚间支出
+  // 8/7 深夜支出
   const eveningIds = new Set((data.money||[]).map(x=>x.id));
   const eveningExpenses = [
     { id: 10101, date: t, title: "打车", type: "expense", amount: 17, category: "行" },
@@ -2406,10 +2426,11 @@ function seedTodayData(){
     { id: 10103, date: t, title: "酒吧·起泡酒+甜食", type: "expense", amount: 210, category: "娱乐" },
     { id: 10104, date: t, title: "打车", type: "expense", amount: 13, category: "行" },
     { id: 10105, date: t, title: "打车", type: "expense", amount: 33.4, category: "行" },
+    { id: 10106, date: t, title: "TRAE会员 Lite 权益", type: "expense", amount: 9.9, category: "设备" },
   ];
   eveningExpenses.forEach(e => { if(!eveningIds.has(e.id)) (data.money=data.money||[]).push(e); });
 
-  // 8/8 晚餐+夜宵饮食记录
+  // 8/7 晚餐+夜宵饮食记录
   const dietIds = new Set((data.diet||[]).map(x=>x.id));
   const eveningDiet = [
     { id: 10001, date: t, title: "晚餐·牛排锅", content: "排骨肉7块 + 干豆腐丝，吃到饱", mood: "热量超", calories: 620, protein: 45, fat: 40, carbs: 13 },
