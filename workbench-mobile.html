@@ -334,6 +334,7 @@
     cursor:pointer; transition:all .15s; font-variant-numeric:tabular-nums; }
   .cat-chip.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
   .cat-chip.empty-cat { opacity:.4; }
+  .cat-chips-sep { width:100%; height:0; }
 
   /* ---------- history ledger entry ---------- */
   .hist-entry { transition:background .15s; }
@@ -619,7 +620,7 @@
    ============================================================ */
 const CONFIG = {
   storageKey: "my-life-dashboard-v3",
-  seedVersion: 11,
+  seedVersion: 12,
   owner: "HAVING",
   slogan: "持续拥有中",
   brand: "我",
@@ -671,9 +672,9 @@ const CONFIG = {
 
   foodInventory: [
     { name: "溏心卤蛋", amount: "4枚", calories: 280 },
-    { name: "帕斯雀牛肉片", amount: "300g", calories: 600 },
+    { name: "帕斯雀牛肉片", amount: "150g", calories: 300 },
     { name: "凉拌牛肉", amount: "90g", calories: 180 },
-    { name: "欧包", amount: "15个", calories: 3750 },
+    { name: "欧包", amount: "12个", calories: 3000 },
     { name: "苹果蕉", amount: "1根", calories: 90 },
     { name: "牛奶", amount: "2300ml", calories: 1380 },
     { name: "凉拌干豆丝", amount: "80g", calories: 120 },
@@ -718,7 +719,8 @@ const CONFIG = {
 
     { key:"money", name:"记账本", icon:"wallet", tint:"#f6efe8", color:"var(--module-4)", type:"finance",
       desc:"收支记录",
-      categories:["食","住","行","娱乐","衣","设备","医疗","通讯","教育","社交","特殊事件","其他"],
+      categories:["食","住","行","衣","娱乐","医疗","设备","礼尚往来","特殊事件","税费","保险","旅行","其他"],
+      incomeCategories:["劳动所得","意外所得"],
       seed:[] },
 
     { key:"mantra", name:"功课进度", icon:"star", tint:"#edf1f5", color:"var(--module-2)", type:"progress",
@@ -995,6 +997,37 @@ function migrateSeedData(d){
     d.money = d.money || [];
     if(!(d.money||[]).some(x=>x.id===10106)){
       d.money.push({ id:10106, date:"2026-08-07", title:"TRAE会员 Lite 权益", type:"expense", amount:9.9, category:"设备" });
+    }
+  }
+  // v12: 8/8 记录——宿醉补觉作息 + 起床餐 + 两笔消费
+  if(curVer < 12){
+    const t8 = "2026-08-08";
+    // 消费：生日礼物 + TRAE Pro
+    d.money = d.money || [];
+    const m12 = [
+      { id:10107, date:t8, title:"送刘娣如生日礼物", type:"expense", amount:101.27, category:"礼尚往来" },
+      { id:10108, date:t8, title:"TrAE会员 Pro 权益", type:"expense", amount:86.7, category:"设备" },
+    ];
+    const mIds = new Set((d.money||[]).map(x=>x.id));
+    m12.forEach(e => { if(!mIds.has(e.id)) d.money.push(e); });
+    // 饮食：三个欧包 + 150g牛肉
+    d.diet = d.diet || [];
+    if(!(d.diet||[]).some(x=>x.id===11001)){
+      d.diet.push({
+        id:11001, date:t8, title:"起床餐·三个欧包+150g牛肉",
+        content:"3个低GI核桃全麦欧包(120g) + 帕斯雀牛肉片150g（一袋）",
+        mood:"碳水不足",
+        calories:837, protein:50.4, fat:24, carbs:48.3
+      });
+    }
+    // 睡眠：主睡眠（宿醉）+ 午睡
+    d.sleep = d.sleep || [];
+    const sIds = new Set((d.sleep||[]).map(x=>x.id));
+    if(!sIds.has(12001)){
+      d.sleep.push({ id:12001, date:t8, title:"主睡眠（宿醉补觉）", content:"7:30入睡 13:14起床，中间因肠胃不适起身上厕所", mood:"严重偏晚", bedtime:"7:30", wakeTime:"13:14", duration:"5h44min" });
+    }
+    if(!sIds.has(12002)){
+      d.sleep.push({ id:12002, date:t8, title:"午睡", content:"15:12睡至18:00", bedtime:"15:12", wakeTime:"18:00", duration:"2h48min" });
     }
   }
   d.__seedVer = CONFIG.seedVersion;
@@ -1563,18 +1596,25 @@ function renderMoney(){
     <div class="money-tab ${moneyFilter==='expense'?'on':''}" data-filter="expense">支出</div>
     <div class="money-tab ${moneyFilter==='income'?'on':''}" data-filter="income">收入</div></div>`;
 
-  // 分类汇总（显示所有分类，包括本月没有的）
+  // 分类汇总（支出分类 + 收入分类）
   const cats = m.categories || [];
+  const incCats = m.incomeCategories || [];
   const monthExps = it.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym));
+  const monthIncs = it.filter(x=>x.type==="income" && (x.date||"").startsWith(ym));
   const catAmounts = cats.map(c=>({
     cat: c,
     amount: monthExps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
   })).sort((a,b)=>b.amount-a.amount);
-  const catChips = `<div class="cat-chips">${catAmounts.map(c=>{
+  const incAmounts = incCats.map(c=>({
+    cat: c,
+    amount: monthIncs.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
+  })).sort((a,b)=>b.amount-a.amount);
+  const chipHTML=(list,dataKey)=>list.map(c=>{
     const on = moneyCatFilter === c.cat;
     const hasAmount = c.amount > 0;
-    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-cat="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
-  }).join("")}</div>`;
+    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-${dataKey}="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
+  }).join("");
+  const catChips = `<div class="cat-chips">${chipHTML(catAmounts,'cat')}${incAmounts.length?`<div class="cat-chips-sep"></div>`:''}${chipHTML(incAmounts,'cat')}</div>`;
 
   // 筛选记录
   let filtered = it;
@@ -1651,18 +1691,25 @@ function renderMoneyHistory(){
       <span style="font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">收入 ¥${fmtMoney(yInc)} · 支出 ¥${fmtMoney(yExp)} · 结余 ¥${fmtMoney(yInc-yExp)}</span>
     </div></div>`;
 
-  // 分类汇总（历史分类体系）
+  // 分类汇总（历史分类体系：支出分类 + 收入分类）
   const cats = meta.categories || [];
+  const incCats = meta.incomeCategories || [];
   const mExps = H.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym));
+  const mIncs = H.filter(x=>x.type==="income" && (x.date||"").startsWith(ym));
   const catAmounts = cats.map(c=>({
     cat: c,
     amount: mExps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
   })).sort((a,b)=>b.amount-a.amount);
-  const catChips = `<div class="cat-chips">${catAmounts.map(c=>{
+  const incAmounts = incCats.map(c=>({
+    cat: c,
+    amount: mIncs.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
+  })).sort((a,b)=>b.amount-a.amount);
+  const chipHTML=(list,dataKey)=>list.map(c=>{
     const on = histCat === c.cat;
     const hasAmount = c.amount > 0;
-    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-hcat="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
-  }).join("")}</div>`;
+    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-${dataKey}="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
+  }).join("");
+  const catChips = `<div class="cat-chips">${chipHTML(catAmounts,'hcat')}${incAmounts.length?`<div class="cat-chips-sep"></div>`:''}${chipHTML(incAmounts,'hcat')}</div>`;
 
   // 筛选记录
   let filtered = H.filter(x=>(x.date||"").startsWith(ym));
@@ -2304,7 +2351,7 @@ function openEditor(key, item){
         <div class="opt ${d.type==='income'?'on':''}" data-v="income">收入</div></div></div>
       <div class="frow"><div class="field"><label>项目</label><input id="f-title" value="${attr(d.title)}" placeholder="午餐 / 稿费"/></div>
       <div class="field"><label>金额 ¥</label><input id="f-amt" type="number" value="${d.amount??''}" placeholder="0"/></div></div>
-      <div class="field"><label>分类</label><div class="seg" style="flex-wrap:wrap" id="f-cat">${(m.categories||[]).map(c=>`<div class="opt ${c===d.category?'on':''}" data-v="${attr(c)}" style="flex:0 0 auto">${esc(c)}</div>`).join("")}</div></div>
+      <div class="field"><label>分类</label><div class="seg" style="flex-wrap:wrap" id="f-cat"></div></div>
       <div class="field"><label>日期</label><input id="f-date" type="date" value="${d.date||isoToday()}"/></div>`;
   } else { // note
     fields=`<div class="field"><label>标题</label><input id="f-title" value="${attr(d.title)}" placeholder="给这条起个名"/></div>
@@ -2338,6 +2385,24 @@ function openEditor(key, item){
   overlay.querySelectorAll(".seg").forEach(seg=>seg.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{
     seg.querySelectorAll(".opt").forEach(x=>x.classList.remove("on")); o.classList.add("on");
   }));
+  // finance 表单：按支出/收入类型动态填充分类选项
+  if(m.type==="finance"){
+    const fillCat=()=>{
+      const isInc=overlay.querySelector("#f-ftype .on")?.dataset.v==="income";
+      const list=isInc?(m.incomeCategories||[]):(m.categories||[]);
+      if(!list.length) return;
+      const cur=isInc
+        ? ((m.incomeCategories||[]).includes(d.category)?d.category:list[0])
+        : ((m.categories||[]).includes(d.category)?d.category:list[0]);
+      const target=overlay.querySelector("#f-cat");
+      target.innerHTML=list.map(c=>`<div class="opt ${c===cur?'on':''}" data-v="${attr(c)}" style="flex:0 0 auto">${esc(c)}</div>`).join("");
+      target.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{
+        target.querySelectorAll(".opt").forEach(x=>x.classList.remove("on")); o.classList.add("on");
+      });
+    };
+    fillCat();
+    overlay.querySelector("#f-ftype").querySelectorAll(".opt").forEach(o=>o.onclick=()=>{ fillCat(); });
+  }
   if(editing) overlay.querySelector("#m-del").onclick=()=>{ close(); confirmDelete(key, d.id); };
   overlay.querySelector("#m-save").onclick=()=>{
     const val=id=>{ const el=overlay.querySelector(id); return el?el.value:undefined; };
@@ -2346,7 +2411,7 @@ function openEditor(key, item){
     d.layout=seg("#f-layout")||'default';
     if(m.type==="todo"){ d.priority=seg("#f-prio")||d.priority; d.note=(val("#f-note")||"").trim(); }
     else if(m.type==="progress"){ d.current=Math.max(0,+val("#f-cur")||0); d.target=Math.max(1,+val("#f-tgt")||1); d.unit=(val("#f-unit")||"").trim(); d.note=(val("#f-note")||"").trim(); }
-    else if(m.type==="finance"){ d.type=seg("#f-ftype")||"expense"; d.amount=Math.max(0,+val("#f-amt")||0); d.category=seg("#f-cat")||(m.categories&&m.categories[0])||"其他"; d.date=val("#f-date"); }
+    else if(m.type==="finance"){ d.type=seg("#f-ftype")||"expense"; d.amount=Math.max(0,+val("#f-amt")||0); const fb=(d.type==="income")?((m.incomeCategories&&m.incomeCategories[0])||"其他"):((m.categories&&m.categories[0])||"其他"); d.category=seg("#f-cat")||fb; d.date=val("#f-date"); }
     else if(m.type==="note"){ d.mood=seg("#f-mood")||d.mood||""; d.content=(val("#f-content")||"").trim(); d.date=val("#f-date"); }
     (m.fields||[]).forEach(f=>{
       if(f.type==="select") d[f.key]=seg("#f-cf-"+f.key)||d[f.key]||"";
@@ -2483,7 +2548,7 @@ function seedTodayData(){
   // 检查是否已有该作息日记录，避免重复
   const hasSleep = (data.sleep||[]).some(x=>x.date===t);
   const hasDiet = (data.diet||[]).some(x=>x.date===t);
-  const hasFinance = (data.money||[]).some(x=>x.date===t && x.category==="社交");
+  const hasFinance = (data.money||[]).some(x=>x.date===t && x.category==="礼尚往来");
   if(hasSleep && hasDiet && hasFinance) return;
 
   // 作息：4:57睡-8:34醒 · 3h37min · 严重偏晚
@@ -2524,7 +2589,7 @@ function seedTodayData(){
       title: "给马女士买奶茶",
       type: "expense",
       amount: 33,
-      category: "社交"
+      category: "礼尚往来"
     });
   }
 
