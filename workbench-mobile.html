@@ -1095,11 +1095,12 @@ function initCloudSync(){
       data = cloud;
       if(needMigration){
         migrateSeedData(data);
-        seedTodayData();
-        seedAug8Today();
-        data.__updated = Date.now();
-        fbDB.ref('data').set(data);
       }
+      // 无条件补种 8/7 与 8/8 记录（内部按 id 去重，重复调用安全）
+      seedTodayData();
+      seedAug8Today();
+      data.__updated = Date.now();
+      fbDB.ref('data').set(data);
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
       render();
     } else {
@@ -1116,13 +1117,12 @@ function initCloudSync(){
     const cloud = snap.val();
     if(cloud && (cloud.__updated || 0) > (data.__updated || 0)){
       data = cloud;
-      // 云端推送的数据也检查种子版本
-      if(migrateSeedData(data)){
-        seedTodayData();
-        seedAug8Today();
-        data.__updated = Date.now();
-        fbDB.ref('data').set(data);
-      }
+      // 云端推送的数据也补种 8/7 与 8/8 记录（内部按 id 去重）
+      migrateSeedData(data);
+      seedTodayData();
+      seedAug8Today();
+      data.__updated = Date.now();
+      fbDB.ref('data').set(data);
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
       render();
       setSyncStatus('synced');
