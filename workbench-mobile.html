@@ -1096,6 +1096,7 @@ function initCloudSync(){
       if(needMigration){
         migrateSeedData(data);
         seedTodayData();
+        seedAug8Today();
         data.__updated = Date.now();
         fbDB.ref('data').set(data);
       }
@@ -1118,6 +1119,7 @@ function initCloudSync(){
       // 云端推送的数据也检查种子版本
       if(migrateSeedData(data)){
         seedTodayData();
+        seedAug8Today();
         data.__updated = Date.now();
         fbDB.ref('data').set(data);
       }
@@ -2636,8 +2638,39 @@ function seedTodayData(){
   persist();
 }
 
+/* ---------- seed 8/8 data (宿醉补觉作息 + 起床餐 + 两笔消费) ----------
+   无条件补种：不依赖 seedVersion 迁移，任何环境下打开都会补全今日记录 */
+function seedAug8Today(){
+  const t = "2026-08-08";
+  // 消费：生日礼物 + TRAE Pro
+  const moneyItems = [
+    { id:10107, date:t, title:"送刘娣如生日礼物", type:"expense", amount:101.27, category:"礼尚往来" },
+    { id:10108, date:t, title:"TrAE会员 Pro 权益", type:"expense", amount:86.7, category:"设备" },
+  ];
+  const mIds = new Set((data.money||[]).map(x=>x.id));
+  moneyItems.forEach(e => { if(!mIds.has(e.id)) (data.money=data.money||[]).push(e); });
+  // 饮食：三个欧包 + 150g牛肉
+  if(!(data.diet||[]).some(x=>x.id===11001)){
+    (data.diet=data.diet||[]).push({
+      id:11001, date:t, title:"起床餐·三个欧包+150g牛肉",
+      content:"3个低GI核桃全麦欧包(120g) + 帕斯雀牛肉片150g（一袋）",
+      mood:"碳水不足", calories:837, protein:50.4, fat:24, carbs:48.3
+    });
+  }
+  // 睡眠：主睡眠（宿醉补觉）+ 午睡
+  const sIds = new Set((data.sleep||[]).map(x=>x.id));
+  if(!sIds.has(12001)){
+    (data.sleep=data.sleep||[]).push({ id:12001, date:t, title:"主睡眠（宿醉补觉）", content:"7:30入睡 13:14起床，中间因肠胃不适起身上厕所", mood:"严重偏晚", bedtime:"7:30", wakeTime:"13:14", duration:"5h44min" });
+  }
+  if(!sIds.has(12002)){
+    (data.sleep=data.sleep||[]).push({ id:12002, date:t, title:"午睡", content:"15:12睡至18:00", bedtime:"15:12", wakeTime:"18:00", duration:"2h48min" });
+  }
+  persist();
+}
+
 buildDrawer();
 seedTodayData();
+seedAug8Today();
 render();
 </script>
 </body>
