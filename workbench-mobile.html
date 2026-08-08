@@ -334,6 +334,14 @@
     cursor:pointer; transition:all .15s; font-variant-numeric:tabular-nums; }
   .cat-chip.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
   .cat-chip.empty-cat { opacity:.4; }
+
+  /* ---------- history ledger entry ---------- */
+  .hist-entry { transition:background .15s; }
+  .hist-entry:active { background:var(--surface-nested); }
+  .hist-entry-ic { width:38px; height:38px; border-radius:12px; background:color-mix(in srgb, var(--module-4) 14%, var(--surface-card));
+    border:1px solid color-mix(in srgb, var(--module-4) 28%, var(--border)); color:var(--module-4); display:grid; place-items:center; flex:0 0 auto; }
+  .hist-entry-t { font-size:14px; font-weight:700; color:var(--text); }
+  .hist-entry-s { font-size:11px; color:var(--text-tertiary); margin-top:1px; }
   .diet-week { display:flex; flex-direction:column; gap:6px; }
   .diet-day { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:var(--radius-tile); background:var(--surface-nested); border:1px solid var(--border); }
   .diet-day.has { background:color-mix(in srgb, var(--module-5) 8%, var(--surface-card)); border-color:color-mix(in srgb, var(--module-5) 25%, var(--border)); }
@@ -602,6 +610,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<!-- 历史财务账本数据（只读，2025-01 ~ 2026-07，来自 Notion 导出） -->
+<script src="money-history.js"></script>
 
 <script>
 /* ============================================================
@@ -779,6 +789,7 @@ const ICONS = {
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>',
   moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/>',
   refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
 };
 function icon(name, size=22, sw=1.7){
   const path = ICONS[name] || ICONS.grid;
@@ -1528,8 +1539,12 @@ function renderTraining(){
    ============================================================ */
 let moneyFilter = 'all';
 let moneyCatFilter = null;
+let moneyHistOn = false;
+let histMon = (window.MONEY_HISTORY_META||{to:"2026-07"}).to.slice(0,7);
+let histCat = null;
 
 function renderMoney(){
+  if(moneyHistOn){ renderMoneyHistory(); return; }
   const m = modOf("money"); const it = (data.money || []).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const ym = isoToday().slice(0,7);
 
@@ -1570,6 +1585,14 @@ function renderMoney(){
     : `<div class="empty"><span class="e">${icon(m.icon,26)}</span><div>暂无记录</div></div>`;
 
   $("#screen").innerHTML = `<div style="margin-top:10px">
+      <div class="panel hist-entry" id="hist-entry" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="hist-entry-ic">${icon("clock",18,1.8)}</span>
+          <div><div class="hist-entry-t">历史账本</div>
+          <div class="hist-entry-s">2025-01 ~ 2026-07 · ${(window.MONEY_HISTORY||[]).length} 笔 · 只读</div></div>
+        </div>
+        <span style="color:var(--text-tertiary)">›</span>
+      </div>
       ${summary}
       ${tabs}
       ${catChips}
@@ -1578,6 +1601,9 @@ function renderMoney(){
     <button class="fab" id="btn-add">${icon("plus",22,2.2)}</button>`;
 
   wireModule("money");
+
+  // 历史账本入口
+  const he = $("#hist-entry"); if(he) he.onclick = ()=>{ moneyHistOn=true; render(); };
 
   // 标签栏交互
   $("#screen").querySelectorAll(".money-tab").forEach(el=>el.onclick=()=>{
@@ -1589,6 +1615,90 @@ function renderMoney(){
   $("#screen").querySelectorAll(".cat-chip").forEach(el=>el.onclick=()=>{
     const cat = el.dataset.cat;
     moneyCatFilter = (moneyCatFilter === cat) ? null : cat;
+    render();
+  });
+}
+
+/* ============================================================
+   MONEY HISTORY — 历史账本（只读，Notion 导出）
+   ============================================================ */
+function renderMoneyHistory(){
+  const H = window.MONEY_HISTORY || [];
+  const meta = window.MONEY_HISTORY_META || {categories:[], months:[], years:[]};
+  const ym = histMon;
+  const year = ym.slice(0,4);
+
+  // 月份选择器
+  const monthOpts = (meta.months||[]).reverse().map(m=>{
+    const y = m.slice(0,4), mo = +m.slice(5);
+    return `<option value="${m}" ${m===ym?'selected':''}>${y}年${mo}月</option>`;
+  }).join("");
+
+  // 月度汇总
+  const mInc = H.filter(x=>x.type==="income" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+  const mExp = H.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym)).reduce((s,x)=>s+ +x.amount, 0);
+  const summary = `<div class="mod-summary">
+    <div class="mini"><div class="l">${ym.slice(0,4)}年${+ym.slice(5)}月收入</div><div class="v" style="color:var(--module-1)">¥${fmtMoney(mInc)}</div></div>
+    <div class="mini"><div class="l">${ym.slice(0,4)}年${+ym.slice(5)}月支出</div><div class="v" style="color:var(--danger)">¥${fmtMoney(mExp)}</div></div>
+    <div class="mini"><div class="l">结余</div><div class="v">¥${fmtMoney(mInc-mExp)}</div></div></div>`;
+
+  // 年度汇总
+  const yInc = H.filter(x=>x.type==="income" && (x.date||"").slice(0,4)===year).reduce((s,x)=>s+ +x.amount, 0);
+  const yExp = H.filter(x=>x.type==="expense" && (x.date||"").slice(0,4)===year).reduce((s,x)=>s+ +x.amount, 0);
+  const yearPanel = `<div class="panel" style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:700">${year} 年度</span>
+      <span style="font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">收入 ¥${fmtMoney(yInc)} · 支出 ¥${fmtMoney(yExp)} · 结余 ¥${fmtMoney(yInc-yExp)}</span>
+    </div></div>`;
+
+  // 分类汇总（历史分类体系）
+  const cats = meta.categories || [];
+  const mExps = H.filter(x=>x.type==="expense" && (x.date||"").startsWith(ym));
+  const catAmounts = cats.map(c=>({
+    cat: c,
+    amount: mExps.filter(x=>x.category===c).reduce((s,x)=>s+ +x.amount, 0)
+  })).sort((a,b)=>b.amount-a.amount);
+  const catChips = `<div class="cat-chips">${catAmounts.map(c=>{
+    const on = histCat === c.cat;
+    const hasAmount = c.amount > 0;
+    return `<div class="cat-chip ${on?'on':''} ${!hasAmount?'empty-cat':''}" data-hcat="${esc(c.cat)}">${esc(c.cat)}${hasAmount?` ¥${fmtMoney(c.amount)}`:''}</div>`;
+  }).join("")}</div>`;
+
+  // 筛选记录
+  let filtered = H.filter(x=>(x.date||"").startsWith(ym));
+  if(histCat) filtered = filtered.filter(x=>x.category===histCat);
+  filtered.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+
+  const body = filtered.length ? filtered.map(x=>{
+    const inc = x.type==="income";
+    return `<div class="rec"><div class="top"><div class="body">
+      <div class="rname">${esc(x.title||'无标题')}</div>
+      <div class="rmeta"><span class="badge" style="background:var(--surface-nested);color:var(--text-secondary)">${esc(x.category||'其他')}</span><span style="color:var(--text-secondary);font-size:12px">${fmtDate(x.date)}</span></div></div>
+      <div class="amt ${inc?'inc':'exp'}" style="margin-left:auto">${inc?'+':'-'}¥${fmtMoney(+x.amount||0)}</div></div></div>`;
+  }).join("") : `<div class="empty"><span class="e">${icon("wallet",26)}</span><div>该月暂无记录</div></div>`;
+
+  $("#screen").innerHTML = `<div style="margin-top:10px">
+      <div class="panel" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <button class="btn ghost" id="hist-back" style="padding:9px 14px;min-height:40px">${icon("chevron",16,2)} 返回本月</button>
+          <span style="font-size:11px;color:var(--text-tertiary)">共 ${(meta.count||H.length)} 笔 · 只读</span>
+        </div>
+        <select id="hist-month" style="width:100%;padding:11px 12px;border-radius:var(--radius-tile);border:1px solid var(--border-input);background:var(--surface-card);color:var(--text);font-family:var(--font);font-size:14px;font-weight:600;outline:none">${monthOpts}</select>
+      </div>
+      ${summary}
+      ${yearPanel}
+      ${catChips}
+      <div class="sec-title">记录 · ${ym.slice(0,4)}年${+ym.slice(5)}月</div>${body}
+    </div>`;
+
+  // 返回当前记账
+  const hb = $("#hist-back"); if(hb) hb.onclick = ()=>{ moneyHistOn=false; render(); };
+  // 月份切换
+  const hm = $("#hist-month"); if(hm) hm.onchange = ()=>{ histMon = hm.value; histCat = null; render(); };
+  // 分类筛选
+  $("#screen").querySelectorAll(".cat-chip").forEach(el=>el.onclick=()=>{
+    const c = el.dataset.hcat;
+    histCat = (histCat === c) ? null : c;
     render();
   });
 }
