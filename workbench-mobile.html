@@ -623,6 +623,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <!-- 历史财务账本数据（只读，2025-01 ~ 2026-07，来自 Notion 导出） -->
 <script src="money-history.js"></script>
+<!-- 每日补录数据（可实时同步，按 id 去重自动合并） -->
+<script src="daily-data.js"></script>
 
 <script>
 /* ============================================================
@@ -896,6 +898,7 @@ const store = {
       try {
         const d = JSON.parse(raw);
         migrateSeedData(d);
+        mergeDailyPatch(d);
         return d;
       } catch(e){}
     }
@@ -903,10 +906,34 @@ const store = {
     CONFIG.modules.forEach(m => d[m.key] = structuredClone(m.seed||[]));
     d.completedTrainings = [];
     d.__seedVer = CONFIG.seedVersion || 1;
+    mergeDailyPatch(d);
     return d;
   },
   save(){ localStorage.setItem(CONFIG.storageKey, JSON.stringify(data)); if(window.cloudSave) window.cloudSave(); },
 };
+
+/* ---------- 每日补录数据合并（本地+云端共用） ----------
+   外部 daily-data.js 提供 window.DAILY_PATCH，
+   将其中补录记录按 id 去重合并进当前数据，实现实时同步补录。 */
+function mergeDailyPatch(d){
+  const patch = window.DAILY_PATCH;
+  if(!patch || typeof patch !== 'object') return false;
+  let merged = false;
+  Object.keys(patch).forEach(key => {
+    const items = patch[key];
+    if(!Array.isArray(items) || !items.length) return;
+    const arr = d[key] = d[key] || [];
+    const ids = new Set(arr.map(x => x && x.id));
+    items.forEach(it => {
+      if(it && it.id != null && !ids.has(it.id)){
+        arr.push(structuredClone(it));
+        ids.add(it.id);
+        merged = true;
+      }
+    });
+  });
+  return merged;
+}
 
 /* ---------- 种子数据迁移（本地+云端共用） ---------- */
 function migrateSeedData(d){
@@ -1096,9 +1123,9 @@ function initCloudSync(){
       if(needMigration){
         migrateSeedData(data);
       }
-      // 无条件补种 8/7 与 8/8 记录（内部按 id 去重，重复调用安全）
+      // 补种 8/7 作息归属 + 合并每日补录（按 id 去重，不依赖版本号）
       seedTodayData();
-      seedAug8Today();
+      mergeDailyPatch(data);
       data.__updated = Date.now();
       fbDB.ref('data').set(data);
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
@@ -1117,10 +1144,10 @@ function initCloudSync(){
     const cloud = snap.val();
     if(cloud && (cloud.__updated || 0) > (data.__updated || 0)){
       data = cloud;
-      // 云端推送的数据也补种 8/7 与 8/8 记录（内部按 id 去重）
+      // 补种 8/7 作息归属 + 合并每日补录（按 id 去重）
       migrateSeedData(data);
       seedTodayData();
-      seedAug8Today();
+      mergeDailyPatch(data);
       data.__updated = Date.now();
       fbDB.ref('data').set(data);
       localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
@@ -2638,39 +2665,8 @@ function seedTodayData(){
   persist();
 }
 
-/* ---------- seed 8/8 data (宿醉补觉作息 + 起床餐 + 两笔消费) ----------
-   无条件补种：不依赖 seedVersion 迁移，任何环境下打开都会补全今日记录 */
-function seedAug8Today(){
-  const t = "2026-08-08";
-  // 消费：生日礼物 + TRAE Pro
-  const moneyItems = [
-    { id:10107, date:t, title:"送刘娣如生日礼物", type:"expense", amount:101.27, category:"礼尚往来" },
-    { id:10108, date:t, title:"TrAE会员 Pro 权益", type:"expense", amount:86.7, category:"设备" },
-  ];
-  const mIds = new Set((data.money||[]).map(x=>x.id));
-  moneyItems.forEach(e => { if(!mIds.has(e.id)) (data.money=data.money||[]).push(e); });
-  // 饮食：三个欧包 + 150g牛肉
-  if(!(data.diet||[]).some(x=>x.id===11001)){
-    (data.diet=data.diet||[]).push({
-      id:11001, date:t, title:"起床餐·三个欧包+150g牛肉",
-      content:"3个低GI核桃全麦欧包(120g) + 帕斯雀牛肉片150g（一袋）",
-      mood:"碳水不足", calories:837, protein:50.4, fat:24, carbs:48.3
-    });
-  }
-  // 睡眠：主睡眠（宿醉补觉）+ 午睡
-  const sIds = new Set((data.sleep||[]).map(x=>x.id));
-  if(!sIds.has(12001)){
-    (data.sleep=data.sleep||[]).push({ id:12001, date:t, title:"主睡眠（宿醉补觉）", content:"7:30入睡 13:14起床，中间因肠胃不适起身上厕所", mood:"严重偏晚", bedtime:"7:30", wakeTime:"13:14", duration:"5h44min" });
-  }
-  if(!sIds.has(12002)){
-    (data.sleep=data.sleep||[]).push({ id:12002, date:t, title:"午睡", content:"15:12睡至18:00", bedtime:"15:12", wakeTime:"18:00", duration:"2h48min" });
-  }
-  persist();
-}
-
 buildDrawer();
 seedTodayData();
-seedAug8Today();
 render();
 </script>
 </body>
