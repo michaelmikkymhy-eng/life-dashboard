@@ -82,14 +82,15 @@ SHEET_HEADERS = {
     '每日努力度': ['日期', '深度成长(h)', '事务(h)', '训练状态', '准提咒(遍)', '睡眠(h)', '管理分', '综合分', '完整度', '等级', '虚度标记'],
     '体成分记录': ['日期', '体重(kg)', 'BMI', '体脂率(%)', '肌肉量(kg)', '肌肉率(%)', '骨骼肌量(kg)', '骨骼肌率(%)',
                '骨量(kg)', '水分率(%)', '蛋白质率(%)', '内脏脂肪(级)', '皮下脂肪率(%)', '去脂体重(kg)',
-               '基础代谢(kcal)', '身体年龄(岁)', '身体得分(分)', '备注'],
+               '基础代谢(kcal)', '身体年龄(岁)', '备注'],
     '身材维度记录': ['日期', '胸围(cm)', '腰围(cm)', '臀围(cm)', '手臂围(cm)', '大腿围(cm)', '小腿围(cm)',
                 '腰臀比', '胸腰比', '备注'],
 }
 
-# 体成分记录表第3列起的15个指标（weight --body 的 CSV 顺序，与表头一一对应）
+# 体成分记录表第3列起的14个指标（weight --body 的 CSV 顺序，与表头一一对应）
+# 2026-09-06 删除"身体得分"项（用户裁定无参考价值）：原第17列已删，备注由第18列左移至第17列
 BODY_COLS = ['BMI', '体脂率', '肌肉量', '肌肉率', '骨骼肌量', '骨骼肌率', '骨量', '水分率', '蛋白质率',
-             '内脏脂肪', '皮下脂肪率', '去脂体重', '基础代谢', '身体年龄', '身体得分']
+             '内脏脂肪', '皮下脂肪率', '去脂体重', '基础代谢', '身体年龄']
 
 MEAL_ORDER = ['起床餐', '训练前', '练前餐', '训练中补给', '训练中', '午餐', '加餐', '练后加餐', '晚餐', '夜宵', '饮品']
 
@@ -1558,7 +1559,6 @@ def cmd_weekly(a):
                     'visceral': bws.cell(r, 12).value,
                     'bmr': bws.cell(r, 15).value,
                     'body_age': bws.cell(r, 16).value,
-                    'score': bws.cell(r, 17).value,
                 }
             if sun_str < ds <= end_limit and (end_body is None or ds < end_body['date']):
                 end_body = {
@@ -1572,7 +1572,6 @@ def cmd_weekly(a):
                     'visceral': bws.cell(r, 12).value,
                     'bmr': bws.cell(r, 15).value,
                     'body_age': bws.cell(r, 16).value,
-                    'score': bws.cell(r, 17).value,
                 }
 
         if start_body and end_body:
@@ -2181,7 +2180,7 @@ def cmd_monthly(a):
                     'body_fat': bws.cell(r, 4).value, 'muscle': bws.cell(r, 5).value,
                     'skeletal': bws.cell(r, 7).value, 'protein_rate': bws.cell(r, 11).value,
                     'visceral': bws.cell(r, 12).value, 'bmr': bws.cell(r, 15).value,
-                    'body_age': bws.cell(r, 16).value, 'score': bws.cell(r, 17).value,
+                    'body_age': bws.cell(r, 16).value,
                 })
         if bodies:
             bodies.sort(key=lambda x: x['date'])  # 体成分表倒序存储（最新在上），按日期升序排列
@@ -2917,7 +2916,7 @@ def main():
     p = sub.add_parser('weight')
     p.add_argument('--date', required=True)
     p.add_argument('--kg', type=float, required=True)
-    p.add_argument('--body', default='', help='体成分15项CSV：BMI,体脂率,肌肉量,肌肉率,骨骼肌量,骨骼肌率,骨量,水分率,蛋白质率,内脏脂肪,皮下脂肪率,去脂体重,基础代谢,身体年龄,身体得分')
+    p.add_argument('--body', default='', help='体成分14项CSV：BMI,体脂率,肌肉量,肌肉率,骨骼肌量,骨骼肌率,骨量,水分率,蛋白质率,内脏脂肪,皮下脂肪率,去脂体重,基础代谢,身体年龄')
     p.set_defaults(fn=cmd_weight)
     p = sub.add_parser('dim')
     p.add_argument('--date', default=datetime.now().strftime('%Y-%m-%d'))
