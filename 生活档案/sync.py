@@ -143,7 +143,10 @@ def sheet_rows(ws, ncol=None):
 
 def sort_by_date(ws, desc=True, date_col=1, ncol=None):
     """整行排序：表头永远写回第1行；日期行紧随其后（按方向），无日期行垫底。
-    稳定排序：同日期的行保持写入时的相对顺序（insert_rows(2) 的新行在同日期中置顶）。"""
+    稳定排序：同日期的行保持写入时的相对顺序（insert_rows(2) 的新行在同日期中置顶）。
+    写回前必须先显式清空整行再写：openpyxl 的 cell(r,c,None) 对 None 参数不写入，
+    旧行残值会留在原位造成跨行污染（2026-09-06 体成分对角线残迹的根因，
+    已实证复现：9/5 行继承 9/4 行的得分/备注）。"""
     rows = sheet_rows(ws, ncol)
     if not rows or rows[0][0] is None:
         raise Stop(f'[{ws.title}] 第1行表头为空，结构异常，拒绝排序写入。')
@@ -156,9 +159,13 @@ def sort_by_date(ws, desc=True, date_col=1, ncol=None):
     ordered = [header] + dated + undated
     if len(ordered) != len(rows):
         raise Stop(f'[{ws.title}] 排序前后行数不一致 {len(rows)}→{len(ordered)}，拒绝写入。')
+    width = len(header)
     for i, row in enumerate(ordered, start=1):
+        for c in range(1, width + 1):
+            ws.cell(i, c).value = None   # 显式清空（属性赋值才生效）
         for c, v in enumerate(row, start=1):
-            ws.cell(i, c, v)
+            if v is not None:
+                ws.cell(i, c).value = v  # 仅写非空值
     if ws.cell(1, 1).value != header[0]:
         raise Stop(f'[{ws.title}][内部断言] 表头未正确写回，放弃本次写入。')
     return ws
