@@ -2739,7 +2739,8 @@ def cmd_status(a):
     is_rest = '休息' in str(train_part) if train_part else False
     target_kcal = 1650 if is_rest else 1900
     target_carbs = 140 if is_rest else 180
-    fat_low, fat_high = (40, 60) if is_rest else (45, 70)
+    # 脂肪区间统一 45-70g（压缩计划定值，休息/训练日同区间；2026-09-14 修正：原休息日(40,60)与规范不一致）
+    fat_low, fat_high = 45, 70
     protein_low, protein_high = 120, 140
 
     # 第一行：营养余额
