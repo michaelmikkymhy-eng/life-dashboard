@@ -681,14 +681,17 @@ def cmd_meal(a):
     r, _ = ensure_daily_row(dws, date)
     train_day = '休息' not in str(dws.cell(r, 9).value or '')
     text = diary_refresh_summary(text, train_day)
-    # 2) 每日记录
+    # 2) 每日记录（营养列以日记全表求和回写：与校验同源，手工合并日记行后自愈，杜绝两路累加漂移）
+    totals = diary_totals(text)
+    if totals is None:
+        raise Stop('日记里找不到饮食区（## 饮食 / ## 实际饮食记录），请手动检查。')
     old = str(dws.cell(r, 4).value or '').strip()
     if old and old not in ('', '待记录'):
         dws.cell(r, 4, f'{old} + {a.meal}:{display.split(" ")[0]}({macros[0]:.0f})')
     else:
         dws.cell(r, 4, f'{a.meal}:{display.split(" ")[0]}({macros[0]:.0f})')
-    for c, v in zip((5, 6, 7, 8), macros):
-        dws.cell(r, c, round((dws.cell(r, c).value or 0) + v, 1))
+    for c, v in zip((5, 6, 7, 8), (round(t, 1) for t in totals)):
+        dws.cell(r, c, v)
     # 3) 库存
     stock_note = ''
     sws = wb['食物库存明细']
@@ -718,10 +721,7 @@ def cmd_meal(a):
     if stock_note:
         text = diary_add_stock(text, stock_note)
         print(f'→ 库存：{stock_note}')
-    # 4) 汇总刷新 + 校验
-    totals = diary_totals(text)
-    if totals is None:
-        raise Stop('日记里找不到饮食区（## 饮食 / ## 实际饮食记录），请手动检查。')
+    # 4) 校验（营养列已按同源求和写入，此处防写入落空/错位）
     kcal, p, f_, c = totals
     checks = [('每日记录', r, 5, round(kcal, 1), '热量同步'),
               ('每日记录', r, 6, round(p, 1), '蛋白同步')]
