@@ -55,8 +55,9 @@ PLAN = '重组'
 TARGETS = {
     '欧包': {'train': {'kcal': 2100, 'protein': (120, 140), 'fat': 55, 'carb': 260},
              'rest': {'kcal': 1800, 'protein': (120, 140), 'fat': 55, 'carb': 0}},
-    '重组': {'train': {'kcal': 1900, 'protein': (120, 140), 'fat': 45, 'carb': 180},
-             'rest': {'kcal': 1650, 'protein': (120, 140), 'fat': 45, 'carb': 140}},
+    # 2026-09-23 缺口加大版（12%目标）：-120kcal 从碳水扣（180→175 / 140→135），蛋白脂肪不动保肌保激素
+    '重组': {'train': {'kcal': 1780, 'protein': (120, 140), 'fat': 45, 'carb': 175},
+             'rest': {'kcal': 1530, 'protein': (120, 140), 'fat': 45, 'carb': 135}},
 }
 
 # 2026-08-08 之前的日记为旧格式（营养明细不全/格式不一），营养列以台账为准，不参与日记核对
@@ -1672,14 +1673,14 @@ def cmd_weekly(a):
     avg_carbs = round(sum(r['carbs'] for r in rows) / n_days, 1)
     protein_ok = sum(1 for r in rows if 120 <= r['protein'] <= 140)
     fat_ok = sum(1 for r in rows if 45 <= r['fat'] <= 70)
-    kcal_ok = sum(1 for r in rows if r['kcal'] <= 2100)  # 宽松达标
+    kcal_ok = sum(1 for r in rows if r['kcal'] <= 1980)  # 宽松达标（训练日1780+200余量，2026-09-23 缺口加大版）
 
     print('| 指标 | 周平均 | 目标（训练日/休息日） | 达标天数 |')
     print('|------|--------|----------------------|----------|')
-    print(f'| 热量 | {avg_kcal} kcal | 1900 / 1650 | {kcal_ok}/{n_days} |')
+    print(f'| 热量 | {avg_kcal} kcal | 1780 / 1530 | {kcal_ok}/{n_days} |')
     print(f'| 蛋白 | {avg_protein}g | 120-140g | {protein_ok}/{n_days} |')
     print(f'| 脂肪 | {avg_fat}g | 45-70g | {fat_ok}/{n_days} |')
-    print(f'| 碳水 | {avg_carbs}g | 180 / 140 | — |')
+    print(f'| 碳水 | {avg_carbs}g | 175 / 135 | — |')
     print()
 
     # 营养小结
@@ -2247,14 +2248,14 @@ def cmd_monthly(a):
     avg_carbs = round(sum(r['carbs'] for r in rows) / n_days, 1)
     protein_ok = sum(1 for r in rows if 120 <= r['protein'] <= 140)
     fat_ok = sum(1 for r in rows if 45 <= r['fat'] <= 70)
-    kcal_ok = sum(1 for r in rows if r['kcal'] <= 2100)
+    kcal_ok = sum(1 for r in rows if r['kcal'] <= 1980)  # 宽松达标（训练日1780+200余量，2026-09-23 缺口加大版）
 
     L.append('| 指标 | 月平均 | 目标（训练日/休息日） | 达标天数 |')
     L.append('|------|--------|----------------------|----------|')
-    L.append(f'| 热量 | {avg_kcal} kcal | 1900 / 1650 | {kcal_ok}/{n_days} |')
+    L.append(f'| 热量 | {avg_kcal} kcal | 1780 / 1530 | {kcal_ok}/{n_days} |')
     L.append(f'| 蛋白 | {avg_protein}g | 120-140g | {protein_ok}/{n_days} |')
     L.append(f'| 脂肪 | {avg_fat}g | 45-70g | {fat_ok}/{n_days} |')
-    L.append(f'| 碳水 | {avg_carbs}g | 180 / 140 | — |')
+    L.append(f'| 碳水 | {avg_carbs}g | 175 / 135 | — |')
     L.append('')
 
     nutr_notes = []
@@ -2734,11 +2735,13 @@ def cmd_status(a):
     mantra = dws.cell(r, 13).value
     sleep_text = dws.cell(r, 2).value or ''
 
-    # 目标（糙米时代）
+    # 目标（2026-09-23 缺口加大版：训练日1780/碳水175，休息日1530/碳水135）
     # 只有明确标了"休息"才算休息日，空值/未记录按训练日算（计划6练1休）
+    # ⚠️ 已知局限：跳训日台账训练列留空（9/23 裁定"跳训=休息"）→ 此处按训练日1780显示；
+    #   跳训日正确目标为休息日1530，以日记营养汇总表为准（跳训低频，暂不解析日记判别）
     is_rest = '休息' in str(train_part) if train_part else False
-    target_kcal = 1650 if is_rest else 1900
-    target_carbs = 140 if is_rest else 180
+    target_kcal = 1530 if is_rest else 1780
+    target_carbs = 135 if is_rest else 175
     # 脂肪区间统一 45-70g（压缩计划定值，休息/训练日同区间；2026-09-14 修正：原休息日(40,60)与规范不一致）
     fat_low, fat_high = 45, 70
     protein_low, protein_high = 120, 140
