@@ -238,6 +238,9 @@ def match_food(ws, name):
 
 
 def match_stock(ws, name):
+    # 营养成分表名 → 库存表名 别名映射（2026-10-04 立：烤鸡名不匹配曾 3 次静默漏扣）
+    STOCK_ALIAS = {'烤鸡(去骨带皮·估)': '烤鸡(去骨·冷藏)'}
+    name = STOCK_ALIAS.get(name.strip(), name)
     exact = [(r, ws.cell(r, 1).value) for r in range(2, ws.max_row + 1)
              if str(ws.cell(r, 1).value or '').strip() == name.strip()]
     if len(exact) == 1:
@@ -723,6 +726,9 @@ def cmd_meal(a):
             stock_note = f'{name}：{after}{unit} ← {cur} - {a.count}{unit}（{a.meal}）'
         else:
             stock_note = f'⚠️ {name}在库存表中但单位是"{unit}"（库存{cur}），无法按克自动扣减，请确认。'
+    else:
+        # 匹配失败必须留痕（2026-10-04 立：烤鸡名不匹配曾 3 次静默漏扣库存）
+        print(f'⚠️ 库存表未匹配到「{name}」，本次未扣库存——若该食材在库存管理内，请核对条目名或告诉我加别名')
     if stock_note:
         text = diary_add_stock(text, stock_note)
         print(f'→ 库存：{stock_note}')
