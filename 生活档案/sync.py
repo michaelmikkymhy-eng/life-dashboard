@@ -2999,8 +2999,31 @@ def main():
     for name, p in sub.choices.items():
         if name not in ('check', 'today', 'status', 'weekly', 'monthly'):
             p.add_argument('--dry-run', action='store_true', help='只打印动作，不写入')
+            p.add_argument('--backfill', action='store_true', help='确认补录历史日期（绕过日期哨兵）')
 
     a = ap.parse_args()
+
+    # ── 日期哨兵（2026-10-04 立，防"上下文冻结会话错写旧日期"复发）──
+    # 背景：长期会话被压缩后续传时，摘要可能冻结在旧日期（如9/23），而真实已到10月初，
+    # 多个会话曾把新数据错写进旧日期，git 史上修复过11+次。凡写入命令 --date 距真实今天
+    # 超过3天且未显式加 --backfill，直接拒绝。物理闸门，不依赖任何会话"记得"。
+    WRITE_CMDS = {'meal', 'expense', 'income', 'sleep', 'train', 'timeline',
+                  'mantra', 'weight', 'dim', 'deed', 'effort'}
+    if a.cmd in WRITE_CMDS and getattr(a, 'date', None):
+        try:
+            _pd = datetime.strptime(str(a.date)[:10], '%Y-%m-%d').date()
+            _gap = (datetime.now().date() - _pd).days
+        except ValueError:
+            _gap = None
+        if _gap is not None and _gap > 3 and not getattr(a, 'backfill', False):
+            print(f'⛔ 日期哨兵：--date {a.date} 距真实今天 {datetime.now().date()} 已 {_gap} 天。')
+            print('   这通常意味着当前会话的上下文日期过期了（不是真实日期）。')
+            print('   → 先核实真实日期（date 命令 / ls 日记最新文件 / git log -1），')
+            print('   → 如确认是补录历史数据，加 --backfill 重试。')
+            sys.exit(3)
+        if _gap is not None and _gap > 3:
+            print(f'⚠️ 补录模式：--date {a.date}（{_gap} 天前），已确认补录。')
+
     try:
         a.fn(a)
     except Stop as e:
