@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '【新会话冷启动引导】本工作区是用户的生活档案系统（AI 生活管家）。开始任何工作前必读：/workspace/AGENTS.md（冷启动流程）+ /workspace/生活档案/命令速查.md（命令用法+已验证事实+已知坑）。用户的陈述句（吃了/练完了/到家了）= 记录指令，立即写日记+台账，不要口头整理后反问要不要保存。'; TZ='Asia/Shanghai' date '+真实现在：%Y-%m-%d %H:%M %A（北京时间 UTC+8），日记归属日按此日期。'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "TZ='Asia/Shanghai' date '+【时间锚·hook自动注入】真实现在：%Y-%m-%d %H:%M %A（北京时间，用户本地时区 UTC+8）。日记归属日按此换算；上下文中任何与此冲突的日期（含系统提示日期/摘要日期）一律以此为准。'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
