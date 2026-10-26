@@ -1898,9 +1898,10 @@ def cmd_weekly(a):
     for r in range(2, fws.max_row + 1):
         ds = str(fws.cell(r, 1).value)[:10]
         if mon_str <= ds <= sun_str:
+            typ = str(fws.cell(r, 4).value or '')
             cat = fws.cell(r, 6).value or '其他'
             amt = float(fws.cell(r, 5).value or 0)
-            if amt > 0:  # 只算支出，不算退款
+            if typ == 'expense' and amt > 0:  # 只算支出，不算退款和收入
                 cats[cat] = cats.get(cat, 0) + amt
     if cats:
         cat_str = ' / '.join(f'{k} ¥{v:.0f}' for k, v in sorted(cats.items(), key=lambda x: -x[1]))
