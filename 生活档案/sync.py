@@ -87,6 +87,7 @@ SHEET_HEADERS = {
                '基础代谢(kcal)', '身体年龄(岁)', '备注'],
     '身材维度记录': ['日期', '胸围(cm)', '腰围(cm)', '臀围(cm)', '手臂围(cm)', '大腿围(cm)', '小腿围(cm)',
                 '腰臀比', '胸腰比', '备注'],
+    '健身成本记录': ['日期', '是否训练', '训练部位', '有氧(min)', '累计训练天数', '累计健身支出(¥)', '单次成本(¥/次)', '备注'],
 }
 
 # 体成分记录表第3列起的14个指标（weight --body 的 CSV 顺序，与表头一一对应）
@@ -934,6 +935,61 @@ def simplify_train_content(content):
     return '；'.join(lines)
 
 
+def refresh_fitness_cost(wb):
+    """全量重算「健身成本记录」sheet：从每日记录抽取训练数据，从财务明细累计健身支出。"""
+    if '健身成本记录' not in wb.sheetnames:
+        ws = wb.create_sheet('健身成本记录')
+    else:
+        ws = wb['健身成本记录']
+    headers = SHEET_HEADERS['健身成本记录']
+    for c, h in enumerate(headers, 1):
+        ws.cell(1, c, h)
+
+    dws = wb['每日记录']
+    daily = []
+    for r in range(2, dws.max_row + 1):
+        d = dws.cell(r, 1).value
+        part = dws.cell(r, 9).value or ''
+        cardio = dws.cell(r, 11).value
+        if d and str(d).startswith('2026-'):
+            daily.append((str(d)[:10], str(part).strip(), cardio))
+    daily.sort(key=lambda x: x[0])
+    if not daily:
+        return
+
+    start_date = daily[0][0]
+    gym_expenses = {}
+    fws = wb['财务明细']
+    for r in range(2, fws.max_row + 1):
+        d = fws.cell(r, 1).value
+        n = fws.cell(r, 3).value or ''
+        t = fws.cell(r, 4).value or ''
+        a = fws.cell(r, 5).value or 0
+        if d and str(d).startswith('2026') and '健身' in str(n) and str(t) == 'expense':
+            dd = str(d)[:10]
+            gym_expenses[dd] = gym_expenses.get(dd, 0) + float(a)
+
+    # start_date 之前的健身支出作为初始累计（办卡发生在有每日记录之前）
+    cum_expense = sum(v for d, v in gym_expenses.items() if d < start_date)
+    cum_train = 0
+    for row_idx, (date, part, cardio) in enumerate(daily, start=2):
+        is_train = '是' if (part and part != '休息') else '否'
+        if is_train == '是':
+            cum_train += 1
+        if date in gym_expenses:
+            cum_expense += gym_expenses[date]
+        total_visits = 54 + cum_train
+        per_visit = round(cum_expense / total_visits, 2) if total_visits > 0 and cum_expense > 0 else 0
+        ws.cell(row_idx, 1, date)
+        ws.cell(row_idx, 2, is_train)
+        ws.cell(row_idx, 3, part if part else '—')
+        ws.cell(row_idx, 4, cardio if cardio is not None else 0)
+        ws.cell(row_idx, 5, total_visits)
+        ws.cell(row_idx, 6, round(cum_expense, 2))
+        ws.cell(row_idx, 7, per_visit)
+        ws.cell(row_idx, 8, f'健身支出 ¥{gym_expenses[date]:.2f}' if date in gym_expenses else None)
+
+
 def cmd_train(a):
     date = a.date
     print(f'→ 训练：{a.part} | 有氧{a.cardio or 0}min')
@@ -955,8 +1011,20 @@ def cmd_train(a):
     # 自动换行
     for col in [10, 12]:
         dws.cell(r, col).alignment = Alignment(wrap_text=True, vertical='top')
-    save_atomic(wb, [('每日记录', r, 9, a.part, '训练部位')])
-    print('✅ 已同步：每日记录（训练列）。日记的训练明细表格仍由我按你的描述详细撰写。')
+    # 同步刷新健身成本记录
+    refresh_fitness_cost(wb)
+    # 找到当前日期在健身成本记录中的行，用于校验
+    fc_row = None
+    fcws = wb['健身成本记录']
+    for rr in range(2, fcws.max_row + 1):
+        if norm_date(fcws.cell(rr, 1).value) == date:
+            fc_row = rr
+            break
+    checks = [('每日记录', r, 9, a.part, '训练部位')]
+    if fc_row:
+        checks.append(('健身成本记录', fc_row, 3, a.part if a.part else '—', '健身成本训练部位'))
+    save_atomic(wb, checks)
+    print('✅ 已同步：每日记录（训练列）+ 健身成本记录。日记的训练明细表格仍由我按你的描述详细撰写。')
 
 
 def cmd_mantra(a):
