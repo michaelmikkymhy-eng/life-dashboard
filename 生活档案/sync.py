@@ -63,6 +63,9 @@ TARGETS = {
 
 # 2026-08-08 之前的日记为旧格式（营养明细不全/格式不一），营养列以台账为准，不参与日记核对
 LEGACY_UNTIL = '2026-08-07'
+# 睡眠一致性校验起点（2026-11-22 立）：此前的日记作息只记主睡眠、台账记多段合计，
+# 属历史格式差异非错账，故只对 2026-11-01 起的日子做逐项比对。
+SLEEP_CONSIST_FROM = '2026-11-01'
 
 EXPENSE_CATEGORIES = ['食', '住', '行', '衣', '个护', '娱乐', '🎁礼尚往来', '特殊事件', '医疗', '🎬设备', '旅行', '税费', '保险']
 # 标准 emoji 形式（与台账财务明细一致，改分类请同时更新此处+台账+规范文档）
@@ -1521,6 +1524,23 @@ def check_date(wb, date, quiet=False):
         total, diary_total = diary_expense_total(text)
         if diary_total is not None and abs(diary_total - sheet_sum) > 0.01:
             issues.append(f'{date}：日记消费合计 ¥{diary_total} ≠ 财务明细 ¥{sheet_sum}')
+    # 作息/体重一致性（日记 ⇄ 每日记录）——2026-11-22 铁律：md 与 xlsx 必须逐项相等
+    if os.path.exists(p) and date > LEGACY_UNTIL:
+        lines = text.split('\n')
+        s = next((i for i, l in enumerate(lines) if l.startswith('## 作息')), None)
+        if s is not None:
+            e = next((i for i, l in enumerate(lines) if i > s and l.startswith('## ')), len(lines))
+            md_sleep = parse_sleep_hours('\n'.join(lines[s:e]))
+            sheet_sleep = parse_sleep_hours(dws.cell(r, 2).value)
+            if date >= SLEEP_CONSIST_FROM and md_sleep and sheet_sleep and abs(md_sleep - sheet_sleep) > 0.05:
+                issues.append(f'{date}：睡眠 日记{md_sleep:.2f}h ≠ 台账{sheet_sleep:.2f}h')
+        mw = re.search(r'称重[:：]\s*([0-9]+(?:\.[0-9]+)?)\s*kg', text)
+        sheet_w = dws.cell(r, 3).value
+        if mw:
+            if not isinstance(sheet_w, (int, float)):
+                issues.append(f'{date}：体重 日记{mw.group(1)}kg 但台账体重列为空')
+            elif abs(float(mw.group(1)) - float(sheet_w)) > 0.001:
+                issues.append(f'{date}：体重 日记{mw.group(1)}kg ≠ 台账{sheet_w}kg')
     # 准提咒
     m = next((mws.cell(mr, 2).value for mr in range(2, mws.max_row + 1)
               if norm_date(mws.cell(mr, 1).value) == date), None)
@@ -1543,15 +1563,19 @@ def parse_sleep_hours(text):
     if not text:
         return 0.0
     t = str(text)
-    # 1) 显式合计优先：=7h21m / 共 13h57m / 当日合计7h21m
-    m = re.search(r'(?:=|共\s*|合计\s*)(\d+)\s*h\s*(\d+)?\s*m', t)
+    # 1) 显式合计最高优先：当日总睡眠：**8h36m** / =7h21m / 共 13h57m / 当日合计7h21m
+    m = re.search(r'(?:当日总睡眠|总睡眠|合计|共|=)[:：]?\s*\*{0,2}(\d+)\s*h\s*(\d+)?\s*m?', t)
     if m:
         return int(m.group(1)) + int(m.group(2) or 0) / 60
-    # 2) 段内标注：(3h41m) / (8h4min)，多段求和
+    # 2) 多段"约 XhXXm"求和（日记常态：主睡眠 + 补觉/午睡 分行写）
+    segs2 = re.findall(r'约\s*(\d+)\s*h\s*(\d+)?\s*m', t)
+    if segs2:
+        return sum(int(h) + int(mm or 0) / 60 for h, mm in segs2)
+    # 3) 段内标注：(3h41m) / (8h4min)，多段求和
     segs = re.findall(r'\((\d+)\s*h\s*(\d+)?\s*m', t)
     if segs:
         return sum(int(h) + int(mm or 0) / 60 for h, mm in segs)
-    # 3) 时间段 HH:MM→HH:MM / HH:MM-HH:MM（可跨午夜）
+    # 4) 时间段 HH:MM→HH:MM / HH:MM-HH:MM（可跨午夜）
     rngs = re.findall(r'(\d{1,2}):(\d{2})\s*[→\-]\s*(\d{1,2}):(\d{2})', t)
     total = 0.0
     for h1, m1, h2, m2 in rngs:
