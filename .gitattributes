@@ -1,0 +1,4 @@
+# 保证在 Windows 上检出时脚本仍是 LF 行尾
+*.sh    text eol=lf
+*.py    text eol=lf
+.githooks/* text eol=lf

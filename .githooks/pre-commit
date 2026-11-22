@@ -13,11 +13,25 @@ changed=$(git -c core.quotePath=false diff --cached --name-only --diff-filter=AC
 
 [ -z "$changed" ] && exit 0
 
+# 本机可能没有 python3（Windows 常见）或未装 openpyxl。
+# 云端是唯一写入方且已强制校验，本地缺依赖时只警告不拦截，避免 Obsidian 同步被锁死。
+PY=""
+for c in python3 python py; do
+  if command -v "$c" >/dev/null 2>&1; then PY="$c"; break; fi
+done
+if [ -z "$PY" ]; then
+  echo "⚠️  本机未找到 Python，跳过本地一致性校验（以云端校验为准）。"
+  exit 0
+fi
+
 fail=0
 for d in $changed; do
-  out=$(cd '01-日常管理/数据' && PYTHONIOENCODING=utf-8 python3 sync.py check --date "$d" 2>&1) || true
+  out=$(cd '01-日常管理/数据' && PYTHONIOENCODING=utf-8 "$PY" sync.py check --date "$d" 2>&1) || true
   case "$out" in
     *"校验通过"*) printf '  ✅ %s 一致\n' "$d" ;;
+    *"ModuleNotFoundError"*)
+      printf '  ⚠️  %s 跳过：本机缺少 Python 依赖（%s）\n' "$d" "$(printf '%s' "$out" | head -1)"
+      ;;
     *)
       printf '  ❌ %s 不一致：\n' "$d"
       printf '%s\n' "$out" | tail -5 | sed 's/^/     /'
