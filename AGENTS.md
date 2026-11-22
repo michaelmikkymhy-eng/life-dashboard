@@ -12,3 +12,5 @@
 **铁律（2026-11-22 用户立）：Excel 台账与 Markdown 必须逐项一致**——热量/蛋白/脂肪/碳水/消费合计/准提咒/睡眠/体重，任何一项两边不等即为错账。每次写入后跑 `python3 sync.py check --date YYYY-MM-DD`，通过才算完事；仓库已挂 `pre-commit` 钩子，失配的提交会被物理拒绝。
 
 **云端与同步边界**：`/workspace` 是唯一主库和日常管理写入入口。手机 Trae 在电脑关机时仍可记录、校验并推送；本地 Obsidian 只是 GitHub 镜像，`01-日常管理/日记/` 与 Excel 台账只允许云端 AI 通过 sync.py 写，本地不手改。每次记录校验通过后必须 `git commit` + `git push`，不得只留在云会话。换电脑只需重新 clone 并启用 `.githooks`，不依赖旧电脑。
+
+**写入前先同步**：本地 AI 工具会把随笔直接写进 `02-意识与创作/` 并推送，因此云端每次开始写文件或提交前，先跑 `git pull --rebase origin main`；出现冲突立即停下问用户，绝不 force push。外部 AI 的允许写入范围见 `02-意识与创作/README.md`，日常数据仍只能走 sync.py。
