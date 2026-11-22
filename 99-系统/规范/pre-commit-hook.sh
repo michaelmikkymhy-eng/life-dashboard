@@ -8,14 +8,14 @@ ROOT=$(git rev-parse --show-toplevel)
 cd "$ROOT" || exit 1
 
 changed=$(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACM \
-  | grep -E '^生活档案/日记/[0-9]{4}-[0-9]{2}-[0-9]{2}\.md$' \
+  | grep -E '^01-日常管理/日记/[0-9]{4}-[0-9]{2}-[0-9]{2}\.md$' \
   | sed -E 's#.*/##; s#\.md$##' || true)
 
 [ -z "$changed" ] && exit 0
 
 fail=0
 for d in $changed; do
-  out=$(cd 生活档案 && PYTHONIOENCODING=utf-8 python3 sync.py check --date "$d" 2>&1) || true
+  out=$(cd '01-日常管理/数据' && PYTHONIOENCODING=utf-8 python3 sync.py check --date "$d" 2>&1) || true
   case "$out" in
     *"校验通过"*) printf '  ✅ %s 一致\n' "$d" ;;
     *)

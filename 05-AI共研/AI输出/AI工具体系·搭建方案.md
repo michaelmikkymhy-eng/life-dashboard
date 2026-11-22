@@ -49,8 +49,8 @@ Hermes 接 Grok 只有两条路：**SuperGrok/Premium+ 订阅走 OAuth**，或**
 |---|---|
 | ① Hermes 能跑 | PowerShell 里 `hermes` 能进对话 |
 | ② 主模型已接 | 对话时能显示当前模型，回答正常 |
-| ③ 能读本地库 | 让它总结 `生活档案\日记\2026-11-22.md`，内容准确 |
-| ④ 能写本地库 | 让它写进 `知识库\收件箱.md`，文件真的出现 |
+| ③ 能读本地库 | 让它总结 `01-日常管理\日记\2026-11-22.md`，内容准确 |
+| ④ 能写本地库 | 让它写进 `02-意识与创作\灵感\收件箱.md`，文件真的出现 |
 | ⑤ 辅助模型分工 | 至少 1 个辅助槽位在跑 |
 
 五条全过 = 体系成立。任何一条没过，先修这一条，别加功能。
@@ -70,12 +70,13 @@ Hermes 接 Grok 只有两条路：**SuperGrok/Premium+ 订阅走 OAuth**，或**
         └── 辅助槽位 B：视觉/压缩（豆包同源即可）
         │
         ▼
-   本地知识库（纯 Markdown + git）
-   life-dashboard\生活档案   ← 已有 342 次提交
-   life-dashboard\知识库     ← 本次新建
+   本地 Obsidian 镜像（Markdown + Excel + git）
+   年轮\01-日常管理   ← 云端 AI 维护的日记与唯一总台账
+   年轮\02-意识与创作 ← 本地可读写的灵感、随笔与精神成长
+   年轮\04-AI工具箱   ← 可迁移工具、Skill 与 prompts
 ```
 
-**核心原则**：知识库永远是纯文本 + git。Hermes 挂了、换 Claude Code、换 Cursor，积累都还在——这就是视频第 4 步"换工具也能继续"。
+**核心原则**：年轮以 Markdown + git 为交换层，生活数据总台账始终只有一份 Excel。Hermes 挂了、换 Claude Code、换 Cursor，积累都还在——这就是视频第 4 步"换工具也能继续"。日常日记与 Excel 只允许云端 AI 通过 sync.py 双写；本地 Hermes 可以读取，也可以写灵感、随笔和项目文档，但不能直接修改日常管理数据。
 
 ---
 
@@ -102,13 +103,14 @@ hermes --version
 
 ```powershell
 cd $env:USERPROFILE
-git clone https://github.com/michaelmikkymhy-eng/life-dashboard.git
-cd life-dashboard
+git clone https://github.com/michaelmikkymhy-eng/life-dashboard.git 年轮
+cd 年轮
+git config core.hooksPath .githooks
 ```
 
 > 仓库是私有的，需要登录凭据。用 Git Credential Manager 弹窗登录 GitHub 即可，**不要把 token 贴进任何文件**。
 
-**做完的标志**：`dir life-dashboard\生活档案\日记` 能看到 md 文件。
+**做完的标志**：`dir 年轮\01-日常管理\日记` 能看到 md 文件。
 
 ### Step 3｜接主模型（豆包 / 火山）
 
@@ -134,28 +136,28 @@ hermes config set DEEPSEEK_API_KEY sk-你的key
 
 ### Step 5｜验证读写本地库（关键一步）
 
-进 `hermes` 后，在 `life-dashboard` 目录里说：
+进 `hermes` 后，在 `年轮` 目录里说：
 
-> 「读一下 生活档案\日记\2026-11-22.md，用 3 条总结我今天做了什么」
+> 「读一下 01-日常管理\日记\2026-11-22.md，用 3 条总结我今天做了什么」
 
 再试写：
 
-> 「把"今天确认 Hermes 能在 Windows 跑"这句话追加到 知识库\收件箱.md」
+> 「把"今天确认 Hermes 能在 Windows 跑"这句话追加到 02-意识与创作\灵感\收件箱.md」
 
 **做完的标志**：读的内容和日记一致；写的文件真的出现（去资源管理器看）。
 
 ### Step 6｜建第一个技能
 
-Hermes 的核心能力是"从经验生成技能"。第一个技能做你天天要做的事：
+Hermes 的核心能力是"从经验生成技能"。第一个技能先做允许本地写入的灵感归档：
 
-> 「我每天口述饮食和作息流水，你把它解析成时间轴、饮食、称重记录，写进 生活档案\日记\当天日期.md，格式参考已有文件。」
+> 「我口述灵感、创作构思和学习想法，你整理成条目送审文本；我确认后追加到 02-意识与创作\灵感\收件箱.md。饮食、作息、体重等日常记录只生成待云端 AI 处理的请求，不直接修改日记或 Excel。」
 
-**做完的标志**：说一段测试流水，它生成格式正确的文件。
+**做完的标志**：说一段测试灵感，确认后它写入正确文件；说一段饮食流水时，它不碰日常日记和台账。
 
 ### Step 7｜留积累（视频第 4 步）
 
 ```powershell
-cd $env:USERPROFILE\life-dashboard
+cd $env:USERPROFILE\年轮
 git add . ; git commit -m "Hermes 跑通，知识库接入"
 git push
 ```

@@ -5,7 +5,7 @@
 ====================
 一句话输入 → 台账5个sheet + 日记 全部同步，写后自动校验，杜绝漏更/错位/乱序。
 
-用法（在 生活档案 目录下执行）:
+用法（在 01-日常管理/数据 目录下执行）:
   python3 sync.py meal    --date 2026-08-20 --meal 加餐 --food "五香牛肉" --grams 100
   python3 sync.py meal    --date 2026-08-20 --meal 训练中 --food "蛋白粉(80%蛋白)" --count 1
   python3 sync.py expense --date 2026-08-20 --name "打车" --amount 13.2 --category 行
@@ -45,9 +45,11 @@ import time
 from datetime import datetime
 
 BASE = os.path.dirname(os.path.abspath(__file__))
+DAILY_ROOT = os.path.dirname(BASE)
 LEDGER = os.path.join(BASE, '生活数据总台账.xlsx')
-DIARY_DIR = os.path.join(BASE, '日记')
+DIARY_DIR = os.path.join(DAILY_ROOT, '日记')
 BACKUP_DIR = os.path.join(BASE, '备份')
+MONTHLY_REPORT_DIR = os.path.join(DAILY_ROOT, '报告', '月报')
 TMP = LEDGER + '.tmp.xlsx'
 
 # ============ 饮食计划目标（重组计划已启动） ============
@@ -2760,8 +2762,8 @@ def cmd_monthly(a):
 
     # 保存文件
     import os
-    os.makedirs('月报', exist_ok=True)
-    path = f'月报/{month_str}月报.md'
+    os.makedirs(MONTHLY_REPORT_DIR, exist_ok=True)
+    path = os.path.join(MONTHLY_REPORT_DIR, f'{month_str}月报.md')
     with open(path, 'w', encoding='utf-8') as fp:
         fp.write(report + '\n')
     print(f'\n✅ 月报已保存：{path}')

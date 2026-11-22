@@ -6,7 +6,7 @@ v1→v2：/data/user/work 为临时盘（沙箱重启即清空）→ 迁移至 /
 """
 import hashlib, json, os, re, subprocess, time
 
-WATCH = '/workspace/生活档案'
+WATCH = '/workspace/01-日常管理'
 SD = '/workspace/.watchdog'
 VER = SD + '/versions'
 LOG = SD + '/events.log'

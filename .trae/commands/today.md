@@ -7,10 +7,10 @@ description: 时间锚核验与日期修正——强制校准真实日期，检�
 
 ## 阶段一：时间核验（禁止凭记忆作答）
 
-1. 跑 `cd /workspace && TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M %A'` 获取真实北京时间（沙箱默认 UTC，必须换算 UTC+8；凌晨 0:00-7:59 本地时段注意日记归属日）
-2. 跑 `ls /workspace/生活档案/日记/ | sort | tail -3` 用最新日记文件名交叉验证（文件系统事实为最高权威）
-3. 跑 `cd /workspace/生活档案 && python3 sync.py status` 刷新当日常显状态
-4. 读取当日日记《/workspace/生活档案/日记/<步骤1的真实日期>.md》衔接当日状态（不存在则说明当天尚未建档，进入阶段三排查）
+1. 跑 `cd /workspace && TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M %A'` 获取用户本地时间（命令显式使用 Asia/Shanghai，不重复加 8 小时；凌晨 0:00-7:59 注意日记归属日）
+2. 跑 `ls /workspace/01-日常管理/日记/ | sort | tail -3` 用最新日记文件名交叉验证（文件系统事实为最高权威）
+3. 跑 `cd /workspace/01-日常管理/数据 && python3 sync.py status` 刷新当日常显状态
+4. 读取当日日记《/workspace/01-日常管理/日记/<步骤1的真实日期>.md》衔接当日状态（不存在则说明当天尚未建档，进入阶段三排查）
 
 ## 阶段二：冲突裁定
 
