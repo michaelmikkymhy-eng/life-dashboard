@@ -819,9 +819,13 @@ def cmd_sleep(a):
     summary = f'{label} {a.range.replace("-", "→")}({fmt_dur(end - start)})' if label == '主睡眠' \
         else f'{mins // 60}h{mins % 60:02d}m（{n + 1}段）'
     if label != '主睡眠':
-        # 多段：压缩为 "段1+段2=总"
-        segs = re.findall(r'^- (.+?)：(\d{1,2}:\d{2})→(\d{1,2}:\d{2})', text, flags=re.M)
-        summary = '+'.join(f'{s[1]}-{s[2]}' for s in segs) + f'={mins // 60}h{mins % 60:02d}m'
+        # 多段：压缩为 "段1+段2=总"（箭头前可能带"入睡/（8/28 晚）"等说明，需容忍）
+        segs = re.findall(r'^- (.+?)：(\d{1,2}:\d{2}).*?→\s*(\d{1,2}:\d{2})', text, flags=re.M)
+        if segs:
+            summary = '+'.join(f'{s[1]}-{s[2]}' for s in segs) + f'={mins // 60}h{mins % 60:02d}m'
+        else:
+            # 兜底：不写以 = 开头的串，避免被 Excel 当成公式
+            summary = fmt_dur(mins / 60)
     wb = load()
     dws = wb['每日记录']
     r, _ = ensure_daily_row(dws, date)
